@@ -9,8 +9,8 @@ function Navbar() {
             <Image
                 src={logo}
                 alt="Chingu Collaborate Logo"
-                width="110%"
-                height="40%"
+                width={100}
+                height={40}
             />
             <HamburgerMenu />
         </nav>

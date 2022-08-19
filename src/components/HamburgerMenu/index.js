@@ -26,23 +26,33 @@ function HamburgerMenu() {
         <div>
             <Button
                 onClick={() => handleClick(size)}
+                colorScheme="gray"
                 key={size}
                 m={4}
                 as={IconButton}
                 icon={<GiHamburgerMenu />}
-                variant="outline"
-                style={{ backgroundColor: '#E6FFFA', color: '#1D4044' }}
+                variant="ghost"
+                style={{ color: 'black' }}
             />
 
             <Drawer onClose={onClose} isOpen={isOpen} size={size}>
                 <DrawerOverlay />
                 <DrawerContent
-                    style={{ backgroundColor: '#319795', color: '#E6FFFA' }}
+                    style={{ backgroundColor: 'white', color: 'black' }}
                 >
                     <DrawerCloseButton />
                     <DrawerBody>
                         <Link>
-                            <Heading>Test</Heading>
+                            <Heading>Projects</Heading>
+                        </Link>
+                        <Link>
+                            <Heading>Profile</Heading>
+                        </Link>
+                        <Link>
+                            <Heading>Sign In</Heading>
+                        </Link>
+                        <Link>
+                            <Heading>Sign Out</Heading>
                         </Link>
                     </DrawerBody>
                 </DrawerContent>
