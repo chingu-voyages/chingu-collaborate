@@ -10,6 +10,12 @@ body {
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+#__next {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     max-width: 1200px;
     width: 100vw;
