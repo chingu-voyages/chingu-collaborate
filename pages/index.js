@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Navbar from '../src/components/Navbar'
 
 export default function Home() {
     return (
@@ -10,7 +11,7 @@ export default function Home() {
                 <meta name="description" content="Chingu Collaborate" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <Navbar />
             <main></main>
 
             {/* <footer className={styles.footer}>
