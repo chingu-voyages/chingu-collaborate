@@ -11,9 +11,10 @@ import {
     useDisclosure,
     Link,
 } from '@chakra-ui/react'
+import NextLink from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
-function HamburgerMenu() {
+function HamburgerMenu({ routes }) {
     const [size, setSize] = useState('xs')
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,12 +28,11 @@ function HamburgerMenu() {
             <Button
                 onClick={() => handleClick(size)}
                 colorScheme="gray"
+                variant="ghost"
                 key={size}
                 m={4}
                 as={IconButton}
                 icon={<GiHamburgerMenu />}
-                variant="ghost"
-                style={{ color: 'black' }}
             />
 
             <Drawer onClose={onClose} isOpen={isOpen} size={size}>
@@ -42,18 +42,19 @@ function HamburgerMenu() {
                 >
                     <DrawerCloseButton />
                     <DrawerBody>
-                        <Link>
-                            <Heading>Projects</Heading>
-                        </Link>
-                        <Link>
-                            <Heading>Profile</Heading>
-                        </Link>
-                        <Link>
-                            <Heading>Sign In</Heading>
-                        </Link>
-                        <Link>
-                            <Heading>Sign Out</Heading>
-                        </Link>
+                        {routes.map((route, index) => {
+                            return (
+                                <NextLink
+                                    key={index}
+                                    href={route.route}
+                                    passHref
+                                >
+                                    <Link>
+                                        <Heading>{route.name}</Heading>
+                                    </Link>
+                                </NextLink>
+                            )
+                        })}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
