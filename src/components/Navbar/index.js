@@ -1,7 +1,7 @@
 import styles from './Nav.module.css'
 
 function Navbar() {
-    return <nav className={styles.nav}></nav>
+    return <nav className={styles.nav}>Chingu Collaborate</nav>
 }
 
-export default Nav
+export default Navbar
