@@ -25,14 +25,11 @@ function HamburgerMenu({ routes }) {
 
     return (
         <div>
-            <Button
+            <IconButton
                 onClick={() => handleClick(size)}
                 colorScheme="gray"
                 variant="ghost"
-                key={size}
-                m={4}
-                as={IconButton}
-                icon={<GiHamburgerMenu />}
+                icon={<GiHamburgerMenu size={20} />}
             />
 
             <Drawer onClose={onClose} isOpen={isOpen} size={size}>
