@@ -1,7 +1,20 @@
 import styles from './Nav.module.css'
+import Image from 'next/image'
+import logo from './chinguLogo.png'
+import HamburgerMenu from '../HamburgerMenu'
 
 function Navbar() {
-    return <nav className={styles.nav}>Chingu Collaborate</nav>
+    return (
+        <nav className={styles.nav}>
+            <Image
+                src={logo}
+                alt="Chingu Collaborate Logo"
+                width="110%"
+                height="40%"
+            />
+            <HamburgerMenu />
+        </nav>
+    )
 }
 
 export default Navbar
