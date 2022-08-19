@@ -11,8 +11,10 @@ export default function Home() {
                 <meta name="description" content="Chingu Collaborate" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Navbar />
-            <main></main>
+
+            <main className="container">
+                <Navbar />
+            </main>
 
             {/* <footer className={styles.footer}>
         <a
