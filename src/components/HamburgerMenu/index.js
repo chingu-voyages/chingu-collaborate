@@ -11,9 +11,10 @@ import {
     useDisclosure,
     Link,
 } from '@chakra-ui/react'
+import NextLink from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
-function HamburgerMenu() {
+function HamburgerMenu({ routes }) {
     const [size, setSize] = useState('xs')
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -26,24 +27,34 @@ function HamburgerMenu() {
         <div>
             <Button
                 onClick={() => handleClick(size)}
+                colorScheme="gray"
+                variant="ghost"
                 key={size}
                 m={4}
                 as={IconButton}
                 icon={<GiHamburgerMenu />}
-                variant="outline"
-                style={{ backgroundColor: '#E6FFFA', color: '#1D4044' }}
             />
 
             <Drawer onClose={onClose} isOpen={isOpen} size={size}>
                 <DrawerOverlay />
                 <DrawerContent
-                    style={{ backgroundColor: '#319795', color: '#E6FFFA' }}
+                    style={{ backgroundColor: 'white', color: 'black' }}
                 >
                     <DrawerCloseButton />
                     <DrawerBody>
-                        <Link>
-                            <Heading>Test</Heading>
-                        </Link>
+                        {routes.map((route, index) => {
+                            return (
+                                <NextLink
+                                    key={index}
+                                    href={route.route}
+                                    passHref
+                                >
+                                    <Link>
+                                        <Heading>{route.name}</Heading>
+                                    </Link>
+                                </NextLink>
+                            )
+                        })}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
