@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Navbar from '../src/components/Navbar'
+import BannedCard from '../src/components/BannedCard'
+import CreateProfile from '../src/components/CreateProfile'
 
 export default function Home() {
     return (
@@ -14,6 +16,10 @@ export default function Home() {
 
             <main className="container">
                 <Navbar />
+                <section className="content">
+                    {/* <BannedCard /> */}
+                    <CreateProfile />
+                </section>
             </main>
 
             {/* <footer className={styles.footer}>
