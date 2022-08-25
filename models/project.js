@@ -6,10 +6,12 @@ const projectSchema = new Schema({
         required: true,
         unique: true,
     },
-    technologies: {
-        type: String,
-        required: true,
-    },
+    technologies: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
     details: {
         type: String,
         required: true,
@@ -40,6 +42,6 @@ const projectSchema = new Schema({
     ],
 });
 
-const Project = models.project || model('Project', projectSchema)
+const Project = models.Project || model('Project', projectSchema)
 
 export default Project;
