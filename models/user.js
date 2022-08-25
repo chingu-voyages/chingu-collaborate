@@ -16,7 +16,7 @@ const userSchema = new Schema({
         required: true,
     },
     discordId: String,
-    gihubProfile: String,
+    githubProfile: String,
     preferredMethodOfContact: String,
     isNewUser: Boolean,
     projectsCreated: [
