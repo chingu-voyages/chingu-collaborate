@@ -1,9 +1,10 @@
 import Head from 'next/head'
+import { signIn } from 'next-auth/react'
 import Navbar from '../../src/components/Navbar'
 import { Flex, Heading, Box, Text } from '@chakra-ui/react'
 import DiscordButton from '../../src/components/DiscordButton'
 
-export default function Home() {
+export default function SignIn() {
     return (
         <div>
             <Head>
@@ -28,7 +29,7 @@ export default function Home() {
                             <Heading size="xl">Sign In</Heading>
                         </Box>
                         <Box display="flex" justifyContent="center">
-                            <DiscordButton />
+                            <DiscordButton onClick={() => signIn('discord')} />
                         </Box>
                         <Box>
                             <Text fontSize="xs" color="gray.500">

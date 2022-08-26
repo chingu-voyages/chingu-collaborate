@@ -1,9 +1,9 @@
 import styles from './DiscordButton.module.css'
 
-function DiscordButton() {
+function DiscordButton({ onClick }) {
     return (
         <div className={styles['discord-button']}>
-            <a>
+            <a onClick={onClick}>
                 <div className={styles.icon}>
                     <svg
                         id="Layer_1"
