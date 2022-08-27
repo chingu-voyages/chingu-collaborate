@@ -6,19 +6,29 @@ const userSchema = new Schema({
         required: true,
         unique: true,
     },
+    discordId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    discordUsername: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     email: {
         type: String,
         required: true,
         unique: true,
     },
-    password: {
+    location: {
         type: String,
         required: true,
     },
-    discordId: String,
     githubProfile: String,
     preferredMethodOfContact: String,
     isNewUser: Boolean,
+    isBannedUser: Boolean,
     projectsCreated: [
         {
             type: Schema.Types.ObjectId,
@@ -31,7 +41,7 @@ const userSchema = new Schema({
             ref: 'Project'
         }   
     ],
-    projectsApplied: [
+    projectsJoined: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Project'
