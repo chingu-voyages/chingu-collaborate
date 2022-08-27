@@ -19,6 +19,7 @@ const userSchema = new Schema({
     githubProfile: String,
     preferredMethodOfContact: String,
     isNewUser: Boolean,
+    isBanned: Boolean,
     projectsCreated: [
         {
             type: Schema.Types.ObjectId,
