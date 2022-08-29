@@ -23,7 +23,7 @@ export default NextAuth({
                     id: profile.id,
                     name: profile.username,
                     email: profile.email,
-                    image: profile.image_url
+                    image: profile.image_url,
                 }
             },
         }),
