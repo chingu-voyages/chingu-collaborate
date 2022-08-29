@@ -1,18 +1,6 @@
-import {
-    Flex,
-    Heading,
-    Text,
-    IconButton,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    HStack,
-    Tag,
-    TagLabel,
-} from '@chakra-ui/react'
+import { Flex, Heading, Text } from '@chakra-ui/react'
 
-function LimitsOverview({ projectsCreated = 1, projectsRequested = 2 }) {
+function LimitsOverview({ projectsCreated = 1, projectsRequested = 0 }) {
     return (
         <Flex
             width="90%"
@@ -21,7 +9,7 @@ function LimitsOverview({ projectsCreated = 1, projectsRequested = 2 }) {
             textAlign="left"
             gap={4}
         >
-            <Heading size="xl">Limits</Heading>
+            <Heading size="lg">Weekly Limits</Heading>
             <Flex justify="space-evenly">
                 <Flex gap={2} align="center">
                     <Heading>{`${projectsCreated}/1`}</Heading>

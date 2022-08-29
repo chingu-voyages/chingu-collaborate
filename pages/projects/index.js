@@ -1,5 +1,8 @@
 import Head from 'next/head'
+import LimitsOverview from '../../src/components/LimitsOverview'
 import Navbar from '../../src/components/Navbar'
+import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
+import ProjectActions from '../../src/components/ProjectActions'
 
 export default function Projects() {
     return (
@@ -12,7 +15,11 @@ export default function Projects() {
 
             <main className="container">
                 <Navbar />
-                <section className="content"></section>
+                <section className="content">
+                    <LimitsOverview />
+                    <ProjectActions />
+                    <ProjectPreviewCard />
+                </section>
             </main>
 
             {/* <footer className={styles.footer}>

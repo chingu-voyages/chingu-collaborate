@@ -28,7 +28,7 @@ function ProjectPreviewCard({
 
     const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
 
-    const isAdmin = false // add logic to check if the logged in user is the admin for this project
+    const isAdmin = true // add logic to check if the logged in user is the admin for this project
 
     return (
         <Flex
