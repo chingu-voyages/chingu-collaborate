@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import ManageProject from '../../src/components/ManageProject'
 import Navbar from '../../src/components/Navbar'
 import ProjectDetails from '../../src/components/ProjectDetails'
 
@@ -8,7 +9,7 @@ export default function Project() {
 
     const projectId = router.query.id
 
-    const isAdmin = false // add logic to check if the logged in user is the admin for this project
+    const isAdmin = true // add logic to check if the logged in user is the admin for this project
 
     return (
         <div>
@@ -21,7 +22,7 @@ export default function Project() {
             <main className="container">
                 <Navbar />
                 <section className="content">
-                    {isAdmin ? '' : <ProjectDetails />}
+                    {isAdmin ? <ManageProject /> : <ProjectDetails />}
                 </section>
             </main>
 
