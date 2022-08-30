@@ -1,5 +1,6 @@
-import { Flex, Heading, Text, VStack } from '@chakra-ui/react'
+import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { BiHourglass } from 'react-icons/bi'
+import RequestedMemberCard from '../RequestedMemberCard'
 
 function ManageProject({
     title = 'Project Title',
@@ -12,7 +13,7 @@ function ManageProject({
 }) {
     const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
 
-    const numberOfRequestedMembers = 6
+    const numberOfRequestedMembers = 1
 
     return (
         <Flex
@@ -42,10 +43,16 @@ function ManageProject({
                 information along with this post.
             </Text>
             <hr />
-            <Flex direction="column" marginTop={4}>
-                <Heading size="md">{`Requested Members (${numberOfRequestedMembers})`}</Heading>
-                <VStack></VStack>
+            <Flex direction="column" marginTop={4} marginBottom={4}>
+                <Heading
+                    size="md"
+                    marginBottom={2}
+                >{`Requested Members (${numberOfRequestedMembers})`}</Heading>
+                <VStack>
+                    <RequestedMemberCard />
+                </VStack>
             </Flex>
+            <Button colorScheme="red">Delete</Button>
         </Flex>
     )
 }
