@@ -4,9 +4,13 @@ import Image from 'next/image'
 import logo from './chinguLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
 import { Box, Link } from '@chakra-ui/react'
-
+import { signOut, useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 function Navbar() {
-    const isAuthenticated = false
+    const nonAuthenticatedRoutes = [
+        { name: 'Home', route: '/' },
+        { name: 'Sign In', route: '/signin' },
+    ]
 
     const authenticatedRoutes = [
         { name: 'Projects', route: '/projects' },
@@ -14,14 +18,18 @@ function Navbar() {
         { name: 'Sign Out', route: '/' },
     ]
 
-    const nonAuthenticatedRoutes = [
-        { name: 'Home', route: '/' },
-        { name: 'Sign In', route: '/signin' },
-    ]
+    const { data: session, status } = useSession()
+    const loading = status === 'loading'
+    const [routes, setRoutes] = useState(nonAuthenticatedRoutes)
 
-    const routes = isAuthenticated
-        ? authenticatedRoutes
-        : nonAuthenticatedRoutes
+    useEffect(() => {
+        if (session) {
+            setRoutes(authenticatedRoutes)
+            console.log('triggered')
+        }
+    }, [session])
+
+    // let routes = isAuthenticated ? authenticatedRoutes : nonAuthenticatedRoutes
 
     return (
         <nav className={styles.nav}>
@@ -46,7 +54,9 @@ function Navbar() {
                 {routes.map((route, index) => {
                     return (
                         <NextLink key={index} href={route.route} passHref>
-                            <Link onClick={route.onClick}>{route.name}</Link>
+                            <Link onClick={route.name == 'Sign Out' && signOut}>
+                                {route.name}
+                            </Link>
                         </NextLink>
                     )
                 })}
