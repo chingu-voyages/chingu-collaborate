@@ -15,7 +15,15 @@ export default async function handler(req, res) {
             }
             break;
         case "POST":
-
+            try {
+                const project = new Project(req.body)
+                project.datePosted = new Date()
+                await project.save();
+                res.status(200).json(project)
+            } catch (err) {
+                res.status(500).json(err)
+            }
+            break;
         default:
             console.log("Wrong method type")
     }
