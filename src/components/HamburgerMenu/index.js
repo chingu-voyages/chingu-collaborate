@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { signOut } from 'next-auth/react'
 
 function HamburgerMenu({ routes }) {
     const [size, setSize] = useState('xs')
@@ -46,7 +47,11 @@ function HamburgerMenu({ routes }) {
                                     href={route.route}
                                     passHref
                                 >
-                                    <Link>
+                                    <Link
+                                        onClick={
+                                            route.name == 'Sign Out' && signOut
+                                        }
+                                    >
                                         <Heading>{route.name}</Heading>
                                     </Link>
                                 </NextLink>
