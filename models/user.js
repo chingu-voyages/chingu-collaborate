@@ -1,6 +1,11 @@
-const {Schema, model, models} = require('mongoose');
+const { Schema, model, models } = require('mongoose')
 
 const userSchema = new Schema({
+    userId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     username: {
         type: String,
         required: true,
@@ -9,12 +14,10 @@ const userSchema = new Schema({
     discordId: {
         type: String,
         required: true,
-        unique: true,
     },
     discordUsername: {
         type: String,
         required: true,
-        unique: true,
     },
     email: {
         type: String,
@@ -27,28 +30,34 @@ const userSchema = new Schema({
     },
     githubProfile: String,
     preferredMethodOfContact: String,
-    isNewUser: Boolean,
-    isBanned: Boolean,
+    isNewUser: {
+        type: Boolean,
+        default: false,
+    },
+    isBanned: {
+        type: Boolean,
+        default: false,
+    },
     projectsCreated: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Project'
-        }   
+            ref: 'Project',
+        },
     ],
     projectsRequested: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Project'
-        }   
+            ref: 'Project',
+        },
     ],
     projectsJoined: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Project'
-        }   
+            ref: 'Project',
+        },
     ],
-});
+})
 
 const User = models.User || model('User', userSchema)
 
-export default User;
+export default User
