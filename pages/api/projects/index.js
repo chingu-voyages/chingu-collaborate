@@ -18,6 +18,7 @@ export default async function handler(req, res) {
             try {
                 const project = new Project(req.body)
                 project.datePosted = new Date()
+                project.expiresIn = new Date() // need logic to add future date.
                 await project.save();
                 res.status(200).json(project)
             } catch (err) {
@@ -25,6 +26,6 @@ export default async function handler(req, res) {
             }
             break;
         default:
-            console.log("Wrong method type")
+            res.status(400).json({message:"Method type not supported"})
     }
 }
