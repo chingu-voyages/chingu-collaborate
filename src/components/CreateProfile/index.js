@@ -90,6 +90,7 @@ function CreateProfile() {
                         setEmail(e.target.value)
                     }}
                     type="email"
+                    marginBottom={inputMarginBottom}
                 />
 
                 <FormLabel marginBottom={labelMarginBottom}>
