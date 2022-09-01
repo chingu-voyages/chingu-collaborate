@@ -1,17 +1,12 @@
 const { Schema, model, models } = require('mongoose')
 
 const userSchema = new Schema({
-    userId: {
-        type: String,
-        required: true,
-        unique: true,
-    },
     username: {
         type: String,
         required: true,
         unique: true,
     },
-    discordId: {
+    authenticatedDiscordId: {
         type: String,
         required: true,
     },
