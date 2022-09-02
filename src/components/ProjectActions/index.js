@@ -7,9 +7,10 @@ import {
     Text,
 } from '@chakra-ui/react'
 import { BiSearch } from 'react-icons/bi'
+import AddProjectModal from '../AddProjectModal'
 
 function ProjectActions() {
-    const reachedMaximumPosts = true
+    const reachedMaximumPosts = false
     return (
         <Flex width="90%" padding="2rem 0" direction="column" gap={4}>
             <InputGroup>
@@ -29,13 +30,7 @@ function ProjectActions() {
                     placeholder="Search for project"
                 />
             </InputGroup>
-            <Button
-                width="100%"
-                colorScheme={reachedMaximumPosts ? 'gray' : 'green'}
-                cursor={reachedMaximumPosts ? 'not-allowed' : 'pointer'}
-            >
-                <Text fontSize="xl">Add Project Idea</Text>
-            </Button>
+            <AddProjectModal reachedMaximumPosts={reachedMaximumPosts} />
         </Flex>
     )
 }
