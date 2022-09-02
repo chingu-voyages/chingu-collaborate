@@ -17,11 +17,11 @@ const projectSchema = new Schema({
         required: true,
     },
     datePosted: {
-        type: String,
+        type: Date,
         required: true,
     },
     expiresIn: {
-        type: String,
+        type: Date,
         required: true,
     },
     admin:{
