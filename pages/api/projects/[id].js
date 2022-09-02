@@ -8,18 +8,22 @@ export default async function handler(req, res) {
     switch (method) {
         case "GET":
             try {
-                const projects = await Project.find();
-                return res.status(200).json(projects)
+                const project = await Project.findById(req.query.id);
+                return res.status(200).json(project)
             } catch (err) {
-                return res.status(500).json({message: "Projects Not found"})
+                return res.status(500).json({message: "Project Not found"})
             }
             break;
-        case "POST":
+        case "PATCH":
             try {
-                const project = new Project(req.body)
-                project.datePosted = new Date()
-                project.expiresIn = new Date() // need logic to add future date.
-                await project.save();
+                // Update logic pending
+            } catch (err) {
+                return res.status(500).json(err)
+            }
+            break;
+        case "DELETE":
+            try {
+                const project = await Project.findByIdAndDelete(req.query.id);
                 return res.status(200).json(project)
             } catch (err) {
                 return res.status(500).json(err)
