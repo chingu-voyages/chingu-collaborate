@@ -1,31 +1,33 @@
-import connectToDatabase from '../../../utils/dbConnect';
-import Project from '../../../models/project';
+import connectToDatabase from '../../../utils/dbConnect'
+import Project from '../../../models/project'
 
 export default async function handler(req, res) {
-    const { method } = req;
-    connectToDatabase();
+    const { method } = req
+    connectToDatabase()
 
     switch (method) {
-        case "GET":
+        case 'GET':
             try {
-                const projects = await Project.find();
+                const projects = await Project.find()
                 return res.status(200).json(projects)
             } catch (err) {
-                return res.status(500).json({message: "Projects Not found"})
+                return res.status(500).json({ message: 'Projects Not found' })
             }
-            break;
-        case "POST":
+            break
+        case 'POST':
             try {
                 const project = new Project(req.body)
                 project.datePosted = new Date()
                 project.expiresIn = new Date() // need logic to add future date.
-                await project.save();
+                await project.save()
                 return res.status(200).json(project)
             } catch (err) {
                 return res.status(500).json(err)
             }
-            break;
+            break
         default:
-            return res.status(400).json({message:"Method type not supported"})
+            return res
+                .status(400)
+                .json({ message: 'Method type not supported' })
     }
 }
