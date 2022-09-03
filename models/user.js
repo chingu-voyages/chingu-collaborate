@@ -21,7 +21,6 @@ const userSchema = new Schema({
     },
     location: {
         type: String,
-        required: true,
     },
     githubProfile: String,
     preferredMethodOfContact: String,
