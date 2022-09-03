@@ -1,6 +1,6 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import User from '../../../models/user'
-import validateUserBody from '../../../utils/validationUserBody'
+
 export default async function handler(req, res) {
     const { method } = req
     connectToDatabase()
