@@ -82,7 +82,7 @@ function CreateProfile() {
 
         if (formIsValid) {
             try {
-                const response = await fetch('/api/addUser', {
+                const response = await fetch('/api/user', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData),
