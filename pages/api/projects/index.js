@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             }
             break
         case 'POST':
-            const { title, technologies, details } = req.body
+            const { title, technologies, details, admin } = req.body
             if (title == undefined) {
                 return res
                     .status(400)
@@ -53,8 +53,10 @@ export default async function handler(req, res) {
             }
             try {
                 const project = new Project(req.body)
+                project.admin = admin
                 project.datePosted = new Date()
                 project.expiresIn = new Date() // need logic to add future date.
+                console.log(project)
                 await project.save()
                 return res.status(200).json(project)
             } catch (err) {

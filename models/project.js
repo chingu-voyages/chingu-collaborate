@@ -1,4 +1,4 @@
-const {Schema, model, models} = require('mongoose');
+const { Schema, model, models } = require('mongoose')
 
 const projectSchema = new Schema({
     title: {
@@ -10,7 +10,7 @@ const projectSchema = new Schema({
         {
             type: String,
             required: true,
-        }
+        },
     ],
     details: {
         type: String,
@@ -24,24 +24,25 @@ const projectSchema = new Schema({
         type: Date,
         required: true,
     },
-    admin:{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
+    admin: {
+        required: true,
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     },
     currentMembers: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'User'
-        }   
+            ref: 'User',
+        },
     ],
     requestedMembers: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'User'
-        }   
+            ref: 'User',
+        },
     ],
-});
+})
 
 const Project = models.Project || model('Project', projectSchema)
 
-export default Project;
+export default Project

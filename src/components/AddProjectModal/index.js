@@ -16,10 +16,13 @@ import {
     Textarea,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
+import { useSession } from 'next-auth/react'
+import { get } from 'mongoose'
 
 function AddProjectModal({ reachedMaximumPosts }) {
     const [selectedOptions, setSelectedOptions] = useState([])
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { data: session, status } = useSession()
 
     const options = [
         { value: 'javascript', label: 'JavaScript', colorScheme: 'yellow' },
@@ -50,11 +53,28 @@ function AddProjectModal({ reachedMaximumPosts }) {
     //Form Validation
     const formIsValid = titleIsValid && technologiesIsValid && detailsIsValid
 
+    const getUserId = async () => {
+        try {
+            const response = await fetch(
+                `/api/user?authenticatedDiscordId=${session.userId}`,
+                {
+                    method: 'GET',
+                }
+            )
+            const user = await response.json()
+            return user[0]._id
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const formSubmit = async () => {
+        const user_id = await getUserId()
         let formData = {
             title,
             technologies,
             details,
+            admin: user_id,
         }
 
         const response = await fetch('/api/projects', {
@@ -62,8 +82,6 @@ function AddProjectModal({ reachedMaximumPosts }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
         })
-        const data = await response.json()
-        console.log(data)
     }
 
     return (
