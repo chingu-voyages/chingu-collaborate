@@ -4,36 +4,51 @@ import styles from '../styles/Home.module.css'
 import Navbar from '../src/components/Navbar'
 import BannedCard from '../src/components/BannedCard'
 import CreateProfile from '../src/components/CreateProfile'
+import { useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export default function Home() {
-    return (
-        <div>
-            <Head>
-                <title>Chingu Collaborate</title>
-                <meta name="description" content="Chingu Collaborate" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+    const { data: session, status } = useSession()
+    const loading = status === 'loading'
+    let routePushed = false
+    const router = useRouter()
+    useEffect(() => {
+        if (session?.dbUser && !routePushed) {
+            router.push('projects')
+            routePushed = true
+        }
+    }, [session])
 
-            <main className="container">
-                <Navbar />
-                <section className="content">
-                    {/* <BannedCard /> */}
-                    <CreateProfile />
-                </section>
-            </main>
+    if (loading) {
+        console.log('loading is true')
+        return <div>LOADING...</div>
+    }
+    if (!session?.dbUser && session) {
+        return (
+            <div>
+                <Head>
+                    <title>Chingu Collaborate</title>
+                    <meta name="description" content="Chingu Collaborate" />
+                    <link rel="icon" href="/favicon.ico" />
+                </Head>
 
-            {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
-        </div>
-    )
+                <main className="container">
+                    <Navbar />
+                    <section className="content">
+                        {/* <BannedCard /> */}
+                        <CreateProfile />
+                    </section>
+                </main>
+            </div>
+        )
+    } else if (session?.dbUser) {
+        return <div>User already exists on the server. Redirecting.</div>
+    } else if (!session?.dbUser && !session) {
+        return (
+            <div>
+                You are not signed in at all. Sign in using discord first.
+            </div>
+        )
+    }
 }
