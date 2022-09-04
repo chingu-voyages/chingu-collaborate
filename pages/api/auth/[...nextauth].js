@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
-
+import User from '../../../models/user'
+import connectToDatabase from '../../../utils/dbConnect'
+connectToDatabase()
 export default NextAuth({
     // Configure one or more authentication providers
     providers: [
@@ -39,8 +41,15 @@ export default NextAuth({
         async session({ session, token, user, profile }) {
             // Send properties to the client, like an access_token from a provider.
             // session.accessToken = token.accessToken
-            console.log(token, 'tokey token')
+
+            console.log(token, 'JWT token')
+            let dbUser = await User.findOne({
+                authenticatedDiscordId: token.sub,
+            })
+            console.log(dbUser, ' the MongoDB user document')
+            session.dbUser = dbUser
             session.userId = token.sub
+
             return session
         },
         async signIn({ user, account, profile, email, credentials }) {
