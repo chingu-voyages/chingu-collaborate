@@ -8,6 +8,14 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
+                if (Object.keys(req.query).length !== 0) {
+                    console.log(req.query)
+                    const users = await User.find({
+                        authenticatedDiscordId:
+                            req.query.authenticatedDiscordId,
+                    })
+                    return res.status(200).json(users)
+                }
                 const users = await User.find()
                 return res.status(200).json(users)
             } catch (err) {
