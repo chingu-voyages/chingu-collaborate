@@ -14,7 +14,7 @@ export default function SignIn() {
     const router = useRouter()
     useEffect(() => {
         if (session && !routePushed) {
-            router.push('projects')
+            router.push('/')
             routePushed = true
         }
     }, [session])
