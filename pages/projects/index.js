@@ -51,7 +51,6 @@ export const getServerSideProps = async () => {
         method: 'GET',
     })
     const data = await response.json()
-    console.log(data)
     return {
         props: { projects: data },
     }

@@ -47,18 +47,24 @@ export default async function handler(req, res) {
                     error: 'At least one technology should be selected',
                 })
             }
-            if (details.length > 80) {
+            if (details.length > 800) {
                 return res.status(400).send({
                     error: 'Description should be less than 800 characters',
                 })
             }
             try {
                 const project = new Project(req.body)
-                project.admin = admin
+
                 const now = DateTime.now()
-                project.datePosted = now
+                //this logic is to get proper date format for project.datePosted
+                const datePostedString = now.toLocaleString(
+                    DateTime.DATETIME_MED
+                )
+                project.datePosted = datePostedString
+
+                project.createdAt = now
                 project.expiresIn = now.plus({ month: 1 })
-                console.log(project)
+                project.admin = admin
                 await project.save()
                 return res.status(200).json(project)
             } catch (err) {

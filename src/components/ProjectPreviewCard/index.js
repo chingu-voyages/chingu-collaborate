@@ -28,10 +28,6 @@ function ProjectPreviewCard({ project }) {
     const difference = expirationDate.diff(currentDate, ['days'])
     const remaningDays = `${Math.round(difference.toObject().days)} days`
 
-    //this logic is to get proper string for project.datePosted
-    const datePosted = DateTime.fromISO(project.datePosted)
-    const datePostedString = datePosted.toLocaleString(DateTime.DATETIME_MED)
-
     return (
         <Flex
             borderWidth="2px"
@@ -73,7 +69,7 @@ function ProjectPreviewCard({ project }) {
                     <Heading
                         size="sm"
                         fontWeight={500}
-                    >{`${project.admin} posted ${datePostedString}`}</Heading>
+                    >{`${project.admin} posted ${project.datePosted}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
