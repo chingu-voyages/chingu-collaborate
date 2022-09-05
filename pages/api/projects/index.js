@@ -1,5 +1,6 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import Project from '../../../models/project'
+import { DateTime } from 'luxon'
 
 export default async function handler(req, res) {
     const { method } = req
@@ -54,8 +55,9 @@ export default async function handler(req, res) {
             try {
                 const project = new Project(req.body)
                 project.admin = admin
-                project.datePosted = new Date()
-                project.expiresIn = new Date() // need logic to add future date.
+                const now = DateTime.now()
+                project.datePosted = now
+                project.expiresIn = now.plus({ month: 1 })
                 console.log(project)
                 await project.save()
                 return res.status(200).json(project)

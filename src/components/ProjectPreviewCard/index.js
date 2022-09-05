@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
+import { DateTime } from 'luxon'
 
 function ProjectPreviewCard({ project }) {
     const inputMarginBottom = '1rem'
@@ -21,6 +22,13 @@ function ProjectPreviewCard({ project }) {
     // const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
 
     const isAdmin = true // add logic to check if the logged in user is the admin for this project
+
+    const currentDate = DateTime.now()
+    const expirationDate = DateTime.fromISO(project.expiresIn)
+
+    const difference = expirationDate.diff(currentDate, ['days'])
+
+    const remaningDays = `${Math.round(difference.toObject().days)} days`
 
     return (
         <Flex
@@ -78,7 +86,7 @@ function ProjectPreviewCard({ project }) {
                     size="sm"
                     fontWeight={500}
                     color="red.500"
-                >{`Expires in ${project.expiresIn}`}</Heading>
+                >{`Expires in ${remaningDays}`}</Heading>
             </Flex>
 
             <HStack spacing={2}>
