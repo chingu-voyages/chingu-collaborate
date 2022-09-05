@@ -1,5 +1,6 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import Project from '../../../models/project'
+import { DateTime } from 'luxon'
 
 export default async function handler(req, res) {
     const { method } = req
@@ -46,17 +47,24 @@ export default async function handler(req, res) {
                     error: 'At least one technology should be selected',
                 })
             }
-            if (details.length > 500) {
+            if (details.length > 800) {
                 return res.status(400).send({
-                    error: 'Title parameter length should be between 5 to 20',
+                    error: 'Description should be less than 800 characters',
                 })
             }
             try {
                 const project = new Project(req.body)
+
+                const now = DateTime.now()
+                //this logic is to get proper date format for project.datePosted
+                const datePostedString = now.toLocaleString(
+                    DateTime.DATETIME_MED
+                )
+                project.datePosted = datePostedString
+
+                project.createdAt = now
+                project.expiresIn = now.plus({ month: 1 })
                 project.admin = admin
-                project.datePosted = new Date()
-                project.expiresIn = new Date() // need logic to add future date.
-                console.log(project)
                 await project.save()
                 return res.status(200).json(project)
             } catch (err) {

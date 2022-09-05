@@ -41,11 +41,9 @@ export default NextAuth({
         async session({ session, token, user, profile }) {
             // Send properties to the client, like an access_token from a provider.
             // session.accessToken = token.accessToken
-            console.log(token, 'JWT token')
             let dbUser = await User.findOne({
                 authenticatedDiscordId: token.sub,
             })
-            console.log(dbUser, ' the MongoDB user document')
             session.dbUser = dbUser
             session.userId = token.sub
 

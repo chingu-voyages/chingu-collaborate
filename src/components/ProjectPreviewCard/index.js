@@ -13,22 +13,20 @@ import {
 } from '@chakra-ui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
+import { DateTime } from 'luxon'
 
-function ProjectPreviewCard({
-    title = 'Project Title',
-    admin = 'username',
-    datePosted = 'today',
-    location = 'Toronto',
-    expiresIn = 'NA',
-    technologies = ['Technology 1', 'Technology 2', 'Technology 3'],
-    details = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-}) {
+function ProjectPreviewCard({ project }) {
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
 
-    const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
+    // const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
 
     const isAdmin = true // add logic to check if the logged in user is the admin for this project
+
+    const currentDate = DateTime.now()
+    const expirationDate = DateTime.fromISO(project.expiresIn)
+    const difference = expirationDate.diff(currentDate, ['days'])
+    const remaningDays = `${Math.round(difference.toObject().days)} days`
 
     return (
         <Flex
@@ -43,7 +41,7 @@ function ProjectPreviewCard({
         >
             <Flex align="center" justify="space-between">
                 <Heading size="lg" noOfLines={1}>
-                    {title}
+                    {project.title}
                 </Heading>
                 <Menu>
                     <MenuButton
@@ -71,12 +69,12 @@ function ProjectPreviewCard({
                     <Heading
                         size="sm"
                         fontWeight={500}
-                    >{`${admin} posted ${datePosted}`}</Heading>
+                    >{`${project.admin} posted ${project.datePosted}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="sm" fontWeight={500}>
-                        {location}
+                        {project.location}
                     </Heading>
                 </Flex>
             </Flex>
@@ -86,18 +84,18 @@ function ProjectPreviewCard({
                     size="sm"
                     fontWeight={500}
                     color="red.500"
-                >{`Expires in ${expiresIn}`}</Heading>
+                >{`Expires in ${remaningDays}`}</Heading>
             </Flex>
 
             <HStack spacing={2}>
-                {technologies.map((tech, index) => (
+                {project.technologies.map((tech, index) => (
                     <Tag key={index} variant="solid" colorScheme="gray">
                         <TagLabel>{tech}</TagLabel>
                     </Tag>
                 ))}
             </HStack>
             <Text fontSize="md" noOfLines={[4, 4, 3]}>
-                {details}
+                {project.details}
             </Text>
         </Flex>
     )

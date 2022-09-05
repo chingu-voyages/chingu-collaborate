@@ -17,6 +17,10 @@ const projectSchema = new Schema({
         required: true,
     },
     datePosted: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
         type: Date,
         required: true,
     },
