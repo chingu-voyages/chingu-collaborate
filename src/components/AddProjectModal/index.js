@@ -16,10 +16,13 @@ import {
     Textarea,
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
+import { useSession } from 'next-auth/react'
+import { get } from 'mongoose'
 
 function AddProjectModal({ reachedMaximumPosts }) {
     const [selectedOptions, setSelectedOptions] = useState([])
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { data: session, status } = useSession()
 
     const options = [
         { value: 'javascript', label: 'JavaScript', colorScheme: 'yellow' },
@@ -33,6 +36,53 @@ function AddProjectModal({ reachedMaximumPosts }) {
 
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
+
+    // Input Values
+    const [title, setTitle] = useState('')
+    const [technologies, setTechnologies] = useState('')
+    const [details, setDetails] = useState('')
+
+    // Input Validation
+    // a) Required Inputs
+    const titleIsValid = title.length > 4 && title.length < 21
+
+    const technologiesIsValid = technologies.length > 0
+
+    const detailsIsValid = details.length > 0
+
+    //Form Validation
+    const formIsValid = titleIsValid && technologiesIsValid && detailsIsValid
+
+    const getUserId = async () => {
+        try {
+            const response = await fetch(
+                `/api/user?authenticatedDiscordId=${session.userId}`,
+                {
+                    method: 'GET',
+                }
+            )
+            const user = await response.json()
+            return user[0]._id
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const formSubmit = async () => {
+        const user_id = await getUserId()
+        let formData = {
+            title,
+            technologies,
+            details,
+            admin: user_id,
+        }
+
+        const response = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        })
+    }
 
     return (
         <>
@@ -59,6 +109,9 @@ function AddProjectModal({ reachedMaximumPosts }) {
                                 Title
                             </FormLabel>
                             <Input
+                                onChange={(e) => {
+                                    setTitle(e.target.value)
+                                }}
                                 type="text"
                                 marginBottom={inputMarginBottom}
                             />
@@ -67,6 +120,14 @@ function AddProjectModal({ reachedMaximumPosts }) {
                                 Technologies
                             </FormLabel>
                             <Select
+                                onChange={(e) => {
+                                    let allTechnologies = e.map(
+                                        (technology) => {
+                                            return technology.value
+                                        }
+                                    )
+                                    setTechnologies(allTechnologies)
+                                }}
                                 isMulti
                                 options={options}
                                 tagVariant="solid"
@@ -78,7 +139,12 @@ function AddProjectModal({ reachedMaximumPosts }) {
                             >
                                 Description
                             </FormLabel>
-                            <Textarea marginBottom={inputMarginBottom} />
+                            <Textarea
+                                onChange={(e) => {
+                                    setDetails(e.target.value)
+                                }}
+                                marginBottom={inputMarginBottom}
+                            />
                         </FormControl>
                     </ModalBody>
 
@@ -86,7 +152,17 @@ function AddProjectModal({ reachedMaximumPosts }) {
                         <Button colorScheme="red" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant="ghost" colorScheme="green">
+                        <Button
+                            variant="ghost"
+                            colorScheme="green"
+                            onClick={
+                                formIsValid
+                                    ? () => {
+                                          formSubmit()
+                                      }
+                                    : () => {}
+                            }
+                        >
                             Add
                         </Button>
                     </ModalFooter>
