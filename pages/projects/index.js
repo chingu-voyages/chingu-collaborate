@@ -4,7 +4,8 @@ import Navbar from '../../src/components/Navbar'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
 
-export default function Projects() {
+// {projects}----->Desturctue of static props
+export default function Projects({ projects }) {
     return (
         <div>
             <Head>
@@ -18,7 +19,14 @@ export default function Projects() {
                 <section className="content">
                     <LimitsOverview />
                     <ProjectActions />
-                    <ProjectPreviewCard />
+                    {projects.map((project) => {
+                        return (
+                            <ProjectPreviewCard
+                                key={project._sid}
+                                project={project}
+                            />
+                        )
+                    })}
                 </section>
             </main>
 
@@ -36,4 +44,15 @@ export default function Projects() {
       </footer> */}
         </div>
     )
+}
+
+export const getServerSideProps = async () => {
+    const response = await fetch('http://localhost:3000/api/projects', {
+        method: 'GET',
+    })
+    const data = await response.json()
+    console.log(data)
+    return {
+        props: { projects: data },
+    }
 }
