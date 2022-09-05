@@ -46,9 +46,9 @@ export default async function handler(req, res) {
                     error: 'At least one technology should be selected',
                 })
             }
-            if (details.length > 500) {
+            if (details.length > 80) {
                 return res.status(400).send({
-                    error: 'Title parameter length should be between 5 to 20',
+                    error: 'Description should be less than 800 characters',
                 })
             }
             try {
