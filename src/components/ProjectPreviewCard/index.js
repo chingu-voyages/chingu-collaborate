@@ -14,19 +14,28 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
+import { useEffect, useState } from 'react'
 
-function ProjectPreviewCard({ project }) {
-    const inputMarginBottom = '1rem'
-    const labelMarginBottom = '0'
-
-    // const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
-
-    const isAdmin = true // add logic to check if the logged in user is the admin for this project
+function ProjectPreviewCard({ project, isAdmin }) {
+    const [admin, setAdmin] = useState('')
+    const [location, setLocation] = useState('')
 
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remaningDays = `${Math.round(difference.toObject().days)} days`
+
+    const getAdmin = async () => {
+        const response = await fetch(`/api/user/${project.admin}`)
+        const user = await response.json()
+        console.log(user)
+        setAdmin(user.username)
+        setLocation(user.location)
+    }
+
+    useEffect(() => {
+        getAdmin()
+    }, [])
 
     return (
         <Flex
@@ -66,17 +75,16 @@ function ProjectPreviewCard({ project }) {
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
                     <BiUser />
-                    <Heading
-                        size="sm"
-                        fontWeight={500}
-                    >{`${project.admin} posted ${project.datePosted}`}</Heading>
+                    <Heading size="sm" fontWeight={500}>{`${admin} `}</Heading>
                 </Flex>
-                <Flex align="center" gap={1}>
-                    <BiTimeFive />
-                    <Heading size="sm" fontWeight={500}>
-                        {project.location}
-                    </Heading>
-                </Flex>
+                {location != '' && (
+                    <Flex align="center" gap={1}>
+                        <BiTimeFive />
+                        <Heading size="sm" fontWeight={500}>
+                            {location}
+                        </Heading>
+                    </Flex>
+                )}
             </Flex>
             <Flex align="center" gap={1}>
                 <BiHourglass />

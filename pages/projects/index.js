@@ -3,7 +3,7 @@ import LimitsOverview from '../../src/components/LimitsOverview'
 import Navbar from '../../src/components/Navbar'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import { Spinner } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
 
@@ -11,15 +11,45 @@ import AuthWrapper from '../../src/components/AuthWrapper'
 export default function Projects({ projects }) {
     const { data: session, status } = useSession()
 
+    const authenticatedPosts = projects.filter(
+        (project) => project.admin === session?.dbUser._id
+    )
+
+    const otherPosts = projects.filter(
+        (project) => project.admin !== session?.dbUser._id
+    )
+
     return (
         <AuthWrapper session={session} status={status}>
-            <LimitsOverview />
-            <ProjectActions />
-            {projects.map((project) => {
-                return (
-                    <ProjectPreviewCard key={project._id} project={project} />
-                )
-            })}
+            <LimitsOverview
+                projectsCreated={session?.dbUser.projectsCreated.length}
+                projectsRequested={session?.dbUser.projectsRequested.length}
+            />
+            <ProjectActions
+                reachedMaximumPosts={authenticatedPosts.length >= 1}
+            />
+            <VStack spacing={4}>
+                {/* Filter logged in user's posts */}
+                {authenticatedPosts.map((project) => {
+                    return (
+                        <ProjectPreviewCard
+                            key={project._id}
+                            project={project}
+                            isAdmin={true}
+                        />
+                    )
+                })}
+                {/* List all other posts */}
+                {otherPosts.map((project) => {
+                    return (
+                        <ProjectPreviewCard
+                            key={project._id}
+                            project={project}
+                            isAdmin={false}
+                        />
+                    )
+                })}
+            </VStack>
         </AuthWrapper>
     )
 }
