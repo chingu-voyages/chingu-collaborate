@@ -8,13 +8,13 @@ import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 function Navbar() {
     const nonAuthenticatedRoutes = [
-        { name: 'Home', route: '/' },
-        { name: 'Sign In', route: '/signin' },
+        // { name: 'Home', route: '/' },
+        // { name: 'Sign In', route: '/signin' },
     ]
 
     const authenticatedRoutes = [
         { name: 'Projects', route: '/projects' },
-        { name: 'Profile', route: '/profile' },
+        // { name: 'Profile', route: '/profile' },
         { name: 'Sign Out', route: '/' },
     ]
 
