@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Flex, Heading, Text, Button, Checkbox } from '@chakra-ui/react'
 
-function CommunityStandards() {
+function CommunityStandards({ onProceed }) {
     const [agreeToTerms, setAgreeToTerms] = useState(false)
 
     const rules = [
@@ -100,13 +100,16 @@ function CommunityStandards() {
                 </Text>
             </Checkbox>
             <Button
+                onClick={() => {
+                    onProceed()
+                }}
                 colorScheme="green"
                 size="lg"
                 width="100%"
                 type="submit"
                 isDisabled={!agreeToTerms}
             >
-                Create Profile
+                Proceed
             </Button>
         </Flex>
     )

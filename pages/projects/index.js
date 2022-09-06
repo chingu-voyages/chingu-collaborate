@@ -12,18 +12,18 @@ export default function Projects({ projects }) {
     const { data: session, status } = useSession()
 
     const authenticatedPosts = projects.filter(
-        (project) => project.admin === session?.dbUser._id
+        (project) => project.admin === session?.dbUser?._id
     )
 
     const otherPosts = projects.filter(
-        (project) => project.admin !== session?.dbUser._id
+        (project) => project.admin !== session?.dbUser?._id
     )
 
     return (
         <AuthWrapper session={session} status={status}>
             <LimitsOverview
-                projectsCreated={session?.dbUser.projectsCreated.length}
-                projectsRequested={session?.dbUser.projectsRequested.length}
+                projectsCreated={session?.dbUser?.projectsCreated.length}
+                projectsRequested={session?.dbUser?.projectsRequested.length}
             />
             <ProjectActions
                 reachedMaximumPosts={authenticatedPosts.length >= 1}
