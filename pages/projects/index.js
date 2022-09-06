@@ -3,46 +3,24 @@ import LimitsOverview from '../../src/components/LimitsOverview'
 import Navbar from '../../src/components/Navbar'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
+import { Spinner } from '@chakra-ui/react'
+import { useSession } from 'next-auth/react'
+import AuthWrapper from '../../src/components/AuthWrapper'
 
 // {projects}----->Desturctue of static props
 export default function Projects({ projects }) {
+    const { data: session, status } = useSession()
+
     return (
-        <div>
-            <Head>
-                <title>Chingu Collaborate</title>
-                <meta name="description" content="Chingu Collaborate" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-
-            <main className="container">
-                <Navbar />
-                <section className="content">
-                    <LimitsOverview />
-                    <ProjectActions />
-                    {projects.map((project) => {
-                        return (
-                            <ProjectPreviewCard
-                                key={project._sid}
-                                project={project}
-                            />
-                        )
-                    })}
-                </section>
-            </main>
-
-            {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
-        </div>
+        <AuthWrapper session={session} status={status}>
+            <LimitsOverview />
+            <ProjectActions />
+            {projects.map((project) => {
+                return (
+                    <ProjectPreviewCard key={project._id} project={project} />
+                )
+            })}
+        </AuthWrapper>
     )
 }
 
