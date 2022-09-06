@@ -17,9 +17,9 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 function CreateProfile() {
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const { data: session, status } = useSession()
-    const loading = status === 'loading'
 
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
@@ -81,6 +81,7 @@ function CreateProfile() {
         }
 
         if (formIsValid) {
+            setIsLoading(true)
             try {
                 const response = await fetch('/api/user', {
                     method: 'POST',
@@ -95,11 +96,15 @@ function CreateProfile() {
                 }
 
                 console.log('Successfully created profile!')
-
                 const data = await response.json()
-                console.log(data) // Need to remove after integrating and testing
-                router.push('/projects')
+
+                if (router.pathname === '/projects') {
+                    return router.reload()
+                }
+                return router.replace('/projects')
             } catch (error) {
+                setIsLoading(false)
+                console.log(error)
                 console.log('1. Something went wrong.')
             }
         }
@@ -262,10 +267,12 @@ function CreateProfile() {
                               }
                             : () => {}
                     }
+                    isLoading={isLoading}
+                    loadingText="Submitting"
                     colorScheme="green"
                     size="lg"
                     width="100%"
-                    disabled={!formIsValid}
+                    disabled={!formIsValid || isLoading}
                 >
                     Register
                 </Button>

@@ -28,9 +28,8 @@ function ProjectPreviewCard({ project, isAdmin }) {
     const getAdmin = async () => {
         const response = await fetch(`/api/user/${project.admin}`)
         const user = await response.json()
-        console.log(user)
-        setAdmin(user.username)
-        setLocation(user.location)
+        setAdmin(user?.username)
+        setLocation(user?.location)
     }
 
     useEffect(() => {
