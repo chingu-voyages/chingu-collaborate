@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Navbar from '../Navbar'
 import logo from './chinguLogo.png'
 import Image from 'next/image'
+import CommunityStandards from '../CommunityStandards'
 import CreateProfile from '../CreateProfile'
 import BannedCard from '../BannedCard'
 import { Flex, Box, Heading, Text, Spinner } from '@chakra-ui/react'
@@ -9,6 +11,8 @@ import DiscordButton from '../DiscordButton'
 import { signIn } from 'next-auth/react'
 
 function AuthWrapper({ children, session, status }) {
+    const [agreeToRules, setAgreeToRules] = useState(false)
+
     // Loading State
     if (status === 'loading') {
         return (
@@ -117,6 +121,9 @@ function AuthWrapper({ children, session, status }) {
 
     // If user is authenticated and doesn't exist in database then force creating a profile
     if (status !== 'loading' && status === 'authenticated' && !session.dbUser) {
+        const proceedHandler = () => {
+            setAgreeToRules(true)
+        }
         return (
             <div>
                 <Head>
@@ -128,7 +135,10 @@ function AuthWrapper({ children, session, status }) {
                 <main className="container">
                     <Navbar />
                     <section className="content">
-                        <CreateProfile />
+                        {!agreeToRules && (
+                            <CommunityStandards onProceed={proceedHandler} />
+                        )}
+                        {agreeToRules && <CreateProfile />}
                     </section>
                 </main>
             </div>
