@@ -17,12 +17,13 @@ import {
 } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
 import { useSession } from 'next-auth/react'
-import { get } from 'mongoose'
+import { useRouter } from 'next/router'
 
 function AddProjectModal({ reachedMaximumPosts }) {
-    const [selectedOptions, setSelectedOptions] = useState([])
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { data: session, status } = useSession()
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
 
     const options = [
         { value: 'javascript', label: 'JavaScript', colorScheme: 'yellow' },
@@ -42,9 +43,14 @@ function AddProjectModal({ reachedMaximumPosts }) {
     const [technologies, setTechnologies] = useState('')
     const [details, setDetails] = useState('')
 
+    // Input didFocusOn
+    const [didFocusOnTitle, setDidFocusOnTitle] = useState(false)
+    const [didFocusOnTechnologies, setDidFocusOnTechnologies] = useState(false)
+    const [didFocusOnDetails, setDidFocusOnDetails] = useState(false)
+
     // Input Validation
     // a) Required Inputs
-    const titleIsValid = title.length > 4 && title.length < 21
+    const titleIsValid = title.trim().length > 4 && title.length < 21
 
     const technologiesIsValid = technologies.length > 0
 
@@ -53,23 +59,10 @@ function AddProjectModal({ reachedMaximumPosts }) {
     //Form Validation
     const formIsValid = titleIsValid && technologiesIsValid && detailsIsValid
 
-    const getUserId = async () => {
-        try {
-            const response = await fetch(
-                `/api/user?authenticatedDiscordId=${session.userId}`,
-                {
-                    method: 'GET',
-                }
-            )
-            const user = await response.json()
-            return user[0]._id
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
     const formSubmit = async () => {
-        const user_id = await getUserId()
+        setIsLoading(true)
+        const user_id = session.dbUser._id
+
         let formData = {
             title,
             technologies,
@@ -77,11 +70,20 @@ function AddProjectModal({ reachedMaximumPosts }) {
             admin: user_id,
         }
 
-        const response = await fetch('/api/projects', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        })
+        try {
+            const response = await fetch('/api/projects', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            })
+            const data = await response.json()
+            return router.reload()
+        } catch (error) {
+            setIsLoading(false)
+            console.log(
+                'Something went wrong while trying to add project idea.'
+            )
+        }
     }
 
     return (
@@ -109,6 +111,11 @@ function AddProjectModal({ reachedMaximumPosts }) {
                                 Title
                             </FormLabel>
                             <Input
+                                isInvalid={didFocusOnTitle && !titleIsValid}
+                                isRequired
+                                onFocus={() => {
+                                    setDidFocusOnTitle(true)
+                                }}
                                 onChange={(e) => {
                                     setTitle(e.target.value)
                                 }}
@@ -120,6 +127,14 @@ function AddProjectModal({ reachedMaximumPosts }) {
                                 Technologies
                             </FormLabel>
                             <Select
+                                isInvalid={
+                                    didFocusOnTechnologies &&
+                                    !technologiesIsValid
+                                }
+                                isRequired
+                                onFocus={() => {
+                                    setDidFocusOnTechnologies(true)
+                                }}
                                 onChange={(e) => {
                                     let allTechnologies = e.map(
                                         (technology) => {
@@ -140,6 +155,11 @@ function AddProjectModal({ reachedMaximumPosts }) {
                                 Description
                             </FormLabel>
                             <Textarea
+                                isInvalid={didFocusOnDetails && !detailsIsValid}
+                                isRequired
+                                onFocus={() => {
+                                    setDidFocusOnDetails(true)
+                                }}
                                 onChange={(e) => {
                                     setDetails(e.target.value)
                                 }}
@@ -153,15 +173,11 @@ function AddProjectModal({ reachedMaximumPosts }) {
                             Close
                         </Button>
                         <Button
+                            isLoading={isLoading}
                             variant="ghost"
                             colorScheme="green"
-                            onClick={
-                                formIsValid
-                                    ? () => {
-                                          formSubmit()
-                                      }
-                                    : () => {}
-                            }
+                            onClick={formIsValid ? formSubmit : () => {}}
+                            disabled={!formIsValid || isLoading}
                         >
                             Add
                         </Button>
