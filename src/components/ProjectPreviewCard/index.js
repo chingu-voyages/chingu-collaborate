@@ -15,11 +15,13 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 function ProjectPreviewCard({ project, isAdmin }) {
     const [admin, setAdmin] = useState('')
     const [location, setLocation] = useState('')
 
+    const router = useRouter()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
@@ -36,6 +38,25 @@ function ProjectPreviewCard({ project, isAdmin }) {
     useEffect(() => {
         getAdmin()
     }, [])
+
+    const deleteProjectIdea = async (id) => {
+        try {
+            const response = await fetch(`/api/projects/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            })
+
+            if (!response.ok) {
+                throw Error(
+                    'Something went wrong while trying to delete project idea.'
+                )
+            }
+            const data = await response.json()
+            return router.reload()
+        } catch (error) {
+            console.log('Error while deleting project idea,')
+        }
+    }
 
     return (
         <Flex
@@ -60,7 +81,11 @@ function ProjectPreviewCard({ project, isAdmin }) {
                     />
                     <MenuList>
                         {isAdmin ? (
-                            <MenuItem>Delete</MenuItem>
+                            <MenuItem
+                                onClick={() => deleteProjectIdea(project._id)}
+                            >
+                                Delete
+                            </MenuItem>
                         ) : (
                             <MenuItem>Report</MenuItem>
                         )}
