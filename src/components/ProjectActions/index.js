@@ -9,8 +9,7 @@ import {
 import { BiSearch } from 'react-icons/bi'
 import AddProjectModal from '../AddProjectModal'
 
-function ProjectActions() {
-    const reachedMaximumPosts = false
+function ProjectActions({ reachedMaximumPosts }) {
     return (
         <Flex width="90%" padding="2rem 0" direction="column" gap={4}>
             <InputGroup>
