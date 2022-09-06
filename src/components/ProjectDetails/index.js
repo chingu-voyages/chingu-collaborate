@@ -8,20 +8,18 @@ import {
     Button,
 } from '@chakra-ui/react'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
+import { DateTime } from 'luxon'
 
-function ProjectDetails({
-    title = 'Project Title',
-    admin = 'username',
-    datePosted = 'today',
-    location = 'Toronto',
-    expiresIn = 'NA',
-    technologies = ['Technology 1', 'Technology 2', 'Technology 3'],
-    details = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-}) {
-    const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
+function ProjectDetails({ project, admin }) {
+    const currentDate = DateTime.now()
+    const expirationDate = DateTime.fromISO(project.expiresIn)
+    const difference = expirationDate.diff(currentDate, ['days'])
+    const remainingDays = `${Math.round(difference.toObject().days)} days`
 
     const isJoinable = true
     const isReported = false
+
+    console.log(1, admin)
 
     return (
         <Flex
@@ -34,7 +32,7 @@ function ProjectDetails({
             gap={2}
         >
             <Flex align="center" justify="space-between">
-                <Heading size="lg">{title}</Heading>
+                <Heading size="lg">{project.title}</Heading>
             </Flex>
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
@@ -42,12 +40,12 @@ function ProjectDetails({
                     <Heading
                         size="sm"
                         fontWeight={500}
-                    >{`${admin} posted ${datePosted}`}</Heading>
+                    >{`${admin.username}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="sm" fontWeight={500}>
-                        {location}
+                        {admin.location}
                     </Heading>
                 </Flex>
             </Flex>
@@ -57,11 +55,11 @@ function ProjectDetails({
                     size="sm"
                     fontWeight={500}
                     color="red.500"
-                >{`Expires in ${expiresIn}`}</Heading>
+                >{`Expires in ${remainingDays}`}</Heading>
             </Flex>
 
             <HStack spacing={2}>
-                {technologies.map((tech, index) => (
+                {project?.technologies?.map((tech, index) => (
                     <Tag key={index} variant="solid" colorScheme="gray">
                         <TagLabel>{tech}</TagLabel>
                     </Tag>
@@ -80,7 +78,7 @@ function ProjectDetails({
                 <Heading size="md" marginTop={4} marginBottom={2}>
                     Description
                 </Heading>
-                <Text fontSize="md">{details}</Text>
+                <Text fontSize="md">{project.details}</Text>
             </Flex>
             <hr />
             <Button

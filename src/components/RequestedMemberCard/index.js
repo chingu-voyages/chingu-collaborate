@@ -1,12 +1,6 @@
 import { Flex, Heading, Text } from '@chakra-ui/react'
 
-function RequestedMemberCard({
-    username = 'Username',
-    location = 'location',
-    discordUsername = 'Test#0012',
-    email = 'johndoe@random.com',
-    githubProfile = 'NA',
-}) {
+function RequestedMemberCard({ info }) {
     return (
         <Flex
             borderWidth="2px"
@@ -17,14 +11,14 @@ function RequestedMemberCard({
             textAlign="left"
             gap={2}
         >
-            <Heading size="md">{username}</Heading>
+            <Heading size="md">{info.username}</Heading>
             <Text fontSize="sm" marginBottom={4}>
-                {location}
+                {info.location}
             </Text>
 
-            <Text fontSize="sm">{discordUsername}</Text>
-            <Text fontSize="sm">{email}</Text>
-            <Text fontSize="sm">{githubProfile}</Text>
+            <Text fontSize="sm">{info.discordUsername}</Text>
+            <Text fontSize="sm">{info.email}</Text>
+            <Text fontSize="sm">{info.githubProfile}</Text>
         </Flex>
     )
 }

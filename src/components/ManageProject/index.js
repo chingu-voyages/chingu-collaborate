@@ -1,19 +1,15 @@
 import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { BiHourglass } from 'react-icons/bi'
+import { DateTime } from 'luxon'
 import RequestedMemberCard from '../RequestedMemberCard'
 
-function ManageProject({
-    title = 'Project Title',
-    admin = 'username',
-    datePosted = 'today',
-    location = 'Toronto',
-    expiresIn = 'NA',
-    technologies = ['Technology 1', 'Technology 2', 'Technology 3'],
-    details = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-}) {
-    const elapsedTimeSincePosted = datePosted // add logic to find the current time vs the time posted
+function ManageProject({ project }) {
+    const currentDate = DateTime.now()
+    const expirationDate = DateTime.fromISO(project.expiresIn)
+    const difference = expirationDate.diff(currentDate, ['days'])
+    const remainingDays = `${Math.round(difference.toObject().days)} days`
 
-    const numberOfRequestedMembers = 1
+    const numberOfRequestedMembers = project?.requestedMembers?.length
 
     return (
         <Flex
@@ -26,7 +22,7 @@ function ManageProject({
             gap={2}
         >
             <Flex align="center" justify="space-between">
-                <Heading size="lg">{title}</Heading>
+                <Heading size="lg">{project.title}</Heading>
             </Flex>
 
             <Flex align="center" gap={1}>
@@ -35,7 +31,7 @@ function ManageProject({
                     size="sm"
                     fontWeight={500}
                     color="red.500"
-                >{`Expires in ${expiresIn}`}</Heading>
+                >{`Expires in ${remainingDays}`}</Heading>
             </Flex>
             <Text fontSize="xs">
                 You’ll have 48 hours after the post expires to contact the
@@ -49,7 +45,9 @@ function ManageProject({
                     marginBottom={2}
                 >{`Requested Members (${numberOfRequestedMembers})`}</Heading>
                 <VStack>
-                    <RequestedMemberCard />
+                    {project?.requestedMembers?.map((member, index) => {
+                        return <RequestedMemberCard key={index} info={member} />
+                    })}
                 </VStack>
             </Flex>
             <Button colorScheme="red">Delete</Button>

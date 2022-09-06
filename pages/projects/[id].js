@@ -1,15 +1,15 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import ManageProject from '../../src/components/ManageProject'
 import Navbar from '../../src/components/Navbar'
 import ProjectDetails from '../../src/components/ProjectDetails'
+import { useSession } from 'next-auth/react'
 
-export default function Project() {
-    const router = useRouter()
+export default function Project({ details, admin }) {
+    const { data: session } = useSession()
 
-    const projectId = router.query.id
+    const isAdmin = session?.dbUser?._id === details.admin
 
-    const isAdmin = true // add logic to check if the logged in user is the admin for this project
+    const projectExists = Object.keys(details).length > 0
 
     return (
         <div>
@@ -22,22 +22,47 @@ export default function Project() {
             <main className="container">
                 <Navbar />
                 <section className="content">
-                    {isAdmin ? <ManageProject /> : <ProjectDetails />}
+                    {projectExists && isAdmin ? (
+                        <ManageProject project={details} />
+                    ) : projectExists && !isAdmin ? (
+                        <ProjectDetails project={details} admin={admin} />
+                    ) : (
+                        ''
+                    )}
                 </section>
             </main>
-
-            {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
         </div>
     )
+}
+
+export const getServerSideProps = async (context) => {
+    try {
+        const response1 = await fetch(
+            `http://localhost:3000/api/projects/${context.params.id}`
+        )
+
+        if (!response1.ok) {
+            if (response1.status === 500) {
+                return { props: { details: {}, admin: {} } }
+            }
+        }
+
+        const projectData = await response1.json()
+
+        const response2 = await fetch(
+            `http://localhost:3000/api/user/${projectData.admin}`
+        )
+
+        if (!response2.ok) {
+            throw Error('An error occured while fetching for project admin')
+        }
+
+        const adminData = await response2.json()
+
+        return { props: { details: projectData, admin: adminData } }
+    } catch (error) {
+        console.log(
+            'An error occurred whiled server side rendering on Projects page.'
+        )
+    }
 }
