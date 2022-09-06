@@ -40,7 +40,7 @@ function CreateProfile() {
     // Input Validation
     // a) Required Inputs
     const usernameIsValid =
-        username.length > 7 && username.length < 17 && !username.includes(' ')
+        username.length > 4 && username.length < 17 && !username.includes(' ')
 
     const emailIsValid = email.includes('@') && email.includes('.')
 
