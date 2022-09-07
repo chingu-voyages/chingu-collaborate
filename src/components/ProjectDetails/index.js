@@ -24,16 +24,22 @@ function ProjectDetails({ project, admin }) {
     console.log(1, admin)
 
     const requestForProject = async () => {
-        let formData = {
+        const formDataProject = {
             requestedMembers: session.dbUser._id,
         }
-        const response = await fetch(`/api/projects/${project._id}`, {
+        const formDataUser = {
+            projectsRequested: project._id,
+        }
+        await fetch(`/api/projects/${project._id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(formDataProject),
         })
-        const data = await response.json() // Need to remove later
-        console.log(data) // Need to remove later
+        await fetch(`/api/user/${session.dbUser._id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formDataUser),
+        })
     }
 
     return (
