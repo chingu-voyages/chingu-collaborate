@@ -10,6 +10,9 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const projects = await Project.find()
+                    .populate('admin')
+                    .populate('currentMembers')
+                    .populate('requestedMembers')
                 return res.status(200).json(projects)
             } catch (err) {
                 return res.status(500).json({ message: 'Projects Not found' })
