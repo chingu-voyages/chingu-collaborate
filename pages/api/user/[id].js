@@ -15,8 +15,16 @@ export default async function handler(req, res) {
             }
             break
         case 'PATCH':
+            const options = {
+                new: true, // THis option is to return updated in same update request
+            }
             try {
-                // Update logic pending
+                const user = await User.findByIdAndUpdate(
+                    req.query.id,
+                    { $push: req.body },
+                    options
+                )
+                return res.status(200).json(user)
             } catch (err) {
                 return res.status(500).json(err)
             }
