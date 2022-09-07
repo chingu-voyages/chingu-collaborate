@@ -19,8 +19,6 @@ function ProjectDetails({ project, admin }) {
     const isJoinable = true
     const isReported = false
 
-    console.log(1, admin)
-
     return (
         <Flex
             borderWidth="2px"
