@@ -9,6 +9,7 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const project = await Project.findById(req.query.id)
+                    .populate('admin')
                     .populate('currentMembers')
                     .populate('requestedMembers')
                 return res.status(200).json(project)

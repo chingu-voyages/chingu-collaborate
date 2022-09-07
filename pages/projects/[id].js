@@ -7,7 +7,8 @@ import { useSession } from 'next-auth/react'
 export default function Project({ details, admin }) {
     const { data: session } = useSession()
 
-    const isAdmin = session?.dbUser?._id === details.admin
+    // const isAdmin = session?.dbUser?._id === details.admin  ---old line
+    const isAdmin = session?.dbUser?._id === details.admin._id //---new line
 
     const projectExists = Object.keys(details).length > 0
 
@@ -25,7 +26,7 @@ export default function Project({ details, admin }) {
                     {projectExists && isAdmin ? (
                         <ManageProject project={details} />
                     ) : projectExists && !isAdmin ? (
-                        <ProjectDetails project={details} admin={admin} />
+                        <ProjectDetails project={details} />
                     ) : (
                         ''
                     )}
@@ -49,17 +50,18 @@ export const getServerSideProps = async (context) => {
 
         const projectData = await response1.json()
 
-        const response2 = await fetch(
-            `http://localhost:3000/api/user/${projectData.admin}`
-        )
+        // const response2 = await fetch(
+        //     `http://localhost:3000/api/user/${projectData.admin}`
+        // )
 
-        if (!response2.ok) {
-            throw Error('An error occured while fetching for project admin')
-        }
+        // if (!response2.ok) {
+        //     throw Error('An error occured while fetching for project admin')
+        // }
 
-        const adminData = await response2.json()
+        // const adminData = await response2.json()
 
-        return { props: { details: projectData, admin: adminData } }
+        // return { props: { details: projectData, admin: adminData } } -- old line
+        return { props: { details: projectData } }
     } catch (error) {
         console.log(
             'An error occurred whiled server side rendering on Projects page.'

@@ -19,26 +19,32 @@ import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
+
 function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
     const [admin, setAdmin] = useState('')
     const [location, setLocation] = useState('')
-
+    
     const router = useRouter()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remaningDays = `${Math.round(difference.toObject().days)} days`
 
-    const getAdmin = async () => {
-        const response = await fetch(`/api/user/${project.admin}`)
-        const user = await response.json()
-        setAdmin(user?.username)
-        setLocation(user?.location)
-    }
+    // bELOW CODE IS INVALID NOW. NO NEED TO FETCH USER BASED ON ADMIN. ITS ALREADY POPULATED IN PROJECT JSON
 
-    useEffect(() => {
-        getAdmin()
-    }, [])
+    // const [admin, setAdmin] = useState('')
+    // const [location, setLocation] = useState('')
+
+    // const getAdmin = async () => {
+    //     const response = await fetch(`/api/user/${project.admin}`)
+    //     const user = await response.json()
+    //     setAdmin(user?.username)
+    //     setLocation(user?.location)
+    // }
+
+    // useEffect(() => {
+    //     getAdmin()
+    // }, [])
 
     const deleteProjectIdea = async (id) => {
         try {
@@ -122,16 +128,16 @@ function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
                 <Flex gap={10}>
                     <Flex align="center" gap={1}>
                         <BiUser />
-                        <Heading
-                            size="xs"
-                            fontWeight={500}
-                        >{`${admin} `}</Heading>
+                        <Heading size="sm" fontWeight={500}>
+                            {project.admin.username}
+                        </Heading>
+
                     </Flex>
-                    {location != '' && (
+                    {project.admin.location != '' && (
                         <Flex align="center" gap={1}>
                             <BiTimeFive />
-                            <Heading size="xs" fontWeight={500}>
-                                {location}
+                            <Heading size="sm" fontWeight={500}>
+                                {project.admin.location}
                             </Heading>
                         </Flex>
                     )}

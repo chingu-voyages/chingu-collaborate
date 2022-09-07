@@ -11,7 +11,7 @@ import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
 import { useSession } from 'next-auth/react'
 
-function ProjectDetails({ project, admin }) {
+function ProjectDetails({ project }) {
     const { data: session, status } = useSession()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
@@ -20,8 +20,6 @@ function ProjectDetails({ project, admin }) {
 
     const isJoinable = true
     const isReported = false
-
-    console.log(1, admin)
 
     const requestForProject = async () => {
         const formDataProject = {
@@ -61,12 +59,12 @@ function ProjectDetails({ project, admin }) {
                     <Heading
                         size="sm"
                         fontWeight={500}
-                    >{`${admin.username}`}</Heading>
+                    >{`${project.admin.username}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="sm" fontWeight={500}>
-                        {admin.location}
+                        {project.admin.location}
                     </Heading>
                 </Flex>
             </Flex>
