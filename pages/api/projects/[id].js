@@ -9,6 +9,8 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const project = await Project.findById(req.query.id)
+                    .populate('currentMembers')
+                    .populate('requestedMembers')
                 return res.status(200).json(project)
             } catch (err) {
                 return res.status(500).json({ message: 'Project Not found' })

@@ -9,6 +9,9 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const user = await User.findById(req.query.id)
+                    .populate('projectsCreated')
+                    .populate('projectsRequested')
+                    .populate('projectsJoined')
                 return res.status(200).json(user)
             } catch (err) {
                 return res.status(500).json({ message: 'User Not found' })
