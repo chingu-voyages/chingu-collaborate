@@ -9,7 +9,7 @@ import {
 import { BiSearch } from 'react-icons/bi'
 import AddProjectModal from '../AddProjectModal'
 
-function ProjectActions({ reachedMaximumPosts }) {
+function ProjectActions({ reachedMaximumPostedProjects }) {
     return (
         <Flex width="90%" padding="2rem 0" direction="column" gap={4}>
             <InputGroup>
@@ -29,7 +29,9 @@ function ProjectActions({ reachedMaximumPosts }) {
                     placeholder="Search for project"
                 />
             </InputGroup>
-            <AddProjectModal reachedMaximumPosts={reachedMaximumPosts} />
+            <AddProjectModal
+                reachedMaximumPostedProjects={reachedMaximumPostedProjects}
+            />
         </Flex>
     )
 }

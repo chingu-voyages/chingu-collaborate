@@ -1,55 +1,90 @@
-import Head from 'next/head'
 import LimitsOverview from '../../src/components/LimitsOverview'
-import Navbar from '../../src/components/Navbar'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import { VStack } from '@chakra-ui/react'
+import { HStack, VStack, useMediaQuery } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
+import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
+import { useEffect, useState } from 'react'
 
 // {projects}----->Desturctue of static props
 export default function Projects({ projects }) {
+    const [selectedProject, setSelectedProject] = useState({})
+    const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
+
     const { data: session, status } = useSession()
 
-    const authenticatedPosts = projects.filter(
-        (project) => project.admin === session?.dbUser?._id
+    const authenticatedProjects = projects.filter(
+        (project) => project.admin === session?.dbUser._id
     )
 
-    const otherPosts = projects.filter(
-        (project) => project.admin !== session?.dbUser?._id
+    const otherProjects = projects.filter(
+        (project) => project.admin !== session?.dbUser._id
     )
+
+    const allProjects = authenticatedProjects.concat(otherProjects)
+    const selectedProjectHandler = (project) => {
+        if (isLargerThan768) {
+            setSelectedProject(project)
+        }
+        return
+    }
+
+    useEffect(() => {
+        setSelectedProject(allProjects[0])
+    }, [])
 
     return (
         <AuthWrapper session={session} status={status}>
             <LimitsOverview
-                projectsCreated={session?.dbUser?.projectsCreated.length}
-                projectsRequested={session?.dbUser?.projectsRequested.length}
+                projectsCreated={session?.dbUser.projectsCreated.length}
+                projectsRequested={session?.dbUser.projectsRequested.length}
             />
             <ProjectActions
-                reachedMaximumPosts={authenticatedPosts.length >= 1}
+                reachedMaximumPostedProjects={authenticatedProjects.length >= 1}
             />
-            <VStack spacing={4}>
-                {/* Filter logged in user's posts */}
-                {authenticatedPosts.map((project) => {
-                    return (
-                        <ProjectPreviewCard
-                            key={project._id}
-                            project={project}
-                            isAdmin={true}
-                        />
-                    )
-                })}
-                {/* List all other posts */}
-                {otherPosts.map((project) => {
-                    return (
-                        <ProjectPreviewCard
-                            key={project._id}
-                            project={project}
-                            isAdmin={false}
-                        />
-                    )
-                })}
-            </VStack>
+            <HStack width="90%" align="flex-start">
+                <VStack
+                    spacing={4}
+                    width={['100%', '100%', '50%', '50%']}
+                    minWidth="320px"
+                    align={isLargerThan768 ? 'flex-start' : 'center'}
+                >
+                    {/* Filter logged in user's  */}
+                    {authenticatedProjects.map((project) => {
+                        return (
+                            <ProjectPreviewCard
+                                onClick={() => selectedProjectHandler(project)}
+                                externalDetails={!isLargerThan768}
+                                key={project._id}
+                                project={project}
+                                isAdmin={true}
+                            />
+                        )
+                    })}
+                    {/* List all other projects */}
+                    {otherProjects.map((project) => {
+                        return (
+                            <ProjectPreviewCard
+                                onClick={() => selectedProjectHandler(project)}
+                                externalDetails={!isLargerThan768}
+                                key={project._id}
+                                project={project}
+                                isAdmin={false}
+                            />
+                        )
+                    })}
+                </VStack>
+
+                {allProjects.length > 0 && (
+                    <VStack
+                        width="50%"
+                        display={['none', 'none', 'flex', 'flex']}
+                    >
+                        <DetailsPreviewCard info={selectedProject} />
+                    </VStack>
+                )}
+            </HStack>
         </AuthWrapper>
     )
 }
