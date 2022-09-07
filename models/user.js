@@ -24,10 +24,6 @@ const userSchema = new Schema({
     },
     githubProfile: String,
     preferredMethodOfContact: String,
-    isNewUser: {
-        type: Boolean,
-        default: false,
-    },
     isBanned: {
         type: Boolean,
         default: false,
