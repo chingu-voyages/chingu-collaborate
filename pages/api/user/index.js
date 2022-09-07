@@ -60,7 +60,6 @@ export default async function handler(req, res) {
                 })
             }
             if (location != '') {
-                console.log(`in location ${location}`)
                 if (!location.includes(',')) {
                     return res
                         .status(400)
@@ -107,7 +106,6 @@ export default async function handler(req, res) {
             try {
                 const existingUserResponse = await existingUser(username, email)
                 if (existingUserResponse != true) {
-                    console.log(existingUserResponse)
                     return res.status(400).json({ error: existingUserResponse })
                 }
                 const user = new User(req.body)
