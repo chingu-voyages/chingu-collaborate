@@ -19,7 +19,7 @@ import { Select } from 'chakra-react-select'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
-function AddProjectModal({ reachedMaximumPosts }) {
+function AddProjectModal({ reachedMaximumPostedProjects }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { data: session, status } = useSession()
     const router = useRouter()
@@ -91,14 +91,16 @@ function AddProjectModal({ reachedMaximumPosts }) {
             <Button
                 onClick={onOpen}
                 width="100%"
-                colorScheme={reachedMaximumPosts ? 'gray' : 'green'}
-                cursor={reachedMaximumPosts ? 'not-allowed' : 'pointer'}
+                colorScheme={reachedMaximumPostedProjects ? 'gray' : 'green'}
+                cursor={
+                    reachedMaximumPostedProjects ? 'not-allowed' : 'pointer'
+                }
             >
                 <Text fontSize="xl">Add Project Idea</Text>
             </Button>
 
             <Modal
-                isOpen={!reachedMaximumPosts ? isOpen : false}
+                isOpen={!reachedMaximumPostedProjects ? isOpen : false}
                 onClose={onClose}
             >
                 <ModalOverlay />
