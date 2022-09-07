@@ -9,8 +9,10 @@ import {
 } from '@chakra-ui/react'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
+import { useSession } from 'next-auth/react'
 
 function ProjectDetails({ project, admin }) {
+    const { data: session, status } = useSession()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
@@ -18,6 +20,27 @@ function ProjectDetails({ project, admin }) {
 
     const isJoinable = true
     const isReported = false
+
+    console.log(1, admin)
+
+    const requestForProject = async () => {
+        const formDataProject = {
+            requestedMembers: session.dbUser._id,
+        }
+        const formDataUser = {
+            projectsRequested: project._id,
+        }
+        await fetch(`/api/projects/${project._id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formDataProject),
+        })
+        await fetch(`/api/user/${session.dbUser._id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formDataUser),
+        })
+    }
 
     return (
         <Flex
@@ -68,6 +91,9 @@ function ProjectDetails({ project, admin }) {
                 colorScheme={isJoinable ? 'green' : 'gray'}
                 cursor={isJoinable ? 'pointer' : 'not-allowed'}
                 marginBottom={4}
+                onClick={() => {
+                    requestForProject()
+                }}
             >
                 {isJoinable ? 'Request' : 'Requested'}
             </Button>

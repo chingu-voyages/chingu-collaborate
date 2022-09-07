@@ -89,19 +89,21 @@ function CreateProfile() {
                     body: JSON.stringify(formData),
                 })
 
-                if (!response.ok) {
-                    throw new Error(
-                        'Something went wrong while attempting to create user.'
-                    )
-                }
-
-                console.log('Successfully created profile!')
+                // Removed this for now. This code block throws an error when backend send custom 400 status code
+                // if (!response.ok) {
+                //     throw new Error(
+                //         'Something went wrong while attempting to create user.'
+                //     )
+                // }
                 const data = await response.json()
-
-                if (router.pathname === '/projects') {
-                    return router.reload()
+                if (response.status == '200') {
+                    if (router.pathname === '/projects') {
+                        return router.reload()
+                    }
+                    return router.replace('/projects')
                 }
-                return router.replace('/projects')
+                setIsLoading(false)
+                console.log(data)
             } catch (error) {
                 setIsLoading(false)
                 console.log(error)
