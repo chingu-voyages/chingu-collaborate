@@ -4,13 +4,10 @@ import Navbar from '../../src/components/Navbar'
 import ProjectDetails from '../../src/components/ProjectDetails'
 import { useSession } from 'next-auth/react'
 
-export default function Project({ details, admin }) {
+export default function Project({ details }) {
     const { data: session } = useSession()
 
-    // const isAdmin = session?.dbUser?._id === details.admin  ---old line
-    const isAdmin = session?.dbUser?._id === details.admin._id //---new line
-
-    const projectExists = Object.keys(details).length > 0
+    const isAdmin = session?.dbUser?._id === details?.admin?._id
 
     return (
         <div>
@@ -23,12 +20,12 @@ export default function Project({ details, admin }) {
             <main className="container">
                 <Navbar />
                 <section className="content">
-                    {projectExists && isAdmin ? (
+                    {details !== null && isAdmin ? (
                         <ManageProject project={details} />
-                    ) : projectExists && !isAdmin ? (
+                    ) : details !== null && !isAdmin ? (
                         <ProjectDetails project={details} />
                     ) : (
-                        ''
+                        'The project you are looking for does not exist.'
                     )}
                 </section>
             </main>
@@ -44,23 +41,12 @@ export const getServerSideProps = async (context) => {
 
         if (!response1.ok) {
             if (response1.status === 500) {
-                return { props: { details: {}, admin: {} } }
+                return { props: { details: {} } }
             }
         }
 
         const projectData = await response1.json()
 
-        // const response2 = await fetch(
-        //     `http://localhost:3000/api/user/${projectData.admin}`
-        // )
-
-        // if (!response2.ok) {
-        //     throw Error('An error occured while fetching for project admin')
-        // }
-
-        // const adminData = await response2.json()
-
-        // return { props: { details: projectData, admin: adminData } } -- old line
         return { props: { details: projectData } }
     } catch (error) {
         console.log(

@@ -156,7 +156,7 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
                         ''
                     )}
                 </HStack>
-                <Text fontSize="sm" noOfLines={[4, 4, 3]} marginTop={4}>
+                <Text fontSize="sm" noOfLines={5} marginTop={4}>
                     {project.details}
                 </Text>
             </Flex>
