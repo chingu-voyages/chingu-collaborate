@@ -6,23 +6,19 @@ import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
 import { useEffect, useState } from 'react'
+import { authOptions } from '../api/auth/[...nextauth]'
+import { unstable_getServerSession } from 'next-auth'
 
-// {projects}----->Desturctue of static props
-export default function Projects({ projects }) {
+export default function Projects({
+    projects, //projects concats the order of authenticatedProjects followed by otherProjects
+    authenticatedProjects,
+    otherProjects,
+}) {
     const [selectedProject, setSelectedProject] = useState({})
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
 
     const { data: session, status } = useSession()
 
-    const authenticatedProjects = projects.filter(
-        (project) => project.admin === session?.dbUser._id
-    )
-
-    const otherProjects = projects.filter(
-        (project) => project.admin !== session?.dbUser._id
-    )
-
-    const allProjects = authenticatedProjects.concat(otherProjects)
     const selectedProjectHandler = (project) => {
         if (isLargerThan768) {
             setSelectedProject(project)
@@ -31,9 +27,8 @@ export default function Projects({ projects }) {
     }
 
     useEffect(() => {
-        setSelectedProject(allProjects[0])
+        setSelectedProject(projects[0])
     }, [])
-
     return (
         <AuthWrapper session={session} status={status}>
             <LimitsOverview
@@ -58,7 +53,6 @@ export default function Projects({ projects }) {
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
-                                isAdmin={true}
                             />
                         )
                     })}
@@ -70,13 +64,12 @@ export default function Projects({ projects }) {
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
-                                isAdmin={false}
                             />
                         )
                     })}
                 </VStack>
 
-                {allProjects.length > 0 && (
+                {projects.length > 0 && (
                     <VStack
                         width="50%"
                         display={['none', 'none', 'flex', 'flex']}
@@ -89,12 +82,30 @@ export default function Projects({ projects }) {
     )
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (context) => {
+    const session = await unstable_getServerSession(
+        context.req,
+        context.res,
+        authOptions
+    )
+
+    const adminId = session.dbUser._id.toString()
+
     const response = await fetch('http://localhost:3000/api/projects', {
         method: 'GET',
     })
     const data = await response.json()
+
+    const authenticatedProjects = data.filter(
+        (project) => project.admin._id === adminId
+    )
+
+    const otherProjects = data.filter(
+        (project) => project.admin._id !== adminId
+    )
+
+    const projects = authenticatedProjects.concat(otherProjects)
     return {
-        props: { projects: data },
+        props: { projects, authenticatedProjects, otherProjects },
     }
 }

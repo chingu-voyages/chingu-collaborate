@@ -16,26 +16,12 @@ import { useState, useEffect } from 'react'
 
 function DetailsPreviewCard({ info }) {
     const { data: session } = useSession()
-    const isAdmin = info?.admin === session?.dbUser?._id
-
-    const [admin, setAdmin] = useState('')
-    const [location, setLocation] = useState('')
+    const isAdmin = info?.admin?._id === session?.dbUser?._id
 
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(info?.expiresIn)
     const difference = expirationDate?.diff(currentDate, ['days'])
     const remainingDays = `${Math.round(difference?.toObject().days)} days`
-
-    const getAdmin = async () => {
-        const response = await fetch(`/api/user/${info?.admin}`)
-        const user = await response.json()
-        setAdmin(user?.username)
-        setLocation(user?.location)
-    }
-
-    useEffect(() => {
-        getAdmin()
-    }, [info])
 
     if (isAdmin) {
         const numberOfRequestedMembers = info?.requestedMembers?.length
@@ -43,6 +29,7 @@ function DetailsPreviewCard({ info }) {
             <Flex
                 borderWidth="2px"
                 borderRadius="lg"
+                borderColor="green.500"
                 width="100%"
                 padding="1rem"
                 flexDirection="column"
@@ -98,12 +85,15 @@ function DetailsPreviewCard({ info }) {
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
                     <BiUser />
-                    <Heading size="xs" fontWeight={500}>{`${admin}`}</Heading>
+                    <Heading
+                        size="xs"
+                        fontWeight={500}
+                    >{`${info?.admin?.username}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="xs" fontWeight={500}>
-                        {location}
+                        {info?.admin?.location}
                     </Heading>
                 </Flex>
             </Flex>
