@@ -40,6 +40,7 @@ export default function Projects({
             />
             <HStack width="90%" align="flex-start">
                 <VStack
+                    marginTop={4}
                     spacing={4}
                     width={['100%', '100%', '50%', '50%']}
                     minWidth="320px"
@@ -53,6 +54,11 @@ export default function Projects({
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
+                                isSelected={
+                                    project._id == selectedProject._id
+                                        ? true
+                                        : false
+                                }
                             />
                         )
                     })}
@@ -64,6 +70,11 @@ export default function Projects({
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
+                                isSelected={
+                                    project._id == selectedProject._id
+                                        ? true
+                                        : false
+                                }
                             />
                         )
                     })}
