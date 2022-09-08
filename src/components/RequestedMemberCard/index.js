@@ -1,6 +1,7 @@
 import { Flex, Heading, Text } from '@chakra-ui/react'
 
 function RequestedMemberCard({ info }) {
+    console.log(info)
     return (
         <Flex
             borderWidth="2px"
@@ -9,16 +10,35 @@ function RequestedMemberCard({ info }) {
             padding="1rem 1.25rem"
             flexDirection="column"
             textAlign="left"
-            gap={2}
+            gap={1}
         >
-            <Heading size="md">{info.username}</Heading>
-            <Text fontSize="sm" marginBottom={4}>
-                {info.location}
-            </Text>
+            <Flex align="center" gap={1}>
+                <Heading size="xs">Username:</Heading>
+                <Text fontSize="sm">{info.username}</Text>
+            </Flex>
+            {info.location !== '' && (
+                <Flex align="center" gap={1}>
+                    <Heading size="xs">Location:</Heading>
+                    <Text fontSize="xs">{info.location}</Text>{' '}
+                </Flex>
+            )}
 
-            <Text fontSize="sm">{info.discordUsername}</Text>
-            <Text fontSize="sm">{info.email}</Text>
-            <Text fontSize="sm">{info.githubProfile}</Text>
+            <Flex align="center" gap={1}>
+                <Heading size="xs">Discord:</Heading>
+                <Text fontSize="sm">{info.discordUsername}</Text>
+            </Flex>
+
+            <Flex align="center" gap={1}>
+                <Heading size="xs">Email:</Heading>
+                <Text fontSize="sm">{info.email}</Text>
+            </Flex>
+
+            {info.githubProfile !== undefined && (
+                <Flex align="center" gap={1}>
+                    <Heading size="xs">Github:</Heading>
+                    <Text fontSize="sm">{info.githubProfile}</Text>
+                </Flex>
+            )}
         </Flex>
     )
 }

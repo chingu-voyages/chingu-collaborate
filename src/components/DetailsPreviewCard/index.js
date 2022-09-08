@@ -9,13 +9,15 @@ import {
     TagLabel,
     Button,
 } from '@chakra-ui/react'
-import { BiHourglass, BiUser, BiTimeFive } from 'react-icons/bi'
+import { useRouter } from 'next/router'
+import { BiUser, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { DateTime } from 'luxon'
-import { useState, useEffect } from 'react'
 
 function DetailsPreviewCard({ info }) {
     const { data: session } = useSession()
+    const router = useRouter()
+
     const isAdmin = info?.admin?._id === session?.dbUser?._id
 
     const currentDate = DateTime.now()
@@ -23,12 +25,32 @@ function DetailsPreviewCard({ info }) {
     const difference = expirationDate?.diff(currentDate, ['days'])
     const remainingDays = `${Math.round(difference?.toObject().days)} days`
 
+    const deleteProjectIdea = async (id) => {
+        try {
+            const response = await fetch(`/api/projects/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            })
+
+            if (!response.ok) {
+                throw Error(
+                    'Something went wrong while trying to delete project idea.'
+                )
+            }
+            const data = await response.json()
+            return router.reload()
+        } catch (error) {
+            console.log('Error while deleting project idea,')
+        }
+    }
+
     if (isAdmin) {
         const numberOfRequestedMembers = info?.requestedMembers?.length
         return (
             <Flex
                 borderWidth="2px"
                 borderRadius="lg"
+                borderColor="green.500"
                 width="100%"
                 padding="1rem"
                 flexDirection="column"
@@ -59,7 +81,11 @@ function DetailsPreviewCard({ info }) {
                         })}
                     </VStack>
                 </Flex>
-                <Button colorScheme="red" height="30px">
+                <Button
+                    colorScheme="red"
+                    height="30px"
+                    onClick={() => deleteProjectIdea(info._id)}
+                >
                     <Text fontSize="xs" padding={0}>
                         Delete
                     </Text>

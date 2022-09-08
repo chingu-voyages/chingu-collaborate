@@ -3,7 +3,8 @@ import DiscordProvider from 'next-auth/providers/discord'
 import User from '../../../models/user'
 import connectToDatabase from '../../../utils/dbConnect'
 connectToDatabase()
-export default NextAuth({
+
+export const authOptions = {
     // Configure one or more authentication providers
     providers: [
         DiscordProvider({
@@ -63,4 +64,5 @@ export default NextAuth({
             }
         },
     },
-})
+}
+export default NextAuth(authOptions)

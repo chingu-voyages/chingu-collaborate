@@ -1,15 +1,38 @@
 import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
+import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
 
 function ManageProject({ project }) {
     const currentDate = DateTime.now()
-    const expirationDate = DateTime.fromISO(project.expiresIn)
+    const expirationDate = DateTime.fromISO(project?.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remainingDays = `${Math.round(difference.toObject().days)} days`
 
     const numberOfRequestedMembers = project?.requestedMembers?.length
+
+    const router = useRouter()
+
+    const deleteProjectIdea = async (id) => {
+        try {
+            const response = await fetch(`/api/projects/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            })
+
+            if (!response.ok) {
+                throw Error(
+                    'Something went wrong while trying to delete project idea.'
+                )
+            }
+            const data = await response.json()
+            return router.replace('/projects')
+        } catch (error) {
+            console.log(error)
+            console.log('Error while deleting project idea,')
+        }
+    }
 
     return (
         <Flex
@@ -22,7 +45,7 @@ function ManageProject({ project }) {
             gap={2}
         >
             <Flex align="center" justify="space-between">
-                <Heading size="lg">{project.title}</Heading>
+                <Heading size="lg">{project?.title}</Heading>
             </Flex>
 
             <Flex align="center" gap={1}>
@@ -50,7 +73,12 @@ function ManageProject({ project }) {
                     })}
                 </VStack>
             </Flex>
-            <Button colorScheme="red">Delete</Button>
+            <Button
+                colorScheme="red"
+                onClick={() => deleteProjectIdea(project._id)}
+            >
+                Delete
+            </Button>
         </Flex>
     )
 }

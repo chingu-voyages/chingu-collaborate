@@ -14,7 +14,7 @@ import { useSession } from 'next-auth/react'
 function ProjectDetails({ project }) {
     const { data: session, status } = useSession()
     const currentDate = DateTime.now()
-    const expirationDate = DateTime.fromISO(project.expiresIn)
+    const expirationDate = DateTime.fromISO(project?.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remainingDays = `${Math.round(difference.toObject().days)} days`
 
@@ -51,7 +51,7 @@ function ProjectDetails({ project }) {
             gap={2}
         >
             <Flex align="center" justify="space-between">
-                <Heading size="lg">{project.title}</Heading>
+                <Heading size="lg">{project?.title}</Heading>
             </Flex>
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
@@ -59,12 +59,12 @@ function ProjectDetails({ project }) {
                     <Heading
                         size="sm"
                         fontWeight={500}
-                    >{`${project.admin.username}`}</Heading>
+                    >{`${project?.admin?.username}`}</Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="sm" fontWeight={500}>
-                        {project.admin.location}
+                        {project?.admin?.location}
                     </Heading>
                 </Flex>
             </Flex>
@@ -100,7 +100,7 @@ function ProjectDetails({ project }) {
                 <Heading size="md" marginTop={4} marginBottom={2}>
                     Description
                 </Heading>
-                <Text fontSize="md">{project.details}</Text>
+                <Text fontSize="md">{project?.details}</Text>
             </Flex>
             <hr />
             <Button
