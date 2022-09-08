@@ -19,36 +19,16 @@ import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-<<<<<<< Updated upstream
-function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
-    const [admin, setAdmin] = useState('')
-    const [location, setLocation] = useState('')
-
-=======
 function ProjectPreviewCard({ project, externalDetails, onClick }) {
->>>>>>> Stashed changes
     const router = useRouter()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remaningDays = `${Math.round(difference.toObject().days)} days`
 
-<<<<<<< Updated upstream
-    const getAdmin = async () => {
-        const response = await fetch(`/api/user/${project.admin}`)
-        const user = await response.json()
-        setAdmin(user?.username)
-        setLocation(user?.location)
-    }
-
-    useEffect(() => {
-        getAdmin()
-    }, [])
-=======
     const { data: session } = useSession()
 
     const isAdmin = project.admin._id === session.dbUser._id
->>>>>>> Stashed changes
 
     const deleteProjectIdea = async (id) => {
         try {
@@ -132,22 +112,15 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
                 <Flex gap={10}>
                     <Flex align="center" gap={1}>
                         <BiUser />
-<<<<<<< Updated upstream
-                        <Heading
-                            size="xs"
-                            fontWeight={500}
-                        >{`${admin} `}</Heading>
-=======
                         <Heading size="sm" fontWeight={500}>
                             {project.admin.username}
                         </Heading>
->>>>>>> Stashed changes
                     </Flex>
-                    {location != '' && (
+                    {project.admin.location != '' && (
                         <Flex align="center" gap={1}>
                             <BiTimeFive />
                             <Heading size="xs" fontWeight={500}>
-                                {location}
+                                {project.admin.location}
                             </Heading>
                         </Flex>
                     )}
