@@ -26,13 +26,13 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     const [isLoading, setIsLoading] = useState(false)
 
     const options = [
-        { value: 'javascript', label: 'JavaScript', colorScheme: 'yellow' },
-        { value: 'typescript', label: 'TypeScript', colorScheme: 'blue' },
-        { value: 'reactjs', label: 'React', colorScheme: 'cyan' },
-        { value: 'nodejs', label: 'Node.js', colorScheme: 'green' },
-        { value: 'expressjs', label: 'Express.js', colorScheme: 'blackAlpha' },
-        { value: 'mongodb', label: 'MongoDB', colorScheme: 'green' },
-        { value: 'nextjs', label: 'Next.js', colorScheme: 'gray' },
+        { value: 'JavaScript', label: 'JavaScript', colorScheme: 'yellow' },
+        { value: 'TypeScript', label: 'TypeScript', colorScheme: 'blue' },
+        { value: 'React', label: 'React', colorScheme: 'cyan' },
+        { value: 'Node.js', label: 'Node.js', colorScheme: 'green' },
+        { value: 'Express.js', label: 'Express.js', colorScheme: 'blackAlpha' },
+        { value: 'MongoDB', label: 'MongoDB', colorScheme: 'green' },
+        { value: 'Next.js', label: 'Next.js', colorScheme: 'gray' },
     ]
 
     const inputMarginBottom = '1rem'

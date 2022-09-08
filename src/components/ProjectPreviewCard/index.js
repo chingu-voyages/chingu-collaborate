@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-function ProjectPreviewCard({ project, externalDetails, onClick }) {
+function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const router = useRouter()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
@@ -64,9 +64,9 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
             style={{ cursor: 'pointer' }}
         >
             <Flex
-                borderWidth="2px"
+                borderWidth="1.5px"
                 borderRadius="lg"
-                borderColor={isAdmin ? 'green.500' : ''}
+                borderColor={isSelected ? 'green.600' : ''}
                 width="100%"
                 padding="1rem"
                 flexDirection="column"
@@ -126,15 +126,6 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
                         </Flex>
                     )}
                 </Flex>
-                <Flex align="center" gap={1}>
-                    <BiHourglass />
-                    <Heading
-                        size="xs"
-                        fontWeight={500}
-                        color="red.500"
-                    >{`Expires in ${remaningDays}`}</Heading>
-                </Flex>
-
                 <HStack spacing={2}>
                     {project.technologies.map(
                         (tech, index) =>
