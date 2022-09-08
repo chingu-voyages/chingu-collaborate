@@ -16,19 +16,24 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 
+<<<<<<< Updated upstream
 function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
     const [admin, setAdmin] = useState('')
     const [location, setLocation] = useState('')
 
+=======
+function ProjectPreviewCard({ project, externalDetails, onClick }) {
+>>>>>>> Stashed changes
     const router = useRouter()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
     const remaningDays = `${Math.round(difference.toObject().days)} days`
 
+<<<<<<< Updated upstream
     const getAdmin = async () => {
         const response = await fetch(`/api/user/${project.admin}`)
         const user = await response.json()
@@ -39,6 +44,11 @@ function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
     useEffect(() => {
         getAdmin()
     }, [])
+=======
+    const { data: session } = useSession()
+
+    const isAdmin = project.admin._id === session.dbUser._id
+>>>>>>> Stashed changes
 
     const deleteProjectIdea = async (id) => {
         try {
@@ -122,10 +132,16 @@ function ProjectPreviewCard({ project, isAdmin, externalDetails, onClick }) {
                 <Flex gap={10}>
                     <Flex align="center" gap={1}>
                         <BiUser />
+<<<<<<< Updated upstream
                         <Heading
                             size="xs"
                             fontWeight={500}
                         >{`${admin} `}</Heading>
+=======
+                        <Heading size="sm" fontWeight={500}>
+                            {project.admin.username}
+                        </Heading>
+>>>>>>> Stashed changes
                     </Flex>
                     {location != '' && (
                         <Flex align="center" gap={1}>

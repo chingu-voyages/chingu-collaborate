@@ -15,11 +15,11 @@ export default function Projects({ projects }) {
     const { data: session, status } = useSession()
 
     const authenticatedProjects = projects.filter(
-        (project) => project.admin === session?.dbUser._id
+        (project) => project.admin._id === session?.dbUser._id
     )
 
     const otherProjects = projects.filter(
-        (project) => project.admin !== session?.dbUser._id
+        (project) => project.admin._id !== session?.dbUser._id
     )
 
     const allProjects = authenticatedProjects.concat(otherProjects)
@@ -58,7 +58,6 @@ export default function Projects({ projects }) {
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
-                                isAdmin={true}
                             />
                         )
                     })}
@@ -70,7 +69,6 @@ export default function Projects({ projects }) {
                                 externalDetails={!isLargerThan768}
                                 key={project._id}
                                 project={project}
-                                isAdmin={false}
                             />
                         )
                     })}
