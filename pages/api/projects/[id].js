@@ -9,14 +9,26 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const project = await Project.findById(req.query.id)
+                    .populate('admin')
+                    .populate('currentMembers')
+                    .populate('requestedMembers')
                 return res.status(200).json(project)
             } catch (err) {
                 return res.status(500).json({ message: 'Project Not found' })
             }
             break
         case 'PATCH':
+            console.log(req.body)
+            const options = {
+                new: true, // THis option is to return updated in same update request
+            }
             try {
-                // Update logic pending
+                const project = await Project.findByIdAndUpdate(
+                    req.query.id,
+                    { $push: req.body },
+                    options
+                )
+                return res.status(200).json(project)
             } catch (err) {
                 return res.status(500).json(err)
             }

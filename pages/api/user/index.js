@@ -1,6 +1,20 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import User from '../../../models/user'
 
+async function existingUser(username, email) {
+    const existingUsername = await User.findOne({
+        username: username,
+    })
+    const existingEmail = await User.findOne({ email: email })
+    if (existingUsername != null) {
+        return 'Username is already taken'
+    } else if (existingEmail != null) {
+        return 'This email is already link to another account'
+    } else {
+        return true
+    }
+}
+
 export default async function handler(req, res) {
     const { method } = req
     connectToDatabase()
@@ -31,6 +45,7 @@ export default async function handler(req, res) {
                 preferredMethodOfContact,
                 githubLink,
             } = req.body
+
             if (username == undefined) {
                 return res
                     .status(400)
@@ -44,7 +59,7 @@ export default async function handler(req, res) {
                     error: 'username parameter length should be between 4 to 17',
                 })
             }
-            if (location != undefined) {
+            if (location != '') {
                 if (!location.includes(',')) {
                     return res
                         .status(400)
@@ -81,7 +96,7 @@ export default async function handler(req, res) {
                 })
             }
 
-            if (githubLink != undefined) {
+            if (githubLink != '') {
                 if (!githubLink.includes('https://github.com/')) {
                     return res
                         .status(400)
@@ -89,6 +104,10 @@ export default async function handler(req, res) {
                 }
             }
             try {
+                const existingUserResponse = await existingUser(username, email)
+                if (existingUserResponse != true) {
+                    return res.status(400).json({ error: existingUserResponse })
+                }
                 const user = new User(req.body)
                 await user.save()
                 return res.status(200).json({ success: 'User Created' })

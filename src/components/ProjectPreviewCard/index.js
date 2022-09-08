@@ -16,6 +16,7 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { DateTime } from 'luxon'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
@@ -119,7 +120,7 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
                     {project.admin.location != '' && (
                         <Flex align="center" gap={1}>
                             <BiTimeFive />
-                            <Heading size="xs" fontWeight={500}>
+                            <Heading size="sm" fontWeight={500}>
                                 {project.admin.location}
                             </Heading>
                         </Flex>
@@ -155,7 +156,7 @@ function ProjectPreviewCard({ project, externalDetails, onClick }) {
                         ''
                     )}
                 </HStack>
-                <Text fontSize="sm" noOfLines={[4, 4, 3]} marginTop={4}>
+                <Text fontSize="sm" noOfLines={5} marginTop={4}>
                     {project.details}
                 </Text>
             </Flex>
