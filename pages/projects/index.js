@@ -1,7 +1,7 @@
 import LimitsOverview from '../../src/components/LimitsOverview'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import { HStack, VStack, useMediaQuery } from '@chakra-ui/react'
+import { HStack, VStack, Divider, useMediaQuery } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
@@ -38,6 +38,7 @@ export default function Projects({
             <ProjectActions
                 reachedMaximumPostedProjects={authenticatedProjects.length >= 1}
             />
+            <Divider marginBottom={10} width="100vw" colorScheme="red" />
             <HStack width="90%" align="flex-start">
                 <VStack
                     marginTop={4}
