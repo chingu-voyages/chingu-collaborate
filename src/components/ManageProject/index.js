@@ -1,14 +1,33 @@
-import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
-import { BiHourglass } from 'react-icons/bi'
+import {
+    Button,
+    Flex,
+    Box,
+    Heading,
+    Text,
+    VStack,
+    Accordion,
+    AccordionItem,
+    AccordionButton,
+    AccordionPanel,
+    AccordionIcon,
+} from '@chakra-ui/react'
+import { BiHourglass, BiUser } from 'react-icons/bi'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
 
 function ManageProject({ project }) {
     const currentDate = DateTime.now()
+    const creationDate = DateTime.fromISO(project?.createdAt)
+    const creationDifference = creationDate?.diff(currentDate, ['days'])
+    const creationPastDays = Math.abs(
+        Math.round(creationDifference?.toObject().days)
+    )
     const expirationDate = DateTime.fromISO(project?.expiresIn)
-    const difference = expirationDate.diff(currentDate, ['days'])
-    const remainingDays = `${Math.round(difference.toObject().days)} days`
+    const expirationDifference = expirationDate?.diff(currentDate, ['days'])
+    const expirationRemainingDays = Math.round(
+        expirationDifference?.toObject().days
+    )
 
     const numberOfRequestedMembers = project?.requestedMembers?.length
 
@@ -47,14 +66,21 @@ function ManageProject({ project }) {
             <Flex align="center" justify="space-between">
                 <Heading size="lg">{project?.title}</Heading>
             </Flex>
-
-            <Flex align="center" gap={1}>
-                <BiHourglass />
-                <Heading
-                    size="sm"
-                    fontWeight={500}
-                    color="red.500"
-                >{`Expires in ${remainingDays}`}</Heading>
+            <Flex gap={10}>
+                <Flex align="center" gap={1}>
+                    <BiUser />
+                    <Heading size="sm" fontWeight={500}>
+                        {project?.admin?.username}
+                    </Heading>
+                </Flex>
+                <Flex align="center" gap={1}>
+                    <BiHourglass />
+                    <Heading
+                        size="sm"
+                        fontWeight={500}
+                        color="red.500"
+                    >{`Expires in ${expirationRemainingDays} days`}</Heading>
+                </Flex>
             </Flex>
             <Text fontSize="xs">
                 You’ll have 48 hours after the post expires to contact the
@@ -73,6 +99,34 @@ function ManageProject({ project }) {
                     })}
                 </VStack>
             </Flex>
+            <Accordion allowToggle>
+                <AccordionItem border="none">
+                    <h2>
+                        <AccordionButton
+                            padding={(2, 0)}
+                            _hover={{ backgroundColor: '' }}
+                        >
+                            <Box flex="1" textAlign="left">
+                                <Heading
+                                    size="md"
+                                    marginBottom={2}
+                                    marginLeft={0}
+                                >
+                                    Description
+                                </Heading>
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel padding={(16, 0, 4, 0)} fontSize="sm">
+                        {project.details}
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
+            <hr />
+            <Text fontSize="sm">{`posted ${creationPastDays} ${
+                creationPastDays !== 1 ? 'days' : 'day'
+            } ago.`}</Text>
             <Button
                 colorScheme="red"
                 onClick={() => deleteProjectIdea(project._id)}
