@@ -18,6 +18,7 @@ import {
 import { Select } from 'chakra-react-select'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import TimezoneSelect from 'react-timezone-select'
 
 function AddProjectModal({ reachedMaximumPostedProjects }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -38,6 +39,9 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
 
+    // Timezone
+    const [selectedTimezone, setSelectedTimezone] = useState({})
+
     // Input Values
     const [title, setTitle] = useState('')
     const [technologies, setTechnologies] = useState('')
@@ -56,14 +60,17 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
 
     const detailsIsValid = details.length > 0
 
+    const timezoneIsValid = Object.keys(selectedTimezone).length > 0
     //Form Validation
-    const formIsValid = titleIsValid && technologiesIsValid && detailsIsValid
+    const formIsValid =
+        titleIsValid && technologiesIsValid && detailsIsValid && timezoneIsValid
 
     const formSubmit = async () => {
         setIsLoading(true)
         const user_id = session.dbUser._id
 
         let formData = {
+            timezone: selectedTimezone.label,
             title,
             technologies,
             details,
@@ -158,7 +165,14 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 options={options}
                                 tagVariant="solid"
                             />
-
+                            <FormLabel marginBottom={labelMarginBottom}>
+                                Timezone
+                            </FormLabel>
+                            <TimezoneSelect
+                                isInvalid={!timezoneIsValid}
+                                value={selectedTimezone}
+                                onChange={setSelectedTimezone}
+                            />
                             <FormLabel
                                 marginBottom={labelMarginBottom}
                                 marginTop={inputMarginBottom} // Select component doesn't support marginBottom so added to marginTop of next component

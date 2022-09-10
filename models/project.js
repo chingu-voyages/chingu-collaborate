@@ -16,6 +16,10 @@ const projectSchema = new Schema({
         type: String,
         required: true,
     },
+    timezone: {
+        type: String,
+        required: true,
+    },
     datePosted: {
         type: String,
         required: true,

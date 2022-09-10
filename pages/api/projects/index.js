@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             }
             break
         case 'POST':
-            const { title, technologies, details, admin } = req.body
+            const { title, technologies, details, admin, timezone } = req.body
             if (title == undefined) {
                 return res
                     .status(400)
