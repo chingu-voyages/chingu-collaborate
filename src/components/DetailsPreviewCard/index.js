@@ -28,8 +28,8 @@ function DetailsPreviewCard({ info }) {
 
     const isAdmin = info?.admin?._id === session?.dbUser?._id
 
-    const requestedMembers = info?.requestedMembers.map((member) => member._id)
-    const isRequestedMember = requestedMembers.includes(session?.dbUser._id)
+    const requestedMembers = info?.requestedMembers?.map((member) => member._id)
+    const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
 
     const isRequestedProject = session?.dbUser?.projectsRequested.includes(
         info._id
@@ -270,11 +270,11 @@ function DetailsPreviewCard({ info }) {
             <hr />
             <Flex direction="column">
                 <Heading size="sm" marginTop={2} marginBottom={1}>
-                    {info.technologies.length > 1
+                    {info?.technologies?.length > 1
                         ? 'Technologies'
                         : 'Technology'}
                 </Heading>
-                {info?.technologies.map((tech, index) => (
+                {info?.technologies?.map((tech, index) => (
                     <Text key={index} fontSize="xs">
                         {tech}
                     </Text>
@@ -299,7 +299,7 @@ function DetailsPreviewCard({ info }) {
                 >
                     Requested Members
                 </Heading>
-                {info.requestedMembers.length > 0 && (
+                {info?.requestedMembers?.length > 0 && (
                     <AvatarGroup size="sm" max={0}>
                         {info.requestedMembers.map((member, index) => {
                             return (
@@ -320,7 +320,7 @@ function DetailsPreviewCard({ info }) {
                 >
                     Current Members
                 </Heading>
-                {info.currentMembers.length > 0 && (
+                {info?.currentMembers?.length > 0 && (
                     <AvatarGroup size="sm" max={3}>
                         {info.currentMembers.map((member, index) => {
                             return (
