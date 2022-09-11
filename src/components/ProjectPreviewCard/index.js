@@ -125,6 +125,15 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                             </Heading>
                         </Flex>
                     )}
+
+                    {project.timezone && (
+                        <Flex align="center" gap={1}>
+                            <BiTimeFive />
+                            <Heading size="sm" fontWeight={500}>
+                                {project.timezone}
+                            </Heading>
+                        </Flex>
+                    )}
                 </Flex>
                 <HStack spacing={2}>
                     {project.technologies.map(
