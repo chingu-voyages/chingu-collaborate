@@ -10,13 +10,19 @@ import {
     HStack,
     Button,
     Tooltip,
+    List,
+    ListItem,
+    ListIcon,
 } from '@chakra-ui/react'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { MdCheckCircle, MdRemoveCircle } from 'react-icons/md'
 
 function CreateProfile() {
+    const [usernameExists, setUsernameExists] = useState(false)
+    const [emailExists, setEmailExists] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const { data: session, status } = useSession()
@@ -81,6 +87,8 @@ function CreateProfile() {
         }
 
         if (formIsValid) {
+            setUsernameExists(false)
+            setEmailExists(false)
             setIsLoading(true)
             try {
                 const response = await fetch('/api/user', {
@@ -89,21 +97,25 @@ function CreateProfile() {
                     body: JSON.stringify(formData),
                 })
 
-                // Removed this for now. This code block throws an error when backend send custom 400 status code
-                // if (!response.ok) {
-                //     throw new Error(
-                //         'Something went wrong while attempting to create user.'
-                //     )
-                // }
                 const data = await response.json()
                 if (response.status == '200') {
-                    if (router.pathname === '/projects') {
-                        return router.reload()
-                    }
-                    return router.replace('/projects')
+                    return router.reload()
                 }
+
+                if (response.status == '400') {
+                    if (data.error === 'Username is already taken') {
+                        setUsernameExists(true)
+                    }
+
+                    if (
+                        data.error ===
+                        'This email is already link to another account'
+                    ) {
+                        setEmailExists(true)
+                    }
+                }
+
                 setIsLoading(false)
-                console.log(data)
             } catch (error) {
                 setIsLoading(false)
                 console.log(error)
@@ -142,6 +154,56 @@ function CreateProfile() {
                     type="text"
                     marginBottom={inputMarginBottom}
                 />
+                {usernameExists && (
+                    <Text
+                        marginTop="-0.75rem"
+                        color="red.500"
+                        fontSize="xs"
+                        marginBottom="0.5rem"
+                    >
+                        Username is already taken.
+                    </Text>
+                )}
+                {didFocusOnUsername && (
+                    <List
+                        size="xs"
+                        marginTop="-0.5rem"
+                        marginBottom={inputMarginBottom}
+                    >
+                        <ListItem display="flex">
+                            <ListIcon
+                                as={
+                                    username.length > 4 && username.length < 17
+                                        ? MdCheckCircle
+                                        : MdRemoveCircle
+                                }
+                                color={
+                                    username.length > 4 && username.length < 17
+                                        ? 'green.500'
+                                        : 'red.500'
+                                }
+                            />
+                            <Text fontSize="xs">
+                                Between 5 and 16 characters
+                            </Text>
+                        </ListItem>
+                        <ListItem display="flex">
+                            <ListIcon
+                                as={
+                                    !username.includes(' ')
+                                        ? MdCheckCircle
+                                        : MdRemoveCircle
+                                }
+                                color={
+                                    !username.includes(' ')
+                                        ? 'green.500'
+                                        : 'red.500'
+                                }
+                            />
+                            <Text fontSize="xs">No Spaces</Text>
+                        </ListItem>
+                    </List>
+                )}
 
                 <Flex align="center">
                     <FormLabel marginBottom={labelMarginBottom} marginRight={1}>
@@ -186,6 +248,16 @@ function CreateProfile() {
                     type="email"
                     marginBottom={inputMarginBottom}
                 />
+                {emailExists && (
+                    <Text
+                        marginTop={'-1rem'}
+                        marginBottom={inputMarginBottom}
+                        color="red.500"
+                        fontSize="xs"
+                    >
+                        Email is already linked to another account.
+                    </Text>
+                )}
 
                 <Flex align="center">
                     <FormLabel marginBottom={labelMarginBottom} marginRight={1}>
