@@ -24,10 +24,9 @@ function AuthWrapper({ children, session, status }) {
                 </Head>
 
                 <main className="container">
-                    <Navbar />
                     <section className="content">
                         <Flex
-                            justify="start"
+                            justify="center"
                             align="center"
                             width="100vw"
                             height="100vh"
@@ -68,6 +67,7 @@ function AuthWrapper({ children, session, status }) {
                     <Navbar />
                     <section className="content">
                         <Flex
+                            marginTop={10}
                             borderWidth="3px"
                             borderRadius="lg"
                             width="90%"
@@ -109,8 +109,8 @@ function AuthWrapper({ children, session, status }) {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
 
+                <Navbar />
                 <main className="container">
-                    <Navbar />
                     <section className="content">
                         {isBanned ? <BannedCard /> : children}
                     </section>

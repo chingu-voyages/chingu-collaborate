@@ -127,6 +127,7 @@ function DetailsPreviewCard({ info }) {
                 flexDirection="column"
                 textAlign="left"
                 gap={2}
+                backgroundColor="white"
             >
                 <Heading size="md">{info?.title}</Heading>
                 <Flex gap={10}>

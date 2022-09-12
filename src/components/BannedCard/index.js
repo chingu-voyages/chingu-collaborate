@@ -12,6 +12,7 @@ function BannedCard() {
             flexDirection="column"
             textAlign="center"
             gap={2}
+            marginTop={10}
         >
             <Heading size="lg">
                 Your account has been suspended for violating the community

@@ -1,7 +1,14 @@
 import LimitsOverview from '../../src/components/LimitsOverview'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import { HStack, VStack, Divider, useMediaQuery } from '@chakra-ui/react'
+import {
+    Box,
+    Flex,
+    HStack,
+    VStack,
+    Divider,
+    useMediaQuery,
+} from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
@@ -38,58 +45,71 @@ export default function Projects({
             <ProjectActions
                 reachedMaximumPostedProjects={authenticatedProjects.length >= 1}
             />
-            <Divider marginBottom={10} width="100vw" colorScheme="red" />
-            <HStack width="90%" align="flex-start">
-                <VStack
-                    marginTop={4}
-                    spacing={4}
-                    width={['100%', '100%', '50%', '50%']}
-                    minWidth="320px"
-                    align={isLargerThan768 ? 'flex-start' : 'center'}
-                >
-                    {/* Filter logged in user's  */}
-                    {authenticatedProjects.map((project) => {
-                        return (
-                            <ProjectPreviewCard
-                                onClick={() => selectedProjectHandler(project)}
-                                externalDetails={!isLargerThan768}
-                                key={project._id}
-                                project={project}
-                                isSelected={
-                                    project._id == selectedProject._id
-                                        ? true
-                                        : false
-                                }
-                            />
-                        )
-                    })}
-                    {/* List all other projects */}
-                    {otherProjects.map((project) => {
-                        return (
-                            <ProjectPreviewCard
-                                onClick={() => selectedProjectHandler(project)}
-                                externalDetails={!isLargerThan768}
-                                key={project._id}
-                                project={project}
-                                isSelected={
-                                    project._id == selectedProject._id
-                                        ? true
-                                        : false
-                                }
-                            />
-                        )
-                    })}
-                </VStack>
+            {/* <Divider marginBottom={10} width="100vw" /> */}
+            <Flex
+                backgroundColor="#faf9f8"
+                width="100vw"
+                minHeight="500px"
+                justify="center"
+            >
+                <Flex maxWidth="1400px">
+                    <HStack width="100%" align="flex-start" padding="2rem">
+                        <VStack
+                            marginTop={4}
+                            spacing={4}
+                            width={['100%', '100%', '50%', '50%']}
+                            minWidth="320px"
+                            align={isLargerThan768 ? 'flex-start' : 'center'}
+                        >
+                            {/* Filter logged in user's  */}
+                            {authenticatedProjects.map((project) => {
+                                return (
+                                    <ProjectPreviewCard
+                                        onClick={() =>
+                                            selectedProjectHandler(project)
+                                        }
+                                        externalDetails={!isLargerThan768}
+                                        key={project._id}
+                                        project={project}
+                                        isSelected={
+                                            project._id == selectedProject._id
+                                                ? true
+                                                : false
+                                        }
+                                    />
+                                )
+                            })}
+                            {/* List all other projects */}
+                            {otherProjects.map((project) => {
+                                return (
+                                    <ProjectPreviewCard
+                                        onClick={() =>
+                                            selectedProjectHandler(project)
+                                        }
+                                        externalDetails={!isLargerThan768}
+                                        key={project._id}
+                                        project={project}
+                                        isSelected={
+                                            project._id == selectedProject._id
+                                                ? true
+                                                : false
+                                        }
+                                    />
+                                )
+                            })}
+                        </VStack>
 
-                {projects.length > 0 && (
-                    <VStack
-                        width="50%"
-                        display={['none', 'none', 'flex', 'flex']}
-                    >
-                        <DetailsPreviewCard info={selectedProject} />
-                    </VStack>
-                )}
-            </HStack>
+                        {projects.length > 0 && (
+                            <VStack
+                                width="50%"
+                                display={['none', 'none', 'flex', 'flex']}
+                            >
+                                <DetailsPreviewCard info={selectedProject} />
+                            </VStack>
+                        )}
+                    </HStack>
+                </Flex>
+            </Flex>
         </AuthWrapper>
     )
 }
@@ -101,20 +121,23 @@ export const getServerSideProps = async (context) => {
         authOptions
     )
 
-    const adminId = session.dbUser._id.toString()
+    const adminId = session?.dbUser?._id.toString()
 
     const response = await fetch('http://localhost:3000/api/projects', {
         method: 'GET',
     })
+
     const data = await response.json()
 
-    const authenticatedProjects = data.filter(
-        (project) => project.admin._id === adminId
-    )
+    const authenticatedProjects =
+        data.length > 0
+            ? data.filter((project) => project.admin._id === adminId)
+            : []
 
-    const otherProjects = data.filter(
-        (project) => project.admin._id !== adminId
-    )
+    const otherProjects =
+        data.length > 0
+            ? data.filter((project) => project.admin._id !== adminId)
+            : []
 
     const projects = authenticatedProjects.concat(otherProjects)
     return {

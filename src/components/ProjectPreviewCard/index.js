@@ -73,6 +73,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                 textAlign="left"
                 gap={1}
                 height="280px"
+                backgroundColor="white"
             >
                 <Flex align="center" justify="space-between">
                     {/* If the viewport is above medium, onClick changes selectedProject */}
