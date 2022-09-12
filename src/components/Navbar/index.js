@@ -1,7 +1,7 @@
 import styles from './Nav.module.css'
 import NextLink from 'next/link'
 import Image from 'next/image'
-import logo from './chinguLogo.png'
+import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
 import { Box, Link } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
@@ -37,8 +37,8 @@ function Navbar() {
                 <Image
                     src={logo}
                     alt="Chingu Collaborate Logo"
-                    width={100}
-                    height={40}
+                    width="142px"
+                    height="48px"
                 />
             </Box>
             {/* Smaller Screens */}
