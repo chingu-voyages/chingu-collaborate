@@ -1,9 +1,11 @@
 .nav {
     background-color: white;
     padding: 1rem 2rem;
+    width: 100vw;
 
+    border-bottom: #e2e8f0 1.5px solid;
     /* Flexbox */
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }

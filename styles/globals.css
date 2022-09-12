@@ -17,12 +17,16 @@ body {
 }
 
 .container {
-    max-width: 1200px;
     width: 100vw;
     min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
+    max-width: 1400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
