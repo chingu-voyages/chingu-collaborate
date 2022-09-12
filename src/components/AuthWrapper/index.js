@@ -22,7 +22,6 @@ function AuthWrapper({ children, session, status }) {
                     <meta name="description" content="Chingu Collaborate" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-
                 <Flex
                     justify="center"
                     align="center"
@@ -63,6 +62,7 @@ function AuthWrapper({ children, session, status }) {
                     <Navbar />
                     <section className="content">
                         <Flex
+                            marginTop={10}
                             borderWidth="3px"
                             borderRadius="lg"
                             width="90%"
@@ -104,8 +104,8 @@ function AuthWrapper({ children, session, status }) {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
 
+                <Navbar />
                 <main className="container">
-                    <Navbar />
                     <section className="content">
                         {isBanned ? <BannedCard /> : children}
                     </section>

@@ -165,7 +165,10 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 options={options}
                                 tagVariant="solid"
                             />
-                            <FormLabel marginBottom={labelMarginBottom}>
+                            <FormLabel
+                                marginBottom={labelMarginBottom}
+                                marginTop={inputMarginBottom} // Select component doesn't support marginBottom so added to marginTop of next component
+                            >
                                 Timezone
                             </FormLabel>
                             <TimezoneSelect

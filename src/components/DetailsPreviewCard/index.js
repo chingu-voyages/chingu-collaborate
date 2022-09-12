@@ -45,7 +45,7 @@ function DetailsPreviewCard({ info }) {
     )
     const expirationDate = DateTime.fromISO(info?.expiresIn)
     const expirationDifference = expirationDate?.diff(currentDate, ['days'])
-    const expirationremainingDays = Math.round(
+    const expirationRemainingDays = Math.round(
         expirationDifference?.toObject().days
     )
 
@@ -127,6 +127,7 @@ function DetailsPreviewCard({ info }) {
                 flexDirection="column"
                 textAlign="left"
                 gap={2}
+                backgroundColor="white"
             >
                 <Heading size="md">{info?.title}</Heading>
                 <Flex gap={10}>
@@ -142,8 +143,8 @@ function DetailsPreviewCard({ info }) {
                             size="xs"
                             fontWeight={500}
                             color="red.500"
-                        >{`Expires in ${expirationremainingDays} ${
-                            expirationremainingDays !== 1 ? 'days' : 'day'
+                        >{`Expires in ${expirationRemainingDays} ${
+                            expirationRemainingDays !== 1 ? 'days' : 'day'
                         }`}</Heading>
                     </Flex>
                 </Flex>
@@ -246,8 +247,8 @@ function DetailsPreviewCard({ info }) {
                     size="xs"
                     fontWeight={500}
                     color="red.500"
-                >{`Expires in ${expirationremainingDays} ${
-                    expirationremainingDays !== 1 ? 'days' : 'day'
+                >{`Expires in ${expirationRemainingDays} ${
+                    expirationRemainingDays !== 1 ? 'days' : 'day'
                 }`}</Heading>
             </Flex>
             <Button

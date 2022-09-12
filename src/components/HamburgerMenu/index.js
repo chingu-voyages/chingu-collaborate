@@ -52,7 +52,9 @@ function HamburgerMenu({ routes }) {
                                             route.name == 'Sign Out' && signOut
                                         }
                                     >
-                                        <Heading>{route.name}</Heading>
+                                        <Heading size="lg">
+                                            {route.name}
+                                        </Heading>
                                     </Link>
                                 </NextLink>
                             )

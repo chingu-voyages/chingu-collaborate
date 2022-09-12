@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
-import { Box, Link } from '@chakra-ui/react'
+import { Box, Link, Flex } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 function Navbar() {
@@ -51,16 +51,21 @@ function Navbar() {
                 gap={2}
                 fontSize="1.25rem"
             >
-                {routes.map((route, index) => {
-                    return (
-                        <NextLink key={index} href={route.route} passHref>
-                            <Link onClick={route.name == 'Sign Out' && signOut}>
-                                {route.name}
-                            </Link>
-                        </NextLink>
-                    )
-                })}
-            </Box>
+                    {routes.map((route, index) => {
+                        return (
+                            <NextLink key={index} href={route.route} passHref>
+                                <Link
+                                    onClick={
+                                        route.name == 'Sign Out' && signOut
+                                    }
+                                >
+                                    {route.name}
+                                </Link>
+                            </NextLink>
+                        )
+                    })}
+                </Box>
+            </Flex>
         </nav>
     )
 }
