@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import Navbar from '../Navbar'
-import logo from './chinguLogo.png'
+import logo from './ChinguCollaborateLogo.png'
 import Image from 'next/image'
 import CommunityStandards from '../CommunityStandards'
 import CreateProfile from '../CreateProfile'
@@ -22,34 +22,29 @@ function AuthWrapper({ children, session, status }) {
                     <meta name="description" content="Chingu Collaborate" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-
-                <main className="container">
-                    <section className="content">
-                        <Flex
-                            justify="center"
-                            align="center"
-                            width="100vw"
-                            height="100vh"
-                            direction="column"
-                            gap={10}
-                        >
-                            <Image
-                                priority
-                                src={logo}
-                                alt="Chingu Collaborate Logo"
-                                width={220}
-                                height={80}
-                            />
-                            <Spinner
-                                thickness="6px"
-                                speed="0.75s"
-                                emptyColor="gray.200"
-                                color="green.500"
-                                size="xl"
-                            />
-                        </Flex>
-                    </section>
-                </main>
+                <Flex
+                    justify="center"
+                    align="center"
+                    width="100vw"
+                    height="100vh"
+                    direction="column"
+                    gap={2}
+                >
+                    <Image
+                        priority
+                        src={logo}
+                        alt="Chingu Collaborate Logo"
+                        width={226}
+                        height={78}
+                    />
+                    <Spinner
+                        thickness="6px"
+                        speed="0.75s"
+                        emptyColor="gray.200"
+                        color="green.500"
+                        size="xl"
+                    />
+                </Flex>
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import styles from './Nav.module.css'
 import NextLink from 'next/link'
 import Image from 'next/image'
-import logo from './chinguLogo.png'
+import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
 import { Box, Link, Flex } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
@@ -33,30 +33,24 @@ function Navbar() {
 
     return (
         <nav className={styles.nav}>
-            <Flex
-                width="100%"
-                maxWidth="1400px"
-                justify="space-between"
-                align="center"
+            <Box>
+                <Image
+                    src={logo}
+                    alt="Chingu Collaborate Logo"
+                    width="142px"
+                    height="48px"
+                />
+            </Box>
+            {/* Smaller Screens */}
+            <Box display={['flex', 'flex', 'none', 'none']}>
+                <HamburgerMenu routes={routes} />
+            </Box>
+            {/* Larger Screens */}
+            <Box
+                display={['none', 'none', 'flex', 'flex']}
+                gap={2}
+                fontSize="1.25rem"
             >
-                <Box>
-                    <Image
-                        src={logo}
-                        alt="Chingu Collaborate Logo"
-                        width={100}
-                        height={40}
-                    />
-                </Box>
-                {/* Smaller Screens */}
-                <Box display={['flex', 'flex', 'none', 'none']}>
-                    <HamburgerMenu routes={routes} />
-                </Box>
-                {/* Larger Screens */}
-                <Box
-                    display={['none', 'none', 'flex', 'flex']}
-                    gap={2}
-                    fontSize="1rem"
-                >
                     {routes.map((route, index) => {
                         return (
                             <NextLink key={index} href={route.route} passHref>
