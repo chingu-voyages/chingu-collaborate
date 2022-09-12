@@ -3,7 +3,7 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
-import { Box, Link, Flex } from '@chakra-ui/react'
+import { Flex, Box, Link } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 function Navbar() {
@@ -33,24 +33,30 @@ function Navbar() {
 
     return (
         <nav className={styles.nav}>
-            <Box>
-                <Image
-                    src={logo}
-                    alt="Chingu Collaborate Logo"
-                    width="142px"
-                    height="48px"
-                />
-            </Box>
-            {/* Smaller Screens */}
-            <Box display={['flex', 'flex', 'none', 'none']}>
-                <HamburgerMenu routes={routes} />
-            </Box>
-            {/* Larger Screens */}
-            <Box
-                display={['none', 'none', 'flex', 'flex']}
-                gap={2}
-                fontSize="1.25rem"
+            <Flex
+                width="100%"
+                maxWidth="1400px"
+                justify="space-between"
+                align="center"
             >
+                <Box>
+                    <Image
+                        src={logo}
+                        alt="Chingu Collaborate Logo"
+                        width="142px"
+                        height="48px"
+                    />
+                </Box>
+                {/* Smaller Screens */}
+                <Box display={['flex', 'flex', 'none', 'none']}>
+                    <HamburgerMenu routes={routes} />
+                </Box>
+                {/* Larger Screens */}
+                <Box
+                    display={['none', 'none', 'flex', 'flex']}
+                    gap={2}
+                    fontSize="1rem"
+                >
                     {routes.map((route, index) => {
                         return (
                             <NextLink key={index} href={route.route} passHref>

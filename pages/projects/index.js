@@ -123,24 +123,31 @@ export const getServerSideProps = async (context) => {
 
     const adminId = session?.dbUser?._id.toString()
 
-    const response = await fetch('http://localhost:3000/api/projects', {
-        method: 'GET',
-    })
+    try {
+        const response = await fetch('http://localhost:3000/api/projects', {
+            method: 'GET',
+        })
+        const data = await response.json()
 
-    const data = await response.json()
+        const authenticatedProjects = data.filter(
+            (project) => project.admin._id === adminId
+        )
 
-    const authenticatedProjects =
-        data.length > 0
-            ? data.filter((project) => project.admin._id === adminId)
-            : []
+        const otherProjects = data.filter(
+            (project) => project.admin._id !== adminId
+        )
 
-    const otherProjects =
-        data.length > 0
-            ? data.filter((project) => project.admin._id !== adminId)
-            : []
-
-    const projects = authenticatedProjects.concat(otherProjects)
-    return {
-        props: { projects, authenticatedProjects, otherProjects },
+        const projects = authenticatedProjects.concat(otherProjects)
+        return {
+            props: { projects, authenticatedProjects, otherProjects },
+        }
+    } catch (error) {
+        return {
+            props: {
+                projects: [],
+                authenticatedProjects: [],
+                otherProjects: [],
+            },
+        }
     }
 }
