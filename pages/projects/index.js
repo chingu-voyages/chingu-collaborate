@@ -32,8 +32,8 @@ export default function Projects({
     return (
         <AuthWrapper session={session} status={status}>
             <LimitsOverview
-                projectsCreated={session?.dbUser.projectsCreated.length}
-                projectsRequested={session?.dbUser.projectsRequested.length}
+                projectsCreated={session?.dbUser?.projectsCreated.length}
+                projectsRequested={session?.dbUser?.projectsRequested.length}
             />
             <ProjectActions
                 reachedMaximumPostedProjects={authenticatedProjects.length >= 1}
