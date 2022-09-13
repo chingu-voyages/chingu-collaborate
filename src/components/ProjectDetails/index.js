@@ -96,7 +96,7 @@ function ProjectDetails({ project, isJoinable }) {
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="sm" fontWeight={500}>
-                        UTC-4
+                        {project?.timezone}
                     </Heading>
                 </Flex>
             </Flex>
