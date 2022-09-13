@@ -138,15 +138,21 @@ function DetailsPreviewCard({ info }) {
                         </Heading>
                     </Flex>
                     <Flex align="center" gap={1}>
-                        <BiHourglass />
-                        <Heading
-                            size="xs"
-                            fontWeight={500}
-                            color="red.500"
-                        >{`Expires in ${expirationRemainingDays} ${
-                            expirationRemainingDays !== 1 ? 'days' : 'day'
-                        }`}</Heading>
+                        <BiTimeFive />
+                        <Heading size="xs" fontWeight={500}>
+                            {info?.timezone}
+                        </Heading>
                     </Flex>
+                </Flex>
+                <Flex align="center" gap={1}>
+                    <BiHourglass />
+                    <Heading
+                        size="xs"
+                        fontWeight={500}
+                        color="red.500"
+                    >{`Expires in ${expirationRemainingDays} ${
+                        expirationRemainingDays !== 1 ? 'days' : 'day'
+                    }`}</Heading>
                 </Flex>
                 <Text fontSize="xs">
                     You’ll have 48 hours after the post expires to contact the
@@ -237,7 +243,7 @@ function DetailsPreviewCard({ info }) {
                 <Flex align="center" gap={1}>
                     <BiTimeFive />
                     <Heading size="xs" fontWeight={500}>
-                        UTC-4
+                        {info?.timezone}
                     </Heading>
                 </Flex>
             </Flex>

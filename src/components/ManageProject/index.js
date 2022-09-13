@@ -11,7 +11,7 @@ import {
     AccordionPanel,
     AccordionIcon,
 } from '@chakra-ui/react'
-import { BiHourglass, BiUser } from 'react-icons/bi'
+import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
@@ -75,13 +75,19 @@ function ManageProject({ project }) {
                     </Heading>
                 </Flex>
                 <Flex align="center" gap={1}>
-                    <BiHourglass />
-                    <Heading
-                        size="sm"
-                        fontWeight={500}
-                        color="red.500"
-                    >{`Expires in ${expirationRemainingDays} days`}</Heading>
+                    <BiTimeFive />
+                    <Heading size="sm" fontWeight={500}>
+                        {project.timezone}
+                    </Heading>
                 </Flex>
+            </Flex>
+            <Flex align="center" gap={1}>
+                <BiHourglass />
+                <Heading
+                    size="sm"
+                    fontWeight={500}
+                    color="red.500"
+                >{`Expires in ${expirationRemainingDays} days`}</Heading>
             </Flex>
             <Text fontSize="xs">
                 You’ll have 48 hours after the post expires to contact the
