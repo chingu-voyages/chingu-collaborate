@@ -36,84 +36,77 @@ export default function Projects({
     useEffect(() => {
         setSelectedProject(projects[0])
     }, [])
+
     return (
         <AuthWrapper session={session} status={status}>
-            <LimitsOverview
-                projectsCreated={session?.dbUser?.projectsCreated.length}
-                projectsRequested={session?.dbUser?.projectsRequested.length}
-            />
-            <ProjectActions
-                reachedMaximumPostedProjects={authenticatedProjects.length >= 1}
-            />
-            {/* <Divider marginBottom={10} width="100vw" /> */}
-            <Flex
-                backgroundColor="#faf9f8"
-                width="100vw"
-                minHeight="500px"
-                justify="center"
-            >
-                <Flex maxWidth="1400px" width="100%">
-                    <HStack
-                        width="100%"
-                        align="flex-start"
-                        padding="2rem"
-                        minWidth="320px"
+            <Flex direction="column" width="100%" alignItems="center">
+                <LimitsOverview
+                    projectsCreated={session?.dbUser?.projectsCreated.length}
+                    projectsRequested={
+                        session?.dbUser?.projectsRequested.length
+                    }
+                />
+                <ProjectActions
+                    reachedMaximumPostedProjects={
+                        authenticatedProjects.length >= 1
+                    }
+                />
+            </Flex>
+            <Flex maxWidth="1400px" width="100%">
+                <HStack width="100%" align="flex-start" padding="2rem">
+                    <VStack
+                        marginTop={4}
+                        spacing={4}
+                        width={['100%', '100%', '50%', '50%']}
+                        align={isLargerThan768 ? 'flex-start' : 'center'}
                     >
-                        <VStack
-                            marginTop={4}
-                            spacing={4}
-                            width={['100%', '100%', '50%', '50%']}
-                            minWidth="320px"
-                            align={isLargerThan768 ? 'flex-start' : 'center'}
-                        >
-                            {/* Filter logged in user's  */}
-                            {authenticatedProjects.map((project) => {
-                                return (
-                                    <ProjectPreviewCard
-                                        onClick={() =>
-                                            selectedProjectHandler(project)
-                                        }
-                                        externalDetails={!isLargerThan768}
-                                        key={project._id}
-                                        project={project}
-                                        isSelected={
-                                            project._id == selectedProject._id
-                                                ? true
-                                                : false
-                                        }
-                                    />
-                                )
-                            })}
-                            {/* List all other projects */}
-                            {otherProjects.map((project) => {
-                                return (
-                                    <ProjectPreviewCard
-                                        onClick={() =>
-                                            selectedProjectHandler(project)
-                                        }
-                                        externalDetails={!isLargerThan768}
-                                        key={project._id}
-                                        project={project}
-                                        isSelected={
-                                            project._id == selectedProject._id
-                                                ? true
-                                                : false
-                                        }
-                                    />
-                                )
-                            })}
-                        </VStack>
+                        {/* Filter logged in user's  */}
+                        {authenticatedProjects.map((project) => {
+                            return (
+                                <ProjectPreviewCard
+                                    onClick={() =>
+                                        selectedProjectHandler(project)
+                                    }
+                                    externalDetails={!isLargerThan768}
+                                    key={project._id}
+                                    project={project}
+                                    isSelected={
+                                        project._id == selectedProject._id
+                                            ? true
+                                            : false
+                                    }
+                                />
+                            )
+                        })}
+                        {/* List all other projects */}
+                        {otherProjects.map((project) => {
+                            return (
+                                <ProjectPreviewCard
+                                    onClick={() =>
+                                        selectedProjectHandler(project)
+                                    }
+                                    externalDetails={!isLargerThan768}
+                                    key={project._id}
+                                    project={project}
+                                    isSelected={
+                                        project._id == selectedProject._id
+                                            ? true
+                                            : false
+                                    }
+                                />
+                            )
+                        })}
+                    </VStack>
 
-                        {projects.length > 0 && (
-                            <VStack
-                                width="50%"
-                                display={['none', 'none', 'flex', 'flex']}
-                            >
-                                <DetailsPreviewCard info={selectedProject} />
-                            </VStack>
-                        )}
-                    </HStack>
-                </Flex>
+                    {projects.length > 0 && (
+                        <VStack
+                            width="50%"
+                            display={['none', 'none', 'flex', 'flex']}
+                        >
+                            <DetailsPreviewCard info={selectedProject} />
+                        </VStack>
+                    )}
+                </HStack>
             </Flex>
         </AuthWrapper>
     )

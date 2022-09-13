@@ -103,9 +103,8 @@ function AuthWrapper({ children, session, status }) {
                     <meta name="description" content="Chingu Collaborate" />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-
-                <Navbar />
                 <main className="container">
+                    <Navbar />
                     <section className="content">
                         {isBanned ? <BannedCard /> : children}
                     </section>
