@@ -118,15 +118,6 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                             {project.admin.username}
                         </Heading>
                     </Flex>
-                    {project.admin.location != '' && (
-                        <Flex align="center" gap={1}>
-                            <BiTimeFive />
-                            <Heading size="sm" fontWeight={500}>
-                                {project.admin.location}
-                            </Heading>
-                        </Flex>
-                    )}
-
                     {project.timezone && (
                         <Flex align="center" gap={1}>
                             <BiTimeFive />
