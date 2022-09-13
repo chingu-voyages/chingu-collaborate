@@ -34,11 +34,30 @@ function ManageProject({ project }) {
     const router = useRouter()
 
     const deleteProjectIdea = async (id) => {
+        const patchUserData = [
+            {
+                projectsCreated: id,
+            },
+            {
+                projectsRequested: id,
+            },
+            {
+                projectsJoined: id,
+            },
+        ]
         try {
             const response = await fetch(`/api/projects/${id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             })
+
+            for (let patch of patchUserData) {
+                await fetch(`/api/user/`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(patch),
+                })
+            }
 
             if (!response.ok) {
                 throw Error(
@@ -46,9 +65,8 @@ function ManageProject({ project }) {
                 )
             }
             const data = await response.json()
-            return router.replace('/projects')
+            return router.reload()
         } catch (error) {
-            console.log(error)
             console.log('Error while deleting project idea,')
         }
     }
