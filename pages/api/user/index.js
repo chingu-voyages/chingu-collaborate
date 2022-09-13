@@ -115,6 +115,21 @@ export default async function handler(req, res) {
                 return res.status(500).json(err)
             }
             break
+        case 'PATCH':
+            const options = {
+                new: true, // THis option is to return updated in same update request
+            }
+            try {
+                const user = await User.updateMany(
+                    req.body,
+                    { $pull: req.body },
+                    options
+                )
+                return res.status(200).json(user)
+            } catch (err) {
+                return res.status(500).json(err)
+            }
+            break
         default:
             return res
                 .status(400)
