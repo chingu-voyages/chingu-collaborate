@@ -58,12 +58,7 @@ export default async function handler(req, res) {
             try {
                 const project = new Project(req.body)
 
-                const now = DateTime.now() //this logic is to get proper date format for project.datePosted
-                const datePostedString = now.toLocaleString(
-                    DateTime.DATETIME_MED
-                )
-                project.datePosted = datePostedString
-
+                const now = DateTime.now()
                 project.createdAt = now
                 project.expiresIn = now.plus({ week: 1 })
                 project.admin = admin
