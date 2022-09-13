@@ -33,6 +33,22 @@ export default function Projects({
         return
     }
 
+    const otherProjectRequestedMembers = otherProjects.map(
+        (project) => project.requestedMembers
+    )
+
+    let countOfProjectsRequested = 0
+
+    for (let i = 0; i < otherProjectRequestedMembers.length; i++) {
+        for (let j = 0; j < otherProjectRequestedMembers[i].length; j++) {
+            if (
+                otherProjectRequestedMembers[i][j]._id === session?.dbUser._id
+            ) {
+                countOfProjectsRequested++
+            }
+        }
+    }
+
     useEffect(() => {
         setSelectedProject(projects[0])
     }, [])

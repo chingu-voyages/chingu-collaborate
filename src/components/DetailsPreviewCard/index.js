@@ -31,11 +31,9 @@ function DetailsPreviewCard({ info }) {
     const requestedMembers = info?.requestedMembers?.map((member) => member._id)
     const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
 
-    const isRequestedProject = session?.dbUser?.projectsRequested.includes(
-        info._id
-    )
-
-    let isJoinable = isRequestedMember && isRequestedProject ? false : true
+    const JOINLIMIT = 5
+    const projectsJoined = 1 // Add logic
+    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
 
     const currentDate = DateTime.now()
     const creationDate = DateTime.fromISO(info?.createdAt)
@@ -249,6 +247,7 @@ function DetailsPreviewCard({ info }) {
             flexDirection="column"
             textAlign="left"
             gap={2}
+            backgroundColor="white"
         >
             <Heading size="md">{info?.title}</Heading>
 
@@ -326,7 +325,7 @@ function DetailsPreviewCard({ info }) {
                     Requested Members
                 </Heading>
                 {info?.requestedMembers?.length > 0 && (
-                    <AvatarGroup size="sm" max={0}>
+                    <AvatarGroup size="sm" max={2}>
                         {info.requestedMembers.map((member, index) => {
                             return (
                                 <Avatar
@@ -347,7 +346,7 @@ function DetailsPreviewCard({ info }) {
                     Current Members
                 </Heading>
                 {info?.currentMembers?.length > 0 && (
-                    <AvatarGroup size="sm" max={3}>
+                    <AvatarGroup size="sm" max={2}>
                         {info.currentMembers.map((member, index) => {
                             return (
                                 <Avatar

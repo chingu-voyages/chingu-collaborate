@@ -5,36 +5,30 @@ import ProjectDetails from '../../src/components/ProjectDetails'
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
+import AuthWrapper from '../../src/components/AuthWrapper'
 
-export default function Project({ details, isJoinable }) {
-    const { data: session } = useSession()
+export default function Project({ details, isRequestedMember }) {
+    const { data: session, status } = useSession()
+
+    const JOINLIMIT = 5
 
     const isAdmin = session?.dbUser?._id === details?.admin?._id
 
-    return (
-        <div>
-            <Head>
-                <title>Chingu Collaborate</title>
-                <meta name="description" content="Chingu Collaborate" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+    const projectsJoined = 1 // Add logic
 
-            <main className="container">
-                <Navbar />
-                <section className="content">
-                    {details !== null && isAdmin ? (
-                        <ManageProject project={details} />
-                    ) : details !== null && !isAdmin ? (
-                        <ProjectDetails
-                            project={details}
-                            isJoinable={isJoinable}
-                        />
-                    ) : (
-                        'The project you are looking for does not exist.'
-                    )}
-                </section>
-            </main>
-        </div>
+    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
+
+    const detailsLength = Object.keys(details).length
+    return (
+        <AuthWrapper session={session} status={status}>
+            {detailsLength !== 0 && isAdmin ? (
+                <ManageProject project={details} />
+            ) : detailsLength !== 0 && !isAdmin ? (
+                <ProjectDetails project={details} isJoinable={isJoinable} />
+            ) : (
+                'The project you are looking for does not exist.'
+            )}
+        </AuthWrapper>
     )
 }
 
@@ -66,17 +60,12 @@ export const getServerSideProps = async (context) => {
 
         const isRequestedMember = requestedMembers.includes(authenticatedUserId)
 
-        const requestedProjects = session?.dbUser?.projectsRequested.map(
-            (project) => project.toString()
-        )
-
-        const isRequestedProject = requestedProjects.includes(
-            projectData._id.toString()
-        )
-
-        let isJoinable = isRequestedMember && isRequestedProject ? false : true
-
-        return { props: { details: projectData, isJoinable } }
+        return {
+            props: {
+                details: projectData,
+                isRequestedMember,
+            },
+        }
     } catch (error) {
         console.log(
             'An error occurred whiled server side rendering on Projects page.'
