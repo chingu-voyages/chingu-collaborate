@@ -52,8 +52,13 @@ export default function Projects({
                 minHeight="500px"
                 justify="center"
             >
-                <Flex maxWidth="1400px">
-                    <HStack width="100%" align="flex-start" padding="2rem">
+                <Flex maxWidth="1400px" width="100%">
+                    <HStack
+                        width="100%"
+                        align="flex-start"
+                        padding="2rem"
+                        minWidth="320px"
+                    >
                         <VStack
                             marginTop={4}
                             spacing={4}

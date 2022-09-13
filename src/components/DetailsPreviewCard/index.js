@@ -249,6 +249,7 @@ function DetailsPreviewCard({ info }) {
             flexDirection="column"
             textAlign="left"
             gap={2}
+            backgroundColor="white"
         >
             <Heading size="md">{info?.title}</Heading>
 
@@ -326,7 +327,7 @@ function DetailsPreviewCard({ info }) {
                     Requested Members
                 </Heading>
                 {info?.requestedMembers?.length > 0 && (
-                    <AvatarGroup size="sm" max={0}>
+                    <AvatarGroup size="sm" max={2}>
                         {info.requestedMembers.map((member, index) => {
                             return (
                                 <Avatar
@@ -347,7 +348,7 @@ function DetailsPreviewCard({ info }) {
                     Current Members
                 </Heading>
                 {info?.currentMembers?.length > 0 && (
-                    <AvatarGroup size="sm" max={3}>
+                    <AvatarGroup size="sm" max={2}>
                         {info.currentMembers.map((member, index) => {
                             return (
                                 <Avatar
