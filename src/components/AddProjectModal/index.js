@@ -39,17 +39,16 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
 
-    // Timezone
-    const [selectedTimezone, setSelectedTimezone] = useState({})
-
     // Input Values
     const [title, setTitle] = useState('')
     const [technologies, setTechnologies] = useState('')
+    const [timezone, setTimezone] = useState({})
     const [details, setDetails] = useState('')
 
     // Input didFocusOn
     const [didFocusOnTitle, setDidFocusOnTitle] = useState(false)
     const [didFocusOnTechnologies, setDidFocusOnTechnologies] = useState(false)
+    const [didFocusOnTimezone, setDidFocusOnTimezone] = useState(false)
     const [didFocusOnDetails, setDidFocusOnDetails] = useState(false)
 
     // Input Validation
@@ -58,12 +57,30 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
 
     const technologiesIsValid = technologies.length > 0
 
+    const timezoneIsValid = Object.keys(timezone).length > 0
+
     const detailsIsValid = details.length > 0
 
-    const timezoneIsValid = Object.keys(selectedTimezone).length > 0
     //Form Validation
     const formIsValid =
-        titleIsValid && technologiesIsValid && detailsIsValid && timezoneIsValid
+        titleIsValid && technologiesIsValid && timezoneIsValid && detailsIsValid
+
+    const resetStates = () => {
+        setTitle('')
+        setTechnologies('')
+        setTimezone({})
+        setDetails('')
+        setDidFocusOnTitle(false)
+        setDidFocusOnTechnologies(false)
+        setDidFocusOnTimezone(false)
+        setDidFocusOnDetails(false)
+        setIsLoading(false)
+    }
+
+    const closeHandler = () => {
+        resetStates()
+        onClose()
+    }
 
     const formSubmit = async () => {
         setIsLoading(true)
@@ -117,7 +134,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
 
             <Modal
                 isOpen={!reachedMaximumPostedProjects ? isOpen : false}
-                onClose={onClose}
+                onClose={closeHandler}
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -173,8 +190,8 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                             </FormLabel>
                             <TimezoneSelect
                                 isInvalid={!timezoneIsValid}
-                                value={selectedTimezone}
-                                onChange={setSelectedTimezone}
+                                value={timezone}
+                                onChange={setTimezone}
                             />
                             <FormLabel
                                 marginBottom={labelMarginBottom}
@@ -197,7 +214,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="red" mr={3} onClick={onClose}>
+                        <Button colorScheme="red" mr={3} onClick={closeHandler}>
                             Close
                         </Button>
                         <Button
