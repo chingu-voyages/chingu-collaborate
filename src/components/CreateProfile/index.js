@@ -149,7 +149,7 @@ function CreateProfile() {
                         setDidFocusOnUsername(true)
                     }}
                     onChange={(e) => {
-                        setUsername(e.target.value)
+                        setUsername(e.target.value.toLowerCase())
                     }}
                     type="text"
                     marginBottom={inputMarginBottom}
@@ -243,7 +243,7 @@ function CreateProfile() {
                         setDidFocusOnEmail(true)
                     }}
                     onChange={(e) => {
-                        setEmail(e.target.value)
+                        setEmail(e.target.value.toLowerCase())
                     }}
                     type="email"
                     marginBottom={inputMarginBottom}
