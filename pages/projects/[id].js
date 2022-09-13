@@ -7,10 +7,16 @@ import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
 import AuthWrapper from '../../src/components/AuthWrapper'
 
-export default function Project({ details, isJoinable }) {
+export default function Project({ details, isRequestedMember }) {
     const { data: session, status } = useSession()
 
+    const JOINLIMIT = 5
+
     const isAdmin = session?.dbUser?._id === details?.admin?._id
+
+    const projectsJoined = 1 // Add logic
+
+    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
 
     const detailsLength = Object.keys(details).length
     return (
@@ -54,20 +60,10 @@ export const getServerSideProps = async (context) => {
 
         const isRequestedMember = requestedMembers.includes(authenticatedUserId)
 
-        const requestedProjects = session?.dbUser?.projectsRequested.map(
-            (project) => project.toString()
-        )
-
-        const isRequestedProject = requestedProjects.includes(
-            projectData._id.toString()
-        )
-
-        let isJoinable = isRequestedMember && isRequestedProject ? false : true
-
         return {
             props: {
                 details: projectData,
-                isJoinable,
+                isRequestedMember,
             },
         }
     } catch (error) {
