@@ -189,7 +189,9 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 Timezone
                             </FormLabel>
                             <TimezoneSelect
-                                isInvalid={!timezoneIsValid}
+                                isInvalid={
+                                    didFocusOnTimezone && !timezoneIsValid
+                                }
                                 value={timezone}
                                 onChange={setTimezone}
                             />
