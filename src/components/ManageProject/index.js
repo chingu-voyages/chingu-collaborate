@@ -10,6 +10,7 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
+    Container,
 } from '@chakra-ui/react'
 import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
 import { DateTime } from 'luxon'
@@ -77,6 +78,7 @@ function ManageProject({ project }) {
             borderWidth="2px"
             borderRadius="lg"
             width="90%"
+            maxWidth="750px"
             padding="2rem"
             flexDirection="column"
             textAlign="left"
@@ -125,7 +127,7 @@ function ManageProject({ project }) {
                     })}
                 </VStack>
             </Flex>
-            <Accordion allowToggle>
+            <Accordion allowToggle width="100%">
                 <AccordionItem border="none">
                     <h2>
                         <AccordionButton

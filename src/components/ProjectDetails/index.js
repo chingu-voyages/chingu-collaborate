@@ -78,6 +78,7 @@ function ProjectDetails({ project, isJoinable }) {
             borderWidth="2px"
             borderRadius="lg"
             width="90%"
+            maxWidth="750px"
             padding="2rem"
             flexDirection="column"
             textAlign="left"
