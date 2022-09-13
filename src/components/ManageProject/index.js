@@ -65,6 +65,7 @@ function ManageProject({ project }) {
                 )
             }
             const data = await response.json()
+            await router.replace('/projects')
             return router.reload()
         } catch (error) {
             console.log('Error while deleting project idea,')
