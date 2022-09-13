@@ -66,7 +66,7 @@ export default async function handler(req, res) {
                 project.datePosted = datePostedString
 
                 project.createdAt = now
-                project.expiresIn = now.plus({ month: 1 })
+                project.expiresIn = now.plus({ week: 1 })
                 project.admin = admin
                 await project.save()
                 return res.status(200).json(project)
