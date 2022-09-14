@@ -46,8 +46,6 @@ export function formatRelativeProjectDates({
     durationTillExpiration: expiry,
     durationSinceCreation: create,
 }) {
-    console.log(expiry)
-
     let expiresMessage = ''
     let createdMessage = ''
 
