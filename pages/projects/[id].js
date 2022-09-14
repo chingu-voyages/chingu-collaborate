@@ -1,6 +1,4 @@
-import Head from 'next/head'
 import ManageProject from '../../src/components/ManageProject'
-import Navbar from '../../src/components/Navbar'
 import ProjectDetails from '../../src/components/ProjectDetails'
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../api/auth/[...nextauth]'

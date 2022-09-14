@@ -1,14 +1,7 @@
 import LimitsOverview from '../../src/components/LimitsOverview'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import {
-    Box,
-    Flex,
-    HStack,
-    VStack,
-    Divider,
-    useMediaQuery,
-} from '@chakra-ui/react'
+import { Flex, HStack, VStack, useMediaQuery } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import AuthWrapper from '../../src/components/AuthWrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
