@@ -12,22 +12,14 @@ import {
     AccordionIcon,
 } from '@chakra-ui/react'
 import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
-import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { deleteProjectIdea } from '../../../controllers/project'
+import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 
 function ManageProject({ project }) {
-    const currentDate = DateTime.now()
-    const creationDate = DateTime.fromISO(project?.createdAt)
-    const creationDifference = creationDate?.diff(currentDate, ['days'])
-    const creationPastDays = Math.abs(
-        Math.round(creationDifference?.toObject().days)
-    )
-    const expirationDate = DateTime.fromISO(project?.expiresIn)
-    const expirationDifference = expirationDate?.diff(currentDate, ['days'])
-    const expirationRemainingDays = Math.round(
-        expirationDifference?.toObject().days
+    const { expiresMessage, createdMessage } = formatRelativeProjectDates(
+        getRelativeProjectDates(project)
     )
 
     const numberOfRequestedMembers = project?.requestedMembers?.length
@@ -65,11 +57,9 @@ function ManageProject({ project }) {
             </Flex>
             <Flex align="center" gap={1}>
                 <BiHourglass />
-                <Heading
-                    size="sm"
-                    fontWeight={500}
-                    color="red.500"
-                >{`Expires in ${expirationRemainingDays} days`}</Heading>
+                <Heading size="sm" fontWeight={500} color="red.500">
+                    {expiresMessage}
+                </Heading>
             </Flex>
             <Text fontSize="xs">
                 You’ll have 48 hours after the post expires to contact the
@@ -113,10 +103,9 @@ function ManageProject({ project }) {
                 </AccordionItem>
             </Accordion>
             <hr />
-            <Text fontSize="sm">{`posted ${creationPastDays} ${
-                creationPastDays !== 1 ? 'days' : 'day'
-            } ago.`}</Text>
+            <Text fontSize="sm">{createdMessage}</Text>
             <Button
+                width="fit-content"
                 colorScheme="red"
                 onClick={async () => {
                     if ((await deleteProjectIdea(project._id)) == true) {
@@ -128,6 +117,7 @@ function ManageProject({ project }) {
                         )
                     }
                 }}
+                marginTop={4}
             >
                 Delete
             </Button>
