@@ -84,6 +84,7 @@ function CreateProfile() {
             discordUsername: discordId,
             preferredMethodOfContact: methodOfContact,
             githubLink,
+            isBanned: { value: false, reason: '' },
         }
 
         if (formIsValid) {

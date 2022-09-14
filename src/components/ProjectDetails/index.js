@@ -7,24 +7,22 @@ import {
     Button,
 } from '@chakra-ui/react'
 import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
-import { DateTime } from 'luxon'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 
 function ProjectDetails({ project, isJoinable }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
 
     const router = useRouter()
-    const { data: session, status } = useSession()
-    const currentDate = DateTime.now()
-    const expirationDate = DateTime.fromISO(project?.expiresIn)
-    const difference = expirationDate.diff(currentDate, ['days'])
-    const remainingDays = `${Math.round(difference.toObject().days)} days`
+    const { data: session } = useSession()
+
+    const { expiresMessage, createdMessage } = formatRelativeProjectDates(
+        getRelativeProjectDates(project)
+    )
 
     const isReported = false
-
-    console.log(project.requestedMembers)
 
     const requestForProject = async () => {
         if (isJoinable) {
@@ -90,11 +88,9 @@ function ProjectDetails({ project, isJoinable }) {
             </Flex>
             <Flex align="center" gap={1}>
                 <BiHourglass />
-                <Heading
-                    size="sm"
-                    fontWeight={500}
-                    color="red.500"
-                >{`Expires in ${remainingDays}`}</Heading>
+                <Heading size="sm" fontWeight={500} color="red.500">
+                    {expiresMessage}
+                </Heading>
             </Flex>
 
             <Button
@@ -180,6 +176,7 @@ function ProjectDetails({ project, isJoinable }) {
                 )}
             </Flex>
             <hr />
+            <Text fontSize="sm">{createdMessage}</Text>
             <Button
                 width="fit-content"
                 color="white"

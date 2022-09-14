@@ -11,19 +11,22 @@ body {
 }
 
 #__next {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 320px;
 }
 
 .container {
+    min-width: 320px;
     width: 100vw;
     max-width: 1400px;
-    min-width: 320px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: scroll;
 }
 
 .content {

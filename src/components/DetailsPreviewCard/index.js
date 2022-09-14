@@ -20,6 +20,7 @@ import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { DateTime } from 'luxon'
 import { deleteProjectIdea } from '../../../controllers/project'
+import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 
 function DetailsPreviewCard({ info }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
@@ -36,16 +37,8 @@ function DetailsPreviewCard({ info }) {
     const projectsJoined = 1 // Add logic
     const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
 
-    const currentDate = DateTime.now()
-    const creationDate = DateTime.fromISO(info?.createdAt)
-    const creationDifference = creationDate?.diff(currentDate, ['days'])
-    const creationPastDays = Math.abs(
-        Math.round(creationDifference?.toObject().days)
-    )
-    const expirationDate = DateTime.fromISO(info?.expiresIn)
-    const expirationDifference = expirationDate?.diff(currentDate, ['days'])
-    const expirationRemainingDays = Math.round(
-        expirationDifference?.toObject().days
+    const { expiresMessage, createdMessage } = formatRelativeProjectDates(
+        getRelativeProjectDates(info)
     )
 
     const requestForProject = async () => {
@@ -111,13 +104,9 @@ function DetailsPreviewCard({ info }) {
                 </Flex>
                 <Flex align="center" gap={1}>
                     <BiHourglass />
-                    <Heading
-                        size="xs"
-                        fontWeight={500}
-                        color="red.500"
-                    >{`Expires in ${expirationRemainingDays} ${
-                        expirationRemainingDays !== 1 ? 'days' : 'day'
-                    }`}</Heading>
+                    <Heading size="xs" fontWeight={500} color="red.500">
+                        {expiresMessage}
+                    </Heading>
                 </Flex>
                 <Text fontSize="xs">
                     You’ll have 48 hours after the post expires to contact the
@@ -166,10 +155,7 @@ function DetailsPreviewCard({ info }) {
                     </AccordionItem>
                 </Accordion>
                 <hr />
-                <Text fontSize="xs">{`posted ${creationPastDays} ${
-                    creationPastDays !== 1 ? 'days' : 'day'
-                } ago.`}</Text>
-
+                <Text fontSize="xs">{createdMessage}</Text>
                 <Button
                     width="fit-content"
                     colorScheme="red"
@@ -223,13 +209,9 @@ function DetailsPreviewCard({ info }) {
             </Flex>
             <Flex align="center" gap={1}>
                 <BiHourglass />
-                <Heading
-                    size="xs"
-                    fontWeight={500}
-                    color="red.500"
-                >{`Expires in ${expirationRemainingDays} ${
-                    expirationRemainingDays !== 1 ? 'days' : 'day'
-                }`}</Heading>
+                <Heading size="xs" fontWeight={500} color="red.500">
+                    {expiresMessage}
+                </Heading>
             </Flex>
             <Button
                 isLoading={projectRequestLoading}
@@ -316,9 +298,7 @@ function DetailsPreviewCard({ info }) {
                 )}
             </Flex>
             <hr />
-            <Text fontSize="xs">{`posted ${creationPastDays} ${
-                creationPastDays !== 1 ? 'days' : 'day'
-            } ago.`}</Text>
+            <Text fontSize="xs">{createdMessage}</Text>
             <Button
                 width="fit-content"
                 color="white"

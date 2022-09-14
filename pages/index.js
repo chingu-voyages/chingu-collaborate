@@ -1,30 +1,27 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Navbar from '../src/components/Navbar'
-import BannedCard from '../src/components/BannedCard'
-import CreateProfile from '../src/components/CreateProfile'
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import AuthWrapper from '../src/components/AuthWrapper'
-import { Spinner } from '@chakra-ui/react'
+import Wrapper from '../src/components/Wrapper'
+import { Heading, Progress, Stack } from '@chakra-ui/react'
 
 export default function Home() {
     const { data: session, status } = useSession()
-    let routePushed = false
     const router = useRouter()
 
     useEffect(() => {
-        if (session?.dbUser && !routePushed) {
+        if (session?.dbUser) {
             router.push('/projects')
-            routePushed = true
         }
-    }, [session])
+    }, [session, router])
 
     return (
-        <AuthWrapper session={session} status={status}>
-            Redirecting...
-        </AuthWrapper>
+        <Wrapper session={session} status={status}>
+            <Heading size="md" marginTop={5} marginBottom={2}>
+                Redirecting
+            </Heading>
+            <Stack width="90%">
+                <Progress size="xs" isIndeterminate colorScheme="green" />
+            </Stack>
+        </Wrapper>
     )
 }

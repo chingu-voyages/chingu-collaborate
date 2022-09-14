@@ -25,8 +25,8 @@ const userSchema = new Schema({
     githubLink: String,
     preferredMethodOfContact: String,
     isBanned: {
-        type: Boolean,
-        default: false,
+        value: { type: Boolean },
+        reason: { type: String },
     },
 })
 

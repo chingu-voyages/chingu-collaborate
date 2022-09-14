@@ -1,21 +1,15 @@
 import LimitsOverview from '../../src/components/LimitsOverview'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import {
-    Box,
-    Flex,
-    HStack,
-    VStack,
-    Divider,
-    useMediaQuery,
-} from '@chakra-ui/react'
+import { Flex, HStack, VStack, useMediaQuery } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
-import AuthWrapper from '../../src/components/AuthWrapper'
+import Wrapper from '../../src/components/Wrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
 import { useEffect, useState } from 'react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
 import { getProjects } from '../../controllers/project'
+import { getNumberOfProjectsRequested } from '../../src/components/util'
 
 export default function Projects({
     projects, //projects concats the order of authenticatedProjects followed by otherProjects
@@ -34,28 +28,17 @@ export default function Projects({
         return
     }
 
-    const otherProjectRequestedMembers = otherProjects.map(
-        (project) => project.requestedMembers
+    const countOfProjectsRequested = getNumberOfProjectsRequested(
+        otherProjects,
+        session
     )
-
-    let countOfProjectsRequested = 0
-
-    for (let i = 0; i < otherProjectRequestedMembers.length; i++) {
-        for (let j = 0; j < otherProjectRequestedMembers[i].length; j++) {
-            if (
-                otherProjectRequestedMembers[i][j]._id === session?.dbUser._id
-            ) {
-                countOfProjectsRequested++
-            }
-        }
-    }
 
     useEffect(() => {
         setSelectedProject(projects[0])
     }, [])
 
     return (
-        <AuthWrapper session={session} status={status}>
+        <Wrapper session={session} status={status}>
             <Flex direction="column" width="100%" alignItems="center">
                 <LimitsOverview
                     projectsCreated={authenticatedProjects.length}
@@ -123,7 +106,7 @@ export default function Projects({
                     )}
                 </HStack>
             </Flex>
-        </AuthWrapper>
+        </Wrapper>
     )
 }
 
