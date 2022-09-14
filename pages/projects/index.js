@@ -1,7 +1,14 @@
 import LimitsOverview from '../../src/components/LimitsOverview'
 import ProjectPreviewCard from '../../src/components/ProjectPreviewCard'
 import ProjectActions from '../../src/components/ProjectActions'
-import { Flex, Text, HStack, VStack, useMediaQuery } from '@chakra-ui/react'
+import {
+    Flex,
+    Text,
+    HStack,
+    VStack,
+    Divider,
+    useMediaQuery,
+} from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import Wrapper from '../../src/components/Wrapper'
 import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
@@ -51,6 +58,7 @@ export default function Projects({
                     }
                 />
             </Flex>
+            <Divider width="100vw" marginBottom={8} />
             <Flex width="100%" paddingLeft="2rem" marginBottom={-8}>
                 <Text fontSize="xs">{`${projects.length} projects posted.`}</Text>
             </Flex>

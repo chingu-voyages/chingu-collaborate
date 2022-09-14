@@ -1,6 +1,7 @@
 import Header from '../Header'
 import Navbar from '../Navbar'
 import { Flex, Box, Heading, Text } from '@chakra-ui/react'
+import { signIn } from 'next-auth/react'
 import DiscordButton from '../DiscordButton'
 
 export default function UnauthenticatedUser() {
