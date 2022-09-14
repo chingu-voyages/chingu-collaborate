@@ -28,24 +28,6 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    projectsCreated: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Project',
-        },
-    ],
-    projectsRequested: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Project',
-        },
-    ],
-    projectsJoined: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Project',
-        },
-    ],
 })
 
 const User = models.User || model('User', userSchema)
