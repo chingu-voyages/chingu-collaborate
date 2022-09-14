@@ -15,6 +15,7 @@ import DetailsPreviewCard from '../../src/components/DetailsPreviewCard'
 import { useEffect, useState } from 'react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
+import { getProjects } from '../../controllers/project'
 
 export default function Projects({
     projects, //projects concats the order of authenticatedProjects followed by otherProjects
@@ -136,15 +137,11 @@ export const getServerSideProps = async (context) => {
     const adminId = session?.dbUser?._id.toString()
 
     try {
-        const response = await fetch('http://localhost:3000/api/projects', {
-            method: 'GET',
-        })
-        const data = await response.json()
+        const data = await getProjects()
 
         const authenticatedProjects = data.filter(
             (project) => project.admin._id === adminId
         )
-
         const otherProjects = data.filter(
             (project) => project.admin._id !== adminId
         )
