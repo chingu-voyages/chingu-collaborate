@@ -16,7 +16,7 @@ function ProjectDetails({ project, isJoinable }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
 
     const router = useRouter()
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
     const currentDate = DateTime.now()
     const expirationDate = DateTime.fromISO(project?.expiresIn)
     const difference = expirationDate.diff(currentDate, ['days'])
