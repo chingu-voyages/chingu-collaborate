@@ -16,6 +16,7 @@ export default function Projects({
     authenticatedProjects,
     otherProjects,
 }) {
+    const CREATELIMIT = process.env.NEXT_PUBLIC_POSTLIMIT
     const [selectedProject, setSelectedProject] = useState({})
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
 
@@ -46,7 +47,7 @@ export default function Projects({
                 />
                 <ProjectActions
                     reachedMaximumPostedProjects={
-                        authenticatedProjects.length >= 1
+                        authenticatedProjects.length >= CREATELIMIT
                     }
                 />
             </Flex>

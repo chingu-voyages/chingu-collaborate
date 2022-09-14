@@ -14,19 +14,13 @@ import {
     LinkOverlay,
 } from '@chakra-ui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
-import { DateTime } from 'luxon'
-import { useEffect, useState } from 'react'
+import { BiUser, BiTimeFive } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { deleteProjectIdea } from '../../../controllers/project'
 
 function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const router = useRouter()
-    const currentDate = DateTime.now()
-    const expirationDate = DateTime.fromISO(project.expiresIn)
-    const difference = expirationDate.diff(currentDate, ['days'])
-    const remaningDays = `${Math.round(difference.toObject().days)} days`
 
     const { data: session } = useSession()
 
