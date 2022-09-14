@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Head from 'next/head'
 import Navbar from '../Navbar'
 import logo from './ChinguCollaborateLogo.png'
 import Image from 'next/image'
@@ -9,6 +8,7 @@ import BannedCard from '../BannedCard'
 import { Flex, Box, Heading, Text, Spinner } from '@chakra-ui/react'
 import DiscordButton from '../DiscordButton'
 import { signIn } from 'next-auth/react'
+import Header from '../Header'
 
 function Wrapper({ children, session, status }) {
     const [agreeToRules, setAgreeToRules] = useState(false)
@@ -17,11 +17,7 @@ function Wrapper({ children, session, status }) {
     if (status === 'loading') {
         return (
             <div>
-                <Head>
-                    <title>Chingu Collaborate</title>
-                    <meta name="description" content="Chingu Collaborate" />
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
+                <Header />
                 <Flex
                     justify="center"
                     align="center"
@@ -52,12 +48,7 @@ function Wrapper({ children, session, status }) {
     if (status === 'unauthenticated') {
         return (
             <div>
-                <Head>
-                    <title>Chingu Collaborate</title>
-                    <meta name="description" content="Chingu Collaborate" />
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-
+                <Header />
                 <main className="container">
                     <Navbar />
                     <section className="content">
@@ -98,11 +89,7 @@ function Wrapper({ children, session, status }) {
         const isBanned = session.dbUser.isBanned
         return (
             <div>
-                <Head>
-                    <title>Chingu Collaborate</title>
-                    <meta name="description" content="Chingu Collaborate" />
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
+                <Header />
                 <main className="container">
                     <Navbar />
                     <section className="content">
@@ -120,12 +107,7 @@ function Wrapper({ children, session, status }) {
         }
         return (
             <div>
-                <Head>
-                    <title>Chingu Collaborate</title>
-                    <meta name="description" content="Chingu Collaborate" />
-                    <link rel="icon" href="/favicon.ico" />
-                </Head>
-
+                <Header />
                 <main className="container">
                     <Navbar />
                     <section className="content">
