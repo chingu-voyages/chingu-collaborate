@@ -3,7 +3,7 @@ import ProjectDetails from '../../src/components/ProjectDetails'
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
-import AuthWrapper from '../../src/components/AuthWrapper'
+import Wrapper from '../../src/components/Wrapper'
 
 export default function Project({ details, isRequestedMember }) {
     const { data: session, status } = useSession()
@@ -18,7 +18,7 @@ export default function Project({ details, isRequestedMember }) {
 
     const detailsLength = Object.keys(details).length
     return (
-        <AuthWrapper session={session} status={status}>
+        <Wrapper session={session} status={status}>
             {detailsLength !== 0 && isAdmin ? (
                 <ManageProject project={details} />
             ) : detailsLength !== 0 && !isAdmin ? (
@@ -26,7 +26,7 @@ export default function Project({ details, isRequestedMember }) {
             ) : (
                 'The project you are looking for does not exist.'
             )}
-        </AuthWrapper>
+        </Wrapper>
     )
 }
 

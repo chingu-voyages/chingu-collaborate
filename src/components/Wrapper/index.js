@@ -10,7 +10,7 @@ import { Flex, Box, Heading, Text, Spinner } from '@chakra-ui/react'
 import DiscordButton from '../DiscordButton'
 import { signIn } from 'next-auth/react'
 
-function AuthWrapper({ children, session, status }) {
+function Wrapper({ children, session, status }) {
     const [agreeToRules, setAgreeToRules] = useState(false)
 
     // Loading State
@@ -140,4 +140,4 @@ function AuthWrapper({ children, session, status }) {
     }
 }
 
-export default AuthWrapper
+export default Wrapper

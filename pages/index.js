@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import AuthWrapper from '../src/components/AuthWrapper'
+import Wrapper from '../src/components/Wrapper'
 
 export default function Home() {
     const { data: session, status } = useSession()
@@ -16,8 +16,8 @@ export default function Home() {
     }, [session])
 
     return (
-        <AuthWrapper session={session} status={status}>
+        <Wrapper session={session} status={status}>
             Redirecting...
-        </AuthWrapper>
+        </Wrapper>
     )
 }
