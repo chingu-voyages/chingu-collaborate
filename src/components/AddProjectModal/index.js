@@ -22,7 +22,7 @@ import TimezoneSelect from 'react-timezone-select'
 
 function AddProjectModal({ reachedMaximumPostedProjects }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
