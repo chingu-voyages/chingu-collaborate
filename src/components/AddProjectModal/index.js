@@ -39,38 +39,61 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
 
-    // Timezone
-    const [selectedTimezone, setSelectedTimezone] = useState({})
-
     // Input Values
     const [title, setTitle] = useState('')
     const [technologies, setTechnologies] = useState('')
+    const [timezone, setTimezone] = useState({})
     const [details, setDetails] = useState('')
 
     // Input didFocusOn
     const [didFocusOnTitle, setDidFocusOnTitle] = useState(false)
     const [didFocusOnTechnologies, setDidFocusOnTechnologies] = useState(false)
+    const [didFocusOnTimezone, setDidFocusOnTimezone] = useState(false)
     const [didFocusOnDetails, setDidFocusOnDetails] = useState(false)
 
     // Input Validation
     // a) Required Inputs
-    const titleIsValid = title.trim().length > 4 && title.length < 21
+    const titleIsValid =
+        title.trim().length >= 5 &&
+        title.length <= 50 &&
+        title.trim().length !== 0
 
     const technologiesIsValid = technologies.length > 0
 
-    const detailsIsValid = details.length > 0
+    const timezoneIsValid = Object.keys(timezone).length > 0
 
-    const timezoneIsValid = Object.keys(selectedTimezone).length > 0
+    const detailsIsValid =
+        details.length >= 250 &&
+        details.length <= 800 &&
+        details.trim().length !== 0
+
     //Form Validation
     const formIsValid =
-        titleIsValid && technologiesIsValid && detailsIsValid && timezoneIsValid
+        titleIsValid && technologiesIsValid && timezoneIsValid && detailsIsValid
+
+    const resetStates = () => {
+        setTitle('')
+        setTechnologies('')
+        setTimezone({})
+        setDetails('')
+        setDidFocusOnTitle(false)
+        setDidFocusOnTechnologies(false)
+        setDidFocusOnTimezone(false)
+        setDidFocusOnDetails(false)
+        setIsLoading(false)
+    }
+
+    const closeHandler = () => {
+        resetStates()
+        onClose()
+    }
 
     const formSubmit = async () => {
         setIsLoading(true)
         const user_id = session.dbUser._id
 
         let formData = {
-            timezone: selectedTimezone.label,
+            timezone: timezone.label,
             title,
             technologies,
             details,
@@ -117,7 +140,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
 
             <Modal
                 isOpen={!reachedMaximumPostedProjects ? isOpen : false}
-                onClose={onClose}
+                onClose={closeHandler}
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -140,6 +163,16 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 type="text"
                                 marginBottom={inputMarginBottom}
                             />
+                            {didFocusOnTitle && (
+                                <Text
+                                    marginTop="-0.75rem"
+                                    fontSize="xs"
+                                    color={!titleIsValid ? 'red.500' : ''}
+                                    marginBottom="0.5rem"
+                                >
+                                    Between 5 and 50 characters.
+                                </Text>
+                            )}
 
                             <FormLabel marginBottom={labelMarginBottom}>
                                 Technologies
@@ -172,9 +205,11 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 Timezone
                             </FormLabel>
                             <TimezoneSelect
-                                isInvalid={!timezoneIsValid}
-                                value={selectedTimezone}
-                                onChange={setSelectedTimezone}
+                                isInvalid={
+                                    didFocusOnTimezone && !timezoneIsValid
+                                }
+                                value={timezone}
+                                onChange={setTimezone}
                             />
                             <FormLabel
                                 marginBottom={labelMarginBottom}
@@ -191,13 +226,33 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 onChange={(e) => {
                                     setDetails(e.target.value)
                                 }}
-                                marginBottom={inputMarginBottom}
                             />
+                            <Text
+                                marginTop={0}
+                                marginBottom={inputMarginBottom}
+                                fontSize="xs"
+                                textAlign="right"
+                                color={
+                                    didFocusOnDetails && !detailsIsValid
+                                        ? 'red.500'
+                                        : ''
+                                }
+                            >{`${details.length}/800`}</Text>
+                            {didFocusOnDetails && (
+                                <Text
+                                    marginTop="-2rem"
+                                    fontSize="xs"
+                                    color={!detailsIsValid ? 'red.500' : ''}
+                                    marginBottom="0.5rem"
+                                >
+                                    Minimum 250 characters.
+                                </Text>
+                            )}
                         </FormControl>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="red" mr={3} onClick={onClose}>
+                        <Button colorScheme="red" mr={3} onClick={closeHandler}>
                             Close
                         </Button>
                         <Button

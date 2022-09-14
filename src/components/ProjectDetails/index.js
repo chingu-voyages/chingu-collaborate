@@ -24,6 +24,8 @@ function ProjectDetails({ project, isJoinable }) {
 
     const isReported = false
 
+    console.log(project.requestedMembers)
+
     const requestForProject = async () => {
         if (isJoinable) {
             setProjectRequestLoading(true)
@@ -76,6 +78,7 @@ function ProjectDetails({ project, isJoinable }) {
             borderWidth="2px"
             borderRadius="lg"
             width="90%"
+            maxWidth="750px"
             padding="2rem"
             flexDirection="column"
             textAlign="left"
@@ -157,7 +160,7 @@ function ProjectDetails({ project, isJoinable }) {
                     Requested Members
                 </Heading>
                 {project.requestedMembers.length > 0 && (
-                    <AvatarGroup size="md" max={0}>
+                    <AvatarGroup size="md" max={2}>
                         {project.requestedMembers.map((member, index) => {
                             return (
                                 <Avatar
@@ -178,7 +181,7 @@ function ProjectDetails({ project, isJoinable }) {
                     Current Members
                 </Heading>
                 {project.currentMembers.length > 0 && (
-                    <AvatarGroup size="md" max={3}>
+                    <AvatarGroup size="md" max={2}>
                         {project.currentMembers.map((member, index) => {
                             return (
                                 <Avatar

@@ -1,9 +1,7 @@
 .nav {
     background-color: white;
     padding: 1rem 2rem;
-    width: 100vw;
-
-    border-bottom: #e2e8f0 1.5px solid;
+    width: 100%;
     /* Flexbox */
     display: flex;
     justify-content: center;
