@@ -22,6 +22,12 @@ function ProjectDetails({ project, isJoinable }) {
         getRelativeProjectDates(project)
     )
 
+    const requestedMembers = project?.requestedMembers?.map(
+        (member) => member._id
+    )
+    const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
+    console.log(isRequestedMember)
+
     const isReported = false
 
     const requestForProject = async () => {
@@ -104,7 +110,13 @@ function ProjectDetails({ project, isJoinable }) {
                     requestForProject()
                 }}
             >
-                {isJoinable ? 'Request' : 'Requested'}
+                {isRequestedMember ? (
+                    <Text fontSize="xs">Requested</Text>
+                ) : isJoinable ? (
+                    <Text fontSize="xs">Request</Text>
+                ) : (
+                    <Text fontSize="xs">Limit Reached</Text>
+                )}
             </Button>
             <hr />
             <Flex direction="column" marginBottom={4}>

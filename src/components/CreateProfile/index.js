@@ -25,7 +25,7 @@ function CreateProfile() {
     const [emailExists, setEmailExists] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
 
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
