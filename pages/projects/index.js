@@ -101,6 +101,9 @@ export default function Projects({
                     </VStack>
                     {projects.length > 0 && (
                         <VStack
+                            height="100%"
+                            direction="column"
+                            overflow="visible"
                             width="50%"
                             display={['none', 'none', 'flex', 'flex']}
                         >

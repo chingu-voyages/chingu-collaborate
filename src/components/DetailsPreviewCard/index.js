@@ -99,6 +99,8 @@ function DetailsPreviewCard({ info }) {
                 textAlign="left"
                 gap={2}
                 backgroundColor="white"
+                position="sticky"
+                top="20px"
             >
                 <Heading size="md">{info?.title}</Heading>
                 <Flex gap={10}>
@@ -203,6 +205,8 @@ function DetailsPreviewCard({ info }) {
             textAlign="left"
             gap={2}
             backgroundColor="white"
+            position="sticky"
+            top="20px"
         >
             <Heading size="md">{info?.title}</Heading>
 
