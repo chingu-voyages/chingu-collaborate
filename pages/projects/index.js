@@ -16,6 +16,7 @@ import { useEffect, useState } from 'react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
 import { getProjects } from '../../controllers/project'
+import { getNumberOfProjectsRequested } from '../../src/components/util'
 
 export default function Projects({
     projects, //projects concats the order of authenticatedProjects followed by otherProjects
@@ -34,21 +35,10 @@ export default function Projects({
         return
     }
 
-    const otherProjectRequestedMembers = otherProjects.map(
-        (project) => project.requestedMembers
+    const countOfProjectsRequested = getNumberOfProjectsRequested(
+        otherProjects,
+        session
     )
-
-    let countOfProjectsRequested = 0
-
-    for (let i = 0; i < otherProjectRequestedMembers.length; i++) {
-        for (let j = 0; j < otherProjectRequestedMembers[i].length; j++) {
-            if (
-                otherProjectRequestedMembers[i][j]._id === session?.dbUser._id
-            ) {
-                countOfProjectsRequested++
-            }
-        }
-    }
 
     useEffect(() => {
         setSelectedProject(projects[0])
