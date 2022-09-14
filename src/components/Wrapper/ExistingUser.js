@@ -4,7 +4,6 @@ import Navbar from '../Navbar'
 import BannedCard from '../BannedCard'
 
 export default function ExistingUser({ children, isBanned }) {
-    console.log(isBanned, children)
     return (
         <>
             <Header />
