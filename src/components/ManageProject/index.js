@@ -16,6 +16,7 @@ import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
 import { DateTime } from 'luxon'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
+import { deleteProjectIdea } from '../../../controllers/project'
 
 function ManageProject({ project }) {
     const currentDate = DateTime.now()
@@ -33,26 +34,6 @@ function ManageProject({ project }) {
     const numberOfRequestedMembers = project?.requestedMembers?.length
 
     const router = useRouter()
-
-    const deleteProjectIdea = async (id) => {
-        try {
-            const response = await fetch(`/api/projects/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-            })
-
-            if (!response.ok) {
-                throw Error(
-                    'Something went wrong while trying to delete project idea.'
-                )
-            }
-
-            await router.replace('/projects')
-            return router.reload()
-        } catch (error) {
-            console.log('Error while deleting project idea,')
-        }
-    }
 
     return (
         <Flex
@@ -138,7 +119,16 @@ function ManageProject({ project }) {
             } ago.`}</Text>
             <Button
                 colorScheme="red"
-                onClick={() => deleteProjectIdea(project._id)}
+                onClick={async () => {
+                    if ((await deleteProjectIdea(project._id)) == true) {
+                        await router.replace('/projects')
+                        router.reload()
+                    } else {
+                        console.log(
+                            'Something went wrong while trying to delete project idea.'
+                        )
+                    }
+                }}
             >
                 Delete
             </Button>

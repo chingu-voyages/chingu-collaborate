@@ -22,7 +22,7 @@ const userSchema = new Schema({
     location: {
         type: String,
     },
-    githubProfile: String,
+    githubLink: String,
     preferredMethodOfContact: String,
     isBanned: {
         type: Boolean,

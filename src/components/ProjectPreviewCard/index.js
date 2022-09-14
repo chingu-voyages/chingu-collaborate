@@ -19,6 +19,7 @@ import { DateTime } from 'luxon'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { deleteProjectIdea } from '../../../controllers/project'
 
 function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const router = useRouter()
@@ -30,25 +31,6 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const { data: session } = useSession()
 
     const isAdmin = project.admin._id === session.dbUser._id
-
-    const deleteProjectIdea = async (id) => {
-        try {
-            const response = await fetch(`/api/projects/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-            })
-
-            if (!response.ok) {
-                throw Error(
-                    'Something went wrong while trying to delete project idea.'
-                )
-            }
-
-            return router.reload()
-        } catch (error) {
-            console.log('Error while deleting project idea,')
-        }
-    }
 
     const selectedProjectHandler = () => {
         if (externalDetails) {
@@ -99,9 +81,19 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                         <MenuList>
                             {isAdmin ? (
                                 <MenuItem
-                                    onClick={() =>
-                                        deleteProjectIdea(project._id)
-                                    }
+                                    onClick={async () => {
+                                        if (
+                                            (await deleteProjectIdea(
+                                                project._id
+                                            )) == true
+                                        ) {
+                                            router.reload()
+                                        } else {
+                                            console.log(
+                                                'Something went wrong while trying to delete project idea.'
+                                            )
+                                        }
+                                    }}
                                 >
                                     Delete
                                 </MenuItem>

@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { DateTime } from 'luxon'
+import { deleteProjectIdea } from '../../../controllers/project'
 
 function DetailsPreviewCard({ info }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
@@ -77,24 +78,6 @@ function DetailsPreviewCard({ info }) {
                     'Something went wrong while trying to request to join a project.'
                 )
             }
-        }
-    }
-
-    const deleteProjectIdea = async (id) => {
-        try {
-            const response = await fetch(`/api/projects/${id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-            })
-
-            if (!response.ok) {
-                throw Error(
-                    'Something went wrong while trying to delete project idea.'
-                )
-            }
-            return router.reload()
-        } catch (error) {
-            console.log('Error while deleting project idea,')
         }
     }
 
@@ -191,7 +174,15 @@ function DetailsPreviewCard({ info }) {
                     width="fit-content"
                     colorScheme="red"
                     height="30px"
-                    onClick={() => deleteProjectIdea(info._id)}
+                    onClick={async () => {
+                        if ((await deleteProjectIdea(info._id)) == true) {
+                            router.reload()
+                        } else {
+                            console.log(
+                                'Something went wrong while trying to delete project idea.'
+                            )
+                        }
+                    }}
                 >
                     <Text fontSize="xs" padding={0}>
                         Delete
