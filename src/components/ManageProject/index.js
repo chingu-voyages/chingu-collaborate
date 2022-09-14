@@ -10,7 +10,6 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
-    Container,
 } from '@chakra-ui/react'
 import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
 import { DateTime } from 'luxon'
