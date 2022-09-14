@@ -25,7 +25,6 @@ function Navbar() {
     useEffect(() => {
         if (session) {
             setRoutes(authenticatedRoutes)
-            console.log('triggered')
         }
     }, [session])
 
