@@ -8,3 +8,18 @@ export async function getProjects() {
         return err
     }
 }
+
+export async function deleteProjectIdea(id) {
+    try {
+        const response = await fetch(`/api/projects/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        if (!response.ok) {
+            return false
+        }
+        return true
+    } catch (error) {
+        return false
+    }
+}
