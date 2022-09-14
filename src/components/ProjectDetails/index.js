@@ -24,8 +24,6 @@ function ProjectDetails({ project, isJoinable }) {
 
     const isReported = false
 
-    console.log(project.requestedMembers)
-
     const requestForProject = async () => {
         if (isJoinable) {
             setProjectRequestLoading(true)
