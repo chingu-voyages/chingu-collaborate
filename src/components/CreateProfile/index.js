@@ -134,6 +134,7 @@ function CreateProfile() {
             flexDirection="column"
             textAlign="left"
             gap={2}
+            marginTop={10}
         >
             <Heading size="xl">Member</Heading>
             <Text fontSize="xs">

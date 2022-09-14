@@ -67,6 +67,7 @@ function CommunityStandards({ onProceed }) {
             flexDirection="column"
             textAlign="left"
             gap={2}
+            marginTop={10}
         >
             <Heading size="xl">Community Standards</Heading>
             <Text fontSize="sm" fontWeight={500}>
