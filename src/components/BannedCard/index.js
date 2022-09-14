@@ -1,7 +1,6 @@
 import { Flex, Spacer, Heading, Text } from '@chakra-ui/react'
 
-function BannedCard() {
-    const reasonForSuspension = 'Your post included inappropriate words.'
+function BannedCard({ reason }) {
     return (
         <Flex
             borderWidth="3px"
@@ -19,7 +18,7 @@ function BannedCard() {
                 standards.
             </Heading>
             <Spacer />
-            <Text fontSize="lg">{`"${reasonForSuspension}"`}</Text>
+            <Text fontSize="lg">{`"${reason}"`}</Text>
         </Flex>
     )
 }

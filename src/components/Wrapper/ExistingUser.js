@@ -11,7 +11,11 @@ export default function ExistingUser({ children, isBanned }) {
                 <Navbar />
 
                 <section className="content">
-                    {isBanned ? <BannedCard /> : children}
+                    {isBanned.value ? (
+                        <BannedCard reason={isBanned.reason} />
+                    ) : (
+                        children
+                    )}
                 </section>
             </main>
         </>
