@@ -16,7 +16,7 @@ function Wrapper({ children, session, status }) {
     // Loading State
     if (status === 'loading') {
         return (
-            <div>
+            <>
                 <Header />
                 <Flex
                     justify="center"
@@ -41,13 +41,13 @@ function Wrapper({ children, session, status }) {
                         size="xl"
                     />
                 </Flex>
-            </div>
+            </>
         )
     }
 
     if (status === 'unauthenticated') {
         return (
-            <div>
+            <>
                 <Header />
                 <main className="container">
                     <Navbar />
@@ -80,7 +80,7 @@ function Wrapper({ children, session, status }) {
                         </Flex>
                     </section>
                 </main>
-            </div>
+            </>
         )
     }
 
@@ -88,7 +88,7 @@ function Wrapper({ children, session, status }) {
     if (status === 'authenticated' && session.dbUser) {
         const isBanned = session.dbUser.isBanned
         return (
-            <div>
+            <>
                 <Header />
                 <main className="container">
                     <Navbar />
@@ -96,7 +96,7 @@ function Wrapper({ children, session, status }) {
                         {isBanned ? <BannedCard /> : children}
                     </section>
                 </main>
-            </div>
+            </>
         )
     }
 
@@ -106,7 +106,7 @@ function Wrapper({ children, session, status }) {
             setAgreeToRules(true)
         }
         return (
-            <div>
+            <>
                 <Header />
                 <main className="container">
                     <Navbar />
@@ -117,7 +117,7 @@ function Wrapper({ children, session, status }) {
                         {agreeToRules && <CreateProfile />}
                     </section>
                 </main>
-            </div>
+            </>
         )
     }
 }
