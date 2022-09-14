@@ -65,7 +65,7 @@ function Navbar() {
                     })}
                 </Box>
             </Flex>
-            <Divider width="100%" />
+            <Divider width="100vw" minWidth="320px" />
         </>
     )
 }
