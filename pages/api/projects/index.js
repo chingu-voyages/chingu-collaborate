@@ -1,6 +1,7 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import Project from '../../../models/project'
 import { DateTime } from 'luxon'
+import { validateProjectBody } from '../../../utils/validation'
 
 export default async function handler(req, res) {
     const { method } = req
@@ -20,51 +21,20 @@ export default async function handler(req, res) {
             break
         case 'POST':
             const { title, technologies, details, admin, timezone } = req.body
-            if (title == undefined) {
-                return res
-                    .status(400)
-                    .send({ error: 'Title parameter is required' })
-            }
-            if (technologies == undefined) {
-                return res
-                    .status(400)
-                    .send({ error: 'Technologies parameter is required' })
-            }
-            if (details == undefined) {
-                return res
-                    .status(400)
-                    .send({ error: 'Details parameter is required' })
-            }
-            if (typeof title !== 'string') {
-                return res
-                    .status(400)
-                    .send({ error: 'Title parameter should be string' })
-            }
-            if (title.length < 5 || title.length > 51) {
-                return res.status(400).send({
-                    error: 'Title parameter length should be between 5 to 50',
-                })
-            }
-            if (technologies.length < 1) {
-                return res.status(400).send({
-                    error: 'At least one technology should be selected',
-                })
-            }
-            if (details.length < 250 || details.length > 800) {
-                return res.status(400).send({
-                    error: 'Description should be less than 800 characters',
-                })
+            const validationResponse = validateProjectBody(
+                title,
+                technologies,
+                details,
+                admin,
+                timezone
+            )
+
+            if (validationResponse != true) {
+                return res.status(400).send({ error: validationResponse })
             }
             try {
                 const project = new Project(req.body)
-
                 const now = DateTime.now()
-                //this logic is to get proper date format for project.datePosted
-                const datePostedString = now.toLocaleString(
-                    DateTime.DATETIME_MED
-                )
-                project.datePosted = datePostedString
-
                 project.createdAt = now
                 project.expiresIn = now.plus({ week: 1 })
                 project.admin = admin
