@@ -18,12 +18,12 @@ export function validateProjectBody(
     } else if (typeof title !== 'string') {
         return 'Title parameter should be string'
     } else if (title.length < 5 || title.length > 21) {
-        return 'Title parameter length should be between 5 to 20'
+        return 'Title parameter length should be between 5 to 20 characters'
     } else if (technologies.length < 1) {
         return 'At least one technology should be selected'
-    } else if (details.length > 800) {
-        return 'Description should be less than 800 characters'
+    } else if (details.length < 250 || details.length > 800) {
+        return 'Description should be between 250 to 800 characters'
     } else {
-        return ''
+        return true
     }
 }

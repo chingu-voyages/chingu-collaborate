@@ -29,7 +29,7 @@ export default async function handler(req, res) {
                 timezone
             )
 
-            if (validationResponse != '') {
+            if (validationResponse != true) {
                 return res.status(400).send({ error: validationResponse })
             }
             try {
