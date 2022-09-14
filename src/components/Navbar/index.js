@@ -1,4 +1,3 @@
-import styles from './Nav.module.css'
 import NextLink from 'next/link'
 import Image from 'next/image'
 import logo from './ChinguCollaborateLogo.png'
@@ -32,52 +31,48 @@ function Navbar() {
 
     return (
         <>
-            <nav className={styles.nav}>
-                <Flex
-                    width="100%"
-                    maxWidth="1400px"
-                    justify="space-between"
-                    align="center"
+            <Flex
+                backgroundColor="white"
+                padding="1rem 2rem"
+                width="100%"
+                maxWidth="1400px"
+                justify="space-between"
+                align="center"
+            >
+                <Box>
+                    <Image
+                        src={logo}
+                        alt="Chingu Collaborate Logo"
+                        width="142px"
+                        height="48px"
+                    />
+                </Box>
+                {/* Smaller Screens */}
+                <Box display={['flex', 'flex', 'none', 'none']}>
+                    <HamburgerMenu routes={routes} />
+                </Box>
+                {/* Larger Screens */}
+                <Box
+                    display={['none', 'none', 'flex', 'flex']}
+                    gap={2}
+                    fontSize="1rem"
                 >
-                    <Box>
-                        <Image
-                            src={logo}
-                            alt="Chingu Collaborate Logo"
-                            width="142px"
-                            height="48px"
-                        />
-                    </Box>
-                    {/* Smaller Screens */}
-                    <Box display={['flex', 'flex', 'none', 'none']}>
-                        <HamburgerMenu routes={routes} />
-                    </Box>
-                    {/* Larger Screens */}
-                    <Box
-                        display={['none', 'none', 'flex', 'flex']}
-                        gap={2}
-                        fontSize="1rem"
-                    >
-                        {routes.map((route, index) => {
-                            return (
-                                <NextLink
-                                    key={index}
-                                    href={route.route}
-                                    passHref
+                    {routes.map((route, index) => {
+                        return (
+                            <NextLink key={index} href={route.route} passHref>
+                                <Link
+                                    onClick={
+                                        route.name == 'Sign Out' && signOut
+                                    }
                                 >
-                                    <Link
-                                        onClick={
-                                            route.name == 'Sign Out' && signOut
-                                        }
-                                    >
-                                        {route.name}
-                                    </Link>
-                                </NextLink>
-                            )
-                        })}
-                    </Box>
-                </Flex>
-            </nav>
-            <Divider width="100vw" />
+                                    {route.name}
+                                </Link>
+                            </NextLink>
+                        )
+                    })}
+                </Box>
+            </Flex>
+            <Divider width="100%" />
         </>
     )
 }

@@ -92,6 +92,7 @@ function Wrapper({ children, session, status }) {
                 <Header />
                 <main className="container">
                     <Navbar />
+
                     <section className="content">
                         {isBanned ? <BannedCard /> : children}
                     </section>
