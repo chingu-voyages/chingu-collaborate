@@ -57,10 +57,11 @@ export default function Projects({
         <AuthWrapper session={session} status={status}>
             <Flex direction="column" width="100%" alignItems="center">
                 <LimitsOverview
-                    projectsCreated={session?.dbUser?.projectsCreated.length}
-                    projectsRequested={
-                        session?.dbUser?.projectsRequested.length
-                    }
+                // These field deleted from backend for user model. Update this feature using project api
+                // projectsCreated={session?.dbUser?.projectsCreated.length}
+                // projectsRequested={
+                //     session?.dbUser?.projectsRequested.length
+                // }
                 />
                 <ProjectActions
                     reachedMaximumPostedProjects={

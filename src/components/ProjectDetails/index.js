@@ -32,9 +32,6 @@ function ProjectDetails({ project, isJoinable }) {
             const formDataProject = {
                 requestedMembers: session.dbUser._id,
             }
-            const formDataUser = {
-                projectsRequested: project._id,
-            }
 
             try {
                 const updateRequestedMembers = await fetch(
@@ -50,18 +47,6 @@ function ProjectDetails({ project, isJoinable }) {
                     throw Error('Unable to update requestedMembers')
                 }
 
-                const updateProjectsRequested = await fetch(
-                    `/api/user/${session.dbUser._id}`,
-                    {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formDataUser),
-                    }
-                )
-
-                if (updateProjectsRequested.status !== 200) {
-                    throw Error('Unable to update projectsRequested')
-                }
                 console.log('Successfully requested to join project!')
                 router.reload()
             } catch (error) {

@@ -53,9 +53,6 @@ function DetailsPreviewCard({ info }) {
             const formDataProject = {
                 requestedMembers: session?.dbUser?._id,
             }
-            const formDataUser = {
-                projectsRequested: info?._id,
-            }
 
             try {
                 const updateRequestedMembers = await fetch(
@@ -71,18 +68,6 @@ function DetailsPreviewCard({ info }) {
                     throw Error('Unable to update requestedMembers')
                 }
 
-                const updateProjectsRequested = await fetch(
-                    `/api/user/${session.dbUser._id}`,
-                    {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formDataUser),
-                    }
-                )
-
-                if (updateProjectsRequested.status !== 200) {
-                    throw Error('Unable to update projectsRequested')
-                }
                 console.log('Successfully requested to join project!')
                 router.reload()
             } catch (error) {
@@ -96,37 +81,17 @@ function DetailsPreviewCard({ info }) {
     }
 
     const deleteProjectIdea = async (id) => {
-        const patchUserData = [
-            {
-                projectsCreated: id,
-            },
-            {
-                projectsRequested: id,
-            },
-            {
-                projectsJoined: id,
-            },
-        ]
         try {
             const response = await fetch(`/api/projects/${id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             })
 
-            for (let patch of patchUserData) {
-                await fetch(`/api/user/`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(patch),
-                })
-            }
-
             if (!response.ok) {
                 throw Error(
                     'Something went wrong while trying to delete project idea.'
                 )
             }
-            const data = await response.json()
             return router.reload()
         } catch (error) {
             console.log('Error while deleting project idea,')

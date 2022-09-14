@@ -101,21 +101,12 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
         }
 
         try {
-            const response = await fetch('/api/projects', {
+            await fetch('/api/projects', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             })
-            const data = await response.json()
 
-            const userUpdateBody = {
-                projectsCreated: data._id,
-            }
-            await fetch(`/api/user/${user_id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userUpdateBody),
-            })
             return router.reload()
         } catch (error) {
             setIsLoading(false)
