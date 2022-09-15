@@ -59,24 +59,56 @@ export default function Projects({
                     }
                 />
             </Flex>
-            <Flex
-                width="100vw"
-                minWidth="320px"
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-                backgroundColor="#fafafa"
-            >
-                <Flex
-                    maxWidth="1400px"
-                    width="100%"
-                    padding="2rem 2rem 0rem 2rem"
-                    marginBottom={-4}
-                >
-                    <Text fontSize="xs">{`${projects.length} projects posted.`}</Text>
-                </Flex>
-                <Flex maxWidth="1400px" width="100%">
-                    <HStack width="100%" align="flex-start" padding="2rem">
+            <Divider width="100vw" marginBottom={8} />
+            <Flex width="100%" paddingLeft="2rem" marginBottom={-8}>
+                <Text fontSize="xs">{`${projects.length} projects posted.`}</Text>
+            </Flex>
+            <Flex maxWidth="1400px" width="100%">
+                <HStack width="100%" align="flex-start" padding="2rem">
+                    <VStack
+                        marginTop={4}
+                        spacing={4}
+                        width={['100%', '100%', '50%', '50%']}
+                        align={isLargerThan768 ? 'flex-start' : 'center'}
+                    >
+                        {/* Filter logged in user's  */}
+                        {authenticatedProjects.map((project) => {
+                            return (
+                                <ProjectPreviewCard
+                                    onClick={() =>
+                                        selectedProjectHandler(project)
+                                    }
+                                    externalDetails={!isLargerThan768}
+                                    key={project._id}
+                                    project={project}
+                                    isSelected={
+                                        project._id == selectedProject._id
+                                            ? true
+                                            : false
+                                    }
+                                />
+                            )
+                        })}
+                        {/* List all other projects */}
+                        {otherProjects.map((project) => {
+                            return (
+                                <ProjectPreviewCard
+                                    onClick={() =>
+                                        selectedProjectHandler(project)
+                                    }
+                                    externalDetails={!isLargerThan768}
+                                    key={project._id}
+                                    project={project}
+                                    isSelected={
+                                        project._id == selectedProject._id
+                                            ? true
+                                            : false
+                                    }
+                                />
+                            )
+                        })}
+                    </VStack>
+                    {projects.length > 0 && (
                         <VStack
                             marginTop={4}
                             spacing={4}
