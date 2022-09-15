@@ -18,17 +18,41 @@ export default async function handler(req, res) {
             }
             break
         case 'PATCH':
-            console.log(req.body)
+            const { user_id, requestType } = req.body
+            const { id } = req.query
             const options = {
                 new: true, // THis option is to return updated in same update request
             }
             try {
-                const project = await Project.findByIdAndUpdate(
-                    req.query.id,
-                    { $push: req.body },
-                    options
-                )
-                return res.status(200).json(project)
+                if (requestType == 'requestForProject') {
+                    const project = await Project.findByIdAndUpdate(
+                        id,
+                        { $push: { requestedMembers: user_id } },
+                        options
+                    )
+                    return res.status(200).json(project)
+                } else if (requestType == 'rejectProject') {
+                    const project = await Project.findByIdAndUpdate(
+                        id,
+                        { $pull: { requestedMembers: user_id } },
+                        options
+                    )
+                    return res.status(200).json(project)
+                } else if (requestType == 'approveProject') {
+                    await Project.findByIdAndUpdate(
+                        id,
+                        { $pull: { requestedMembers: user_id } },
+                        options
+                    )
+                    const project = await Project.findByIdAndUpdate(
+                        id,
+                        { $push: { currentMembers: user_id } },
+                        options
+                    )
+                    return res.status(200).json(project)
+                } else {
+                    return res.status(400).json('requestType is invalid')
+                }
             } catch (err) {
                 return res.status(500).json(err)
             }
