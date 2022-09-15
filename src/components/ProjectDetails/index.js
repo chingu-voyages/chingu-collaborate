@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
-import { patchProject } from '../../../controllers/project'
+import { patchProject } from '../../controllers/project'
 
 function ProjectDetails({ project, isJoinable }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)

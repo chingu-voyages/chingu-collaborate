@@ -1,10 +1,10 @@
-import ManageProject from '../../src/components/ManageProject'
-import ProjectDetails from '../../src/components/ProjectDetails'
+import ManageProject from '../../components/ManageProject'
+import ProjectDetails from '../../components/ProjectDetails'
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from 'next-auth'
-import Wrapper from '../../src/components/Wrapper'
-import { getNumberOfProjectsRequested } from '../../src/components/util.js'
+import Wrapper from '../../components/Wrapper'
+import { getNumberOfProjectsRequested } from '../../components/util.js'
 
 export default function Project({ details, projects, isRequestedMember }) {
     const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
