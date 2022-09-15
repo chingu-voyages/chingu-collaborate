@@ -25,7 +25,7 @@ function CreateProfile() {
     const [emailExists, setEmailExists] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
 
     const inputMarginBottom = '1rem'
     const labelMarginBottom = '0'
@@ -134,6 +134,7 @@ function CreateProfile() {
             flexDirection="column"
             textAlign="left"
             gap={2}
+            marginTop={10}
         >
             <Heading size="xl">Member</Heading>
             <Text fontSize="xs">

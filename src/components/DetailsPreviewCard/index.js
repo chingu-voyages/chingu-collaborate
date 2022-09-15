@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react'
+import useSWR from 'swr'
 import { useState } from 'react'
 import {
     Flex,
@@ -18,9 +19,12 @@ import {
 import { useRouter } from 'next/router'
 import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
-import { DateTime } from 'luxon'
 import { deleteProjectIdea } from '../../../controllers/project'
-import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
+import {
+    getNumberOfProjectsRequested,
+    getRelativeProjectDates,
+    formatRelativeProjectDates,
+} from '../util.js'
 
 function DetailsPreviewCard({ info }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
@@ -33,9 +37,7 @@ function DetailsPreviewCard({ info }) {
     const requestedMembers = info?.requestedMembers?.map((member) => member._id)
     const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
 
-    const JOINLIMIT = 5
-    const projectsJoined = 1 // Add logic
-    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
+    const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
 
     const { expiresMessage, createdMessage } = formatRelativeProjectDates(
         getRelativeProjectDates(info)
@@ -74,6 +76,17 @@ function DetailsPreviewCard({ info }) {
         }
     }
 
+    const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
+    const { data, error } = useSWR(
+        'http://localhost:3000/api/projects',
+        fetcher
+    )
+
+    const projectsJoined = getNumberOfProjectsRequested(data, session)
+
+    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
+
     if (isAdmin) {
         const numberOfRequestedMembers = info?.requestedMembers?.length
         return (
@@ -86,6 +99,8 @@ function DetailsPreviewCard({ info }) {
                 textAlign="left"
                 gap={2}
                 backgroundColor="white"
+                position="sticky"
+                top="20px"
             >
                 <Heading size="md">{info?.title}</Heading>
                 <Flex gap={10}>
@@ -190,6 +205,8 @@ function DetailsPreviewCard({ info }) {
             textAlign="left"
             gap={2}
             backgroundColor="white"
+            position="sticky"
+            top="20px"
         >
             <Heading size="md">{info?.title}</Heading>
 
@@ -224,10 +241,12 @@ function DetailsPreviewCard({ info }) {
                     requestForProject()
                 }}
             >
-                {isJoinable ? (
+                {isRequestedMember ? (
+                    <Text fontSize="xs">Requested</Text>
+                ) : isJoinable ? (
                     <Text fontSize="xs">Request</Text>
                 ) : (
-                    <Text fontSize="xs">Requested</Text>
+                    <Text fontSize="xs">Limit Reached</Text>
                 )}
             </Button>
             <hr />

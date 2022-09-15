@@ -1,11 +1,4 @@
-import {
-    Flex,
-    InputGroup,
-    Input,
-    InputLeftElement,
-    Button,
-    Text,
-} from '@chakra-ui/react'
+import { Flex, InputGroup, Input, InputLeftElement } from '@chakra-ui/react'
 import { BiSearch } from 'react-icons/bi'
 import AddProjectModal from '../AddProjectModal'
 

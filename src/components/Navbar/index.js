@@ -6,19 +6,14 @@ import { Flex, Box, Link, Divider } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 function Navbar() {
-    const nonAuthenticatedRoutes = [
-        // { name: 'Home', route: '/' },
-        // { name: 'Sign In', route: '/signin' },
-    ]
+    const nonAuthenticatedRoutes = []
 
     const authenticatedRoutes = [
         { name: 'Projects', route: '/projects' },
-        // { name: 'Profile', route: '/profile' },
         { name: 'Sign Out', route: '/' },
     ]
 
     const { data: session, status } = useSession()
-    const loading = status === 'loading'
     const [routes, setRoutes] = useState(nonAuthenticatedRoutes)
 
     useEffect(() => {
@@ -26,8 +21,6 @@ function Navbar() {
             setRoutes(authenticatedRoutes)
         }
     }, [session])
-
-    // let routes = isAuthenticated ? authenticatedRoutes : nonAuthenticatedRoutes
 
     return (
         <>
@@ -72,7 +65,7 @@ function Navbar() {
                     })}
                 </Box>
             </Flex>
-            <Divider width="100%" />
+            <Divider width="100vw" minWidth="320px" />
         </>
     )
 }

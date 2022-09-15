@@ -1,9 +1,9 @@
-import { Box, Flex, Heading, Text, Tooltip } from '@chakra-ui/react'
+import { Flex, Heading, Text, Tooltip } from '@chakra-ui/react'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 
 function LimitsOverview({ projectsCreated, projectsRequested }) {
-    const CREATELIMIT = 1
-    const REQUESTLIMIT = 5
+    const CREATELIMIT = process.env.NEXT_PUBLIC_POSTLIMIT
+    const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
 
     return (
         <Flex
@@ -51,14 +51,14 @@ function LimitsOverview({ projectsCreated, projectsRequested }) {
                 <Flex gap={2} align="center">
                     <Heading
                         color={
-                            projectsRequested < REQUESTLIMIT
+                            projectsRequested < JOINLIMIT
                                 ? 'gray.700'
                                 : 'red.700'
                         }
-                    >{`${projectsRequested}/${REQUESTLIMIT}`}</Heading>
+                    >{`${projectsRequested}/${JOINLIMIT}`}</Heading>
                     <Text
                         color={
-                            projectsRequested < REQUESTLIMIT
+                            projectsRequested < JOINLIMIT
                                 ? 'gray.700'
                                 : 'red.700'
                         }
