@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
+import { patchProject } from '../../../controllers/project'
 
 function ProjectDetails({ project, isJoinable }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
@@ -34,26 +35,14 @@ function ProjectDetails({ project, isJoinable }) {
         if (isJoinable) {
             setProjectRequestLoading(true)
             const formDataProject = {
-                requestedMembers: session.dbUser._id,
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
             }
 
-            try {
-                const updateRequestedMembers = await fetch(
-                    `/api/projects/${project._id}`,
-                    {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formDataProject),
-                    }
-                )
-
-                if (updateRequestedMembers.status !== 200) {
-                    throw Error('Unable to update requestedMembers')
-                }
-
-                console.log('Successfully requested to join project!')
+            const response = await patchProject(project._id, formDataProject)
+            if (response == true) {
                 router.reload()
-            } catch (error) {
+            } else {
                 setProjectRequestLoading(false)
                 console.log(
                     'Something went wrong while trying to request to join a project.'
