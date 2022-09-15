@@ -1,4 +1,4 @@
-import NewUser from './newUser'
+import NewUser from './NewUser'
 import ExistingUser from './ExistingUser'
 import UnauthenticatedUser from './UnauthenticatedUser'
 import Loading from './Loading'
