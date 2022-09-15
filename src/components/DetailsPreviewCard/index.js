@@ -19,7 +19,10 @@ import {
 import { useRouter } from 'next/router'
 import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
-import { deleteProjectIdea } from '../../../controllers/project'
+import {
+    deleteProjectIdea,
+    pushPatchProject,
+} from '../../../controllers/project'
 import {
     getNumberOfProjectsRequested,
     getRelativeProjectDates,
@@ -50,25 +53,11 @@ function DetailsPreviewCard({ info }) {
                 requestedMembers: session?.dbUser?._id,
             }
 
-            try {
-                const updateRequestedMembers = await fetch(
-                    `/api/projects/${info._id}`,
-                    {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formDataProject),
-                    }
-                )
-
-                if (updateRequestedMembers.status !== 200) {
-                    throw Error('Unable to update requestedMembers')
-                }
-
-                console.log('Successfully requested to join project!')
+            const response = await pushPatchProject(info._id, formDataProject)
+            if (response == true) {
                 router.reload()
-            } catch (error) {
+            } else {
                 setProjectRequestLoading(false)
-                console.log(error)
                 console.log(
                     'Something went wrong while trying to request to join a project.'
                 )
