@@ -19,10 +19,7 @@ import {
 import { useRouter } from 'next/router'
 import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
-import {
-    deleteProjectIdea,
-    pushPatchProject,
-} from '../../../controllers/project'
+import { deleteProjectIdea, patchProject } from '../../../controllers/project'
 import {
     getNumberOfProjectsRequested,
     getRelativeProjectDates,
@@ -50,10 +47,11 @@ function DetailsPreviewCard({ info }) {
         if (isJoinable) {
             setProjectRequestLoading(true)
             const formDataProject = {
-                requestedMembers: session?.dbUser?._id,
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
             }
 
-            const response = await pushPatchProject(info._id, formDataProject)
+            const response = await patchProject(info._id, formDataProject)
             if (response == true) {
                 router.reload()
             } else {

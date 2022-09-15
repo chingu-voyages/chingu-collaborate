@@ -24,7 +24,7 @@ export async function deleteProjectIdea(id) {
     }
 }
 
-export async function pushPatchProject(id, formDataProject) {
+export async function patchProject(id, formDataProject) {
     try {
         const response = await fetch(`/api/projects/${id}`, {
             method: 'PATCH',

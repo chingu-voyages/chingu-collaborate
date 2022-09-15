@@ -11,7 +11,7 @@ import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
-import { pushPatchProject } from '../../../controllers/project'
+import { patchProject } from '../../../controllers/project'
 
 function ProjectDetails({ project, isJoinable }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
@@ -35,13 +35,11 @@ function ProjectDetails({ project, isJoinable }) {
         if (isJoinable) {
             setProjectRequestLoading(true)
             const formDataProject = {
-                requestedMembers: session?.dbUser?._id,
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
             }
 
-            const response = await pushPatchProject(
-                project._id,
-                formDataProject
-            )
+            const response = await patchProject(project._id, formDataProject)
             if (response == true) {
                 router.reload()
             } else {
