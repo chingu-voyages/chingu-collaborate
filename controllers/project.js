@@ -23,3 +23,22 @@ export async function deleteProjectIdea(id) {
         return false
     }
 }
+
+export async function pushPatchProject(id, formDataProject) {
+    try {
+        const response = await fetch(`/api/projects/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formDataProject),
+        })
+
+        console.log(response)
+
+        if (!response.ok) {
+            return false
+        }
+        return true
+    } catch (error) {
+        return false
+    }
+}
