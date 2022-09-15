@@ -19,7 +19,7 @@ import {
 import { useRouter } from 'next/router'
 import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
-import { deleteProjectIdea, patchProject } from '../../../controllers/project'
+import { deleteProjectIdea, patchProject } from '../../controllers/project'
 import {
     getNumberOfProjectsRequested,
     getRelativeProjectDates,

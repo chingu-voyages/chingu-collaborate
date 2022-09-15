@@ -14,7 +14,7 @@ import {
 import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
-import { deleteProjectIdea } from '../../../controllers/project'
+import { deleteProjectIdea } from '../../controllers/project'
 import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 
 function ManageProject({ project }) {

@@ -17,7 +17,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiUser, BiTimeFive } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import { deleteProjectIdea } from '../../../controllers/project'
+import { deleteProjectIdea } from '../../controllers/project'
 
 function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const router = useRouter()
