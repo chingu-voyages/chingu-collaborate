@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import Wrapper from '../src/components/Wrapper'
+import Wrapper from '../components/Wrapper'
 import { Heading, Progress, Stack } from '@chakra-ui/react'
 
 export default function Home() {
