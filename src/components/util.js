@@ -1,5 +1,19 @@
 import { DateTime } from 'luxon'
 
+export function range(start, end, step = start < end ? 1 : -1) {
+    let arr = []
+    if (step > 0) {
+        for (let i = start; i <= end; i += step) {
+            arr.push(i)
+        }
+        return arr
+    }
+    for (let i = start; i >= end; i += step) {
+        arr.push(i)
+    }
+    return arr
+}
+
 export function getNumberOfProjectsRequested(projects, session) {
     const requestedMembers = projects?.map(
         (project) => project?.requestedMembers
