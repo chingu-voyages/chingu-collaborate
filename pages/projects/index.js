@@ -110,61 +110,16 @@ export default function Projects({
                     </VStack>
                     {projects.length > 0 && (
                         <VStack
-                            marginTop={4}
-                            spacing={4}
-                            width={['100%', '100%', '50%', '50%']}
-                            align={isLargerThan768 ? 'flex-start' : 'center'}
+                            height="100%"
+                            direction="column"
+                            overflow="visible"
+                            width="50%"
+                            display={['none', 'none', 'flex', 'flex']}
                         >
-                            {/* Filter logged in user's  */}
-                            {authenticatedProjects.map((project) => {
-                                return (
-                                    <ProjectPreviewCard
-                                        onClick={() =>
-                                            selectedProjectHandler(project)
-                                        }
-                                        externalDetails={!isLargerThan768}
-                                        key={project._id}
-                                        project={project}
-                                        isSelected={
-                                            project._id == selectedProject._id
-                                                ? true
-                                                : false
-                                        }
-                                    />
-                                )
-                            })}
-                            {/* List all other projects */}
-                            {otherProjects.map((project) => {
-                                return (
-                                    <ProjectPreviewCard
-                                        onClick={() =>
-                                            selectedProjectHandler(project)
-                                        }
-                                        externalDetails={!isLargerThan768}
-                                        key={project._id}
-                                        project={project}
-                                        isSelected={
-                                            project._id == selectedProject._id
-                                                ? true
-                                                : false
-                                        }
-                                    />
-                                )
-                            })}
+                            <DetailsPreviewCard info={selectedProject} />
                         </VStack>
-                        {projects.length > 0 && (
-                            <VStack
-                                height="100%"
-                                direction="column"
-                                overflow="visible"
-                                width="50%"
-                                display={['none', 'none', 'flex', 'flex']}
-                            >
-                                <DetailsPreviewCard info={selectedProject} />
-                            </VStack>
-                        )}
-                    </HStack>
-                </Flex>
+                    )}
+                </HStack>
             </Flex>
         </Wrapper>
     )
