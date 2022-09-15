@@ -31,7 +31,10 @@ export default async function handler(req, res) {
                         options
                     )
                     return res.status(200).json(project)
-                } else if (requestType == 'rejectProject') {
+                } else if (
+                    requestType == 'rejectProject' ||
+                    requestType == 'withdrawFromProject'
+                ) {
                     const project = await Project.findByIdAndUpdate(
                         id,
                         { $pull: { requestedMembers: user_id } },
