@@ -275,7 +275,7 @@ function DetailsPreviewCard({ info }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
@@ -296,7 +296,7 @@ function DetailsPreviewCard({ info }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}

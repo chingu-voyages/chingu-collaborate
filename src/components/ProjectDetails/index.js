@@ -148,7 +148,7 @@ function ProjectDetails({ project, isJoinable }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
@@ -169,7 +169,7 @@ function ProjectDetails({ project, isJoinable }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
