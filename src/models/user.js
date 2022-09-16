@@ -24,6 +24,7 @@ const userSchema = new Schema({
     },
     githubLink: String,
     preferredMethodOfContact: String,
+    discordAvatarUrl: String,
     isBanned: {
         value: { type: Boolean },
         reason: { type: String },

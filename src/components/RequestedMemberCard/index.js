@@ -12,7 +12,7 @@ function RequestedMemberCard({ info }) {
             gap={1}
         >
             <Flex gap={5} align="center">
-                <Avatar name={info.username} src={info?.imageUrl} />
+                <Avatar name={info.username} src={info?.discordAvatarUrl} />
                 <Flex direction="column">
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Username:</Heading>

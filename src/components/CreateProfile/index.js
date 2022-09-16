@@ -78,6 +78,7 @@ function CreateProfile() {
     const formSubmit = async () => {
         let formData = {
             authenticatedDiscordId: session.userId,
+            discordAvatarUrl: session.user.image,
             username,
             location,
             email,

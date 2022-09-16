@@ -17,7 +17,7 @@ import {
     AccordionIcon,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { BiUser, BiHourglass, BiTimeFive } from 'react-icons/bi'
+import { BiHourglass, BiTimeFive } from 'react-icons/bi'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { deleteProjectIdea, patchProject } from '../../controllers/project'
 import {
@@ -92,7 +92,11 @@ function DetailsPreviewCard({ info }) {
                 <Heading size="md">{info?.title}</Heading>
                 <Flex gap={10}>
                     <Flex align="center" gap={1}>
-                        <BiUser />
+                        <Avatar
+                            size="xs"
+                            name={info?.admin?.username}
+                            src={info?.admin?.discordAvatarUrl}
+                        />
                         <Heading size="xs" fontWeight={500}>
                             {info?.admin?.username}
                         </Heading>
@@ -199,7 +203,11 @@ function DetailsPreviewCard({ info }) {
 
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
-                    <BiUser />
+                    <Avatar
+                        size="xs"
+                        name={info?.admin?.username}
+                        src={info?.admin?.discordAvatarUrl}
+                    />
                     <Heading size="xs" fontWeight={500}>
                         {info?.admin?.username}
                     </Heading>
@@ -275,7 +283,7 @@ function DetailsPreviewCard({ info }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
@@ -296,7 +304,7 @@ function DetailsPreviewCard({ info }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}

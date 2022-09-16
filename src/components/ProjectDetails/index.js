@@ -6,7 +6,7 @@ import {
     AvatarGroup,
     Button,
 } from '@chakra-ui/react'
-import { BiUser, BiTimeFive, BiHourglass } from 'react-icons/bi'
+import { BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -68,7 +68,11 @@ function ProjectDetails({ project, isJoinable }) {
             </Flex>
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
-                    <BiUser />
+                    <Avatar
+                        size="xs"
+                        name={project?.admin?.username}
+                        src={project?.admin?.discordAvatarUrl}
+                    />
                     <Heading
                         size="sm"
                         fontWeight={500}
@@ -148,7 +152,7 @@ function ProjectDetails({ project, isJoinable }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
@@ -169,7 +173,7 @@ function ProjectDetails({ project, isJoinable }) {
                                 <Avatar
                                     key={index}
                                     name={member.username}
-                                    src={member?.imageUrl}
+                                    src={member?.discordAvatarUrl}
                                 />
                             )
                         })}
