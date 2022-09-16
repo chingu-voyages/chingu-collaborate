@@ -25,6 +25,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     const { data: session } = useSession()
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [projectTitleExists, setProjectTitleExists] = useState(false)
 
     const options = [
         { value: 'JavaScript', label: 'JavaScript', colorScheme: 'yellow' },
@@ -80,6 +81,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
         setDidFocusOnTechnologies(false)
         setDidFocusOnTimezone(false)
         setDidFocusOnDetails(false)
+        setProjectTitleExists(false)
         setIsLoading(false)
     }
 
@@ -89,6 +91,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
     }
 
     const formSubmit = async () => {
+        setProjectTitleExists(false)
         setIsLoading(true)
         const user_id = session.dbUser._id
 
@@ -101,13 +104,23 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
         }
 
         try {
-            await fetch('/api/projects', {
+            const response = await fetch('/api/projects', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             })
 
-            return router.reload()
+            const data = await response.json()
+            if (response.status == '200') {
+                return router.reload()
+            }
+
+            if (response.status == '400') {
+                if (data.error === 'Project Title is already taken') {
+                    setProjectTitleExists(true)
+                }
+            }
+            setIsLoading(false)
         } catch (error) {
             setIsLoading(false)
             console.log(
@@ -143,7 +156,10 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 Title
                             </FormLabel>
                             <Input
-                                isInvalid={didFocusOnTitle && !titleIsValid}
+                                isInvalid={
+                                    (didFocusOnTitle && !titleIsValid) ||
+                                    projectTitleExists
+                                }
                                 isRequired
                                 onFocus={() => {
                                     setDidFocusOnTitle(true)
@@ -154,6 +170,16 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                                 type="text"
                                 marginBottom={inputMarginBottom}
                             />
+                            {projectTitleExists && (
+                                <Text
+                                    marginTop="-0.75rem"
+                                    color="red.500"
+                                    fontSize="xs"
+                                    marginBottom="0.5rem"
+                                >
+                                    Project already exists.
+                                </Text>
+                            )}
                             {didFocusOnTitle && (
                                 <Text
                                     marginTop="-0.75rem"
