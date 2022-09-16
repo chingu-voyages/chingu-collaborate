@@ -7,21 +7,16 @@ export default async function handler(req, res) {
     connectToDatabase()
 
     switch (method) {
-        case 'GET':
-            try {
-                if (Object.keys(req.query).length !== 0) {
-                    const users = await User.find({
-                        authenticatedDiscordId:
-                            req.query.authenticatedDiscordId,
-                    })
-                    return res.status(200).json(users)
-                }
-                const users = await User.find()
-                return res.status(200).json(users)
-            } catch (err) {
-                return res.status(500).json({ message: 'Users Not found' })
-            }
-            break
+        // GET all users method is currently not in USE. It may require in future to give access to Chingu admin
+        // Make sure to protect this route before using this
+        // case 'GET':
+        //     try {
+        //         const users = await User.find()
+        //         return res.status(200).json(users)
+        //     } catch (err) {
+        //         return res.status(500).json({ message: 'Users Not found' })
+        //     }
+        //     break
         case 'POST':
             const {
                 username,
