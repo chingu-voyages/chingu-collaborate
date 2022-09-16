@@ -126,7 +126,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                     reachedMaximumPostedProjects ? 'not-allowed' : 'pointer'
                 }
             >
-                <Text fontSize="xl">Add Project Idea</Text>
+                <Text fontSize="md">Add Project Idea</Text>
             </Button>
 
             <Modal
