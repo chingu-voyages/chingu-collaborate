@@ -63,15 +63,28 @@ export function formatRelativeProjectDates({
     // Expiration
     if (expiry?.days > 0) {
         const daysTill = Math.floor(Math.abs(expiry?.days))
-        expiresMessage = `Expires in ${daysTill} days`
+        if (expiry?.days == 1) {
+            expiresMessage = `Expires in ${daysTill} day`
+        }
+
+        if (expiry?.days > 1) {
+            expiresMessage = `Expires in ${daysTill} days`
+        }
     } else {
         if (expiry?.hours === 0) {
             const minutesTill = Math.floor(Math.abs(expiry?.minutes))
-            expiresMessage = `Expires in ${minutesTill} minutes`
+            if (expiry?.minutes <= 1) {
+                expiresMessage = `Expires in ${minutesTill} minute`
+            }
+            if (expiry?.minutes > 1) {
+                expiresMessage = `Expires in ${minutesTill} minutes`
+            }
         } else {
             const hoursTill = Math.floor(Math.abs(expiry?.hours))
             const minutesTill = Math.floor(Math.abs(expiry?.minutes))
-            expiresMessage = `Expires in ${hoursTill} hours and ${minutesTill} minutes`
+            expiresMessage = `Expires in ${hoursTill} ${
+                hoursTill == 1 ? 'hour' : 'hours'
+            } and ${minutesTill} ${minutesTill == 1 ? 'minute' : 'minutes'}`
         }
     }
 
