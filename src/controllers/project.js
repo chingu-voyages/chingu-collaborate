@@ -1,4 +1,4 @@
-export async function getProjects(context, searchQuery) {
+export async function getProjects(cookie, searchQuery = '') {
     try {
         let apiEndpoint
         if (searchQuery == '') {
@@ -10,7 +10,7 @@ export async function getProjects(context, searchQuery) {
         const response = await fetch(apiEndpoint, {
             method: 'GET',
             headers: {
-                Cookie: context.req.headers.cookie,
+                Cookie: cookie,
             },
         })
         return await response.json()

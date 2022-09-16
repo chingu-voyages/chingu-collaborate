@@ -24,6 +24,7 @@ export default function Projects({
     projects, //projects concats the order of authenticatedProjects followed by otherProjects
     authenticatedProjects,
     otherProjects,
+    cookie,
 }) {
     const CREATELIMIT = process.env.NEXT_PUBLIC_POSTLIMIT
     const [selectedProject, setSelectedProject] = useState({})
@@ -46,10 +47,10 @@ export default function Projects({
         session
     )
 
-    const searchHandler = (value) => {
+    const searchHandler = async (value) => {
         if (value !== '') {
-            // Add logic connecting to backend
-            setFilteredProjects(projects.slice(1, 10))
+            const projects = await getProjects(cookie, value)
+            setFilteredProjects(projects)
         } else {
             //reset state
             setFilteredProjects([])
@@ -259,9 +260,8 @@ export const getServerSideProps = async (context) => {
     )
 
     const adminId = session?.dbUser?._id.toString()
-
     try {
-        const data = await getProjects(context, '')
+        const data = await getProjects(context.req.headers.cookie)
 
         const authenticatedProjects = data.filter(
             (project) => project.admin._id === adminId
@@ -272,7 +272,12 @@ export const getServerSideProps = async (context) => {
 
         const projects = authenticatedProjects.concat(otherProjects)
         return {
-            props: { projects, authenticatedProjects, otherProjects },
+            props: {
+                projects,
+                authenticatedProjects,
+                otherProjects,
+                cookie: context.req.headers.cookie,
+            },
         }
     } catch (error) {
         return {
