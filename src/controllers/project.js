@@ -1,6 +1,13 @@
-export async function getProjects(context) {
+export async function getProjects(context, searchQuery) {
     try {
-        const response = await fetch('http://localhost:3000/api/projects', {
+        let apiEndpoint
+        if (searchQuery == '') {
+            apiEndpoint = `http://localhost:3000/api/projects`
+        } else {
+            apiEndpoint = `http://localhost:3000/api/projects?title=${searchQuery}`
+        }
+
+        const response = await fetch(apiEndpoint, {
             method: 'GET',
             headers: {
                 Cookie: context.req.headers.cookie,
