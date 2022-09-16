@@ -8,9 +8,6 @@ export function range(start, end, step = start < end ? 1 : -1) {
         }
         return arr
     }
-    for (let i = start; i >= end; i += step) {
-        arr.push(i)
-    }
     return arr
 }
 
