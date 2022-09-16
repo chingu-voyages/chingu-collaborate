@@ -223,7 +223,7 @@ export const getServerSideProps = async (context) => {
     const adminId = session?.dbUser?._id.toString()
 
     try {
-        const data = await getProjects()
+        const data = await getProjects(context)
 
         const authenticatedProjects = data.filter(
             (project) => project.admin._id === adminId

@@ -1,7 +1,10 @@
-export async function getProjects() {
+export async function getProjects(context) {
     try {
         const response = await fetch('http://localhost:3000/api/projects', {
             method: 'GET',
+            headers: {
+                Cookie: context.req.headers.cookie,
+            },
         })
         return await response.json()
     } catch (err) {
