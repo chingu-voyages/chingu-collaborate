@@ -12,9 +12,10 @@ import {
     TagLabel,
     LinkBox,
     LinkOverlay,
+    Avatar,
 } from '@chakra-ui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { BiUser, BiTimeFive } from 'react-icons/bi'
+import { BiTimeFive } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { deleteProjectIdea } from '../../controllers/project'
@@ -99,7 +100,11 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                 </Flex>
                 <Flex gap={10}>
                     <Flex align="center" gap={1}>
-                        <BiUser />
+                        <Avatar
+                            size="xs"
+                            name={project?.admin?.username}
+                            src={project?.admin?.discordAvatarUrl}
+                        />
                         <Heading size="sm" fontWeight={500}>
                             {project.admin.username}
                         </Heading>

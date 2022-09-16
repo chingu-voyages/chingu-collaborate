@@ -10,8 +10,9 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
+    Avatar,
 } from '@chakra-ui/react'
-import { BiTimeFive, BiHourglass, BiUser } from 'react-icons/bi'
+import { BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { useRouter } from 'next/router'
 import RequestedMemberCard from '../RequestedMemberCard'
 import { deleteProjectIdea } from '../../controllers/project'
@@ -43,7 +44,11 @@ function ManageProject({ project }) {
             </Flex>
             <Flex gap={10}>
                 <Flex align="center" gap={1}>
-                    <BiUser />
+                    <Avatar
+                        size="xs"
+                        name={project?.admin?.username}
+                        src={project?.admin?.discordAvatarUrl}
+                    />
                     <Heading size="sm" fontWeight={500}>
                         {project?.admin?.username}
                     </Heading>
