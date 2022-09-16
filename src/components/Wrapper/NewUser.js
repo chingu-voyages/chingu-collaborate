@@ -3,6 +3,7 @@ import Header from '../Header'
 import Navbar from '../Navbar'
 import CommunityStandards from '../CommunityStandards'
 import CreateProfile from '../CreateProfile'
+import Footer from '../Footer'
 
 export default function NewUser() {
     const [agreeToRules, setAgreeToRules] = useState(false)
@@ -20,6 +21,7 @@ export default function NewUser() {
                     )}
                     {agreeToRules && <CreateProfile />}
                 </section>
+                <Footer />
             </main>
         </>
     )

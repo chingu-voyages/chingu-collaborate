@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Header from '../Header'
 import Navbar from '../Navbar'
 import BannedCard from '../BannedCard'
+import Footer from '../Footer'
 
 export default function ExistingUser({ children, isBanned }) {
     return (
@@ -9,7 +10,6 @@ export default function ExistingUser({ children, isBanned }) {
             <Header />
             <main className="container">
                 <Navbar />
-
                 <section className="content">
                     {isBanned.value ? (
                         <BannedCard reason={isBanned.reason} />
@@ -17,6 +17,7 @@ export default function ExistingUser({ children, isBanned }) {
                         children
                     )}
                 </section>
+                <Footer />
             </main>
         </>
     )
