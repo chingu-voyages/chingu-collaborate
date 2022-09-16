@@ -68,6 +68,7 @@ function CommunityStandards({ onProceed }) {
             textAlign="left"
             gap={2}
             marginTop={10}
+            marginBottom={10}
         >
             <Heading size="xl">Community Standards</Heading>
             <Text fontSize="sm" fontWeight={500}>
