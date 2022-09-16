@@ -1,7 +1,14 @@
 import LimitsOverview from '../../components/LimitsOverview'
 import ProjectPreviewCard from '../../components/ProjectPreviewCard'
 import ProjectActions from '../../components/ProjectActions'
-import { Flex, Text, HStack, VStack, useMediaQuery } from '@chakra-ui/react'
+import {
+    Flex,
+    Text,
+    HStack,
+    VStack,
+    useMediaQuery,
+    list,
+} from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import Wrapper from '../../components/Wrapper'
 import DetailsPreviewCard from '../../components/DetailsPreviewCard'
@@ -21,7 +28,11 @@ export default function Projects({
     const CREATELIMIT = process.env.NEXT_PUBLIC_POSTLIMIT
     const [selectedProject, setSelectedProject] = useState({})
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
+    const [filteredProjects, setFilteredProjects] = useState([])
     const { data: session, status } = useSession()
+
+    const listOfProjects =
+        filteredProjects.length > 0 ? filteredProjects : projects
 
     const selectedProjectHandler = (project) => {
         if (isLargerThan768) {
@@ -35,21 +46,44 @@ export default function Projects({
         session
     )
 
+    const searchHandler = (value) => {
+        if (value !== '') {
+            // Add logic connecting to backend
+            setFilteredProjects(projects.slice(1, 10))
+        } else {
+            //reset state
+            setFilteredProjects([])
+        }
+    }
+
     // Pagination Logic
     const PROJECTSPERPAGE = 5
-    const TOTALPROJECTPAGES = Math.ceil(projects.length / PROJECTSPERPAGE)
+    const TOTALPROJECTPAGES = Math.ceil(listOfProjects.length / PROJECTSPERPAGE)
     const MAXNUMBEROFPAGESTOSHOW = 3 //Excludes arrow buttons
+
+    const projectsOnPage = (projects, selectedPage) => {
+        return projects.slice(
+            Number(PROJECTSPERPAGE * selectedPage) - PROJECTSPERPAGE,
+            Number(PROJECTSPERPAGE * selectedPage)
+        )
+    }
+
+    const initialMaxPage =
+        TOTALPROJECTPAGES <= MAXNUMBEROFPAGESTOSHOW
+            ? TOTALPROJECTPAGES
+            : MAXNUMBEROFPAGESTOSHOW
 
     const initialState = {
         selectedPage: 1,
         minPage: 1,
-        maxPage: 1,
-        pageRange: [],
+        maxPage: initialMaxPage,
+        pageRange: range(1, initialMaxPage),
     }
 
     function reducer(state, action) {
         switch (action.type) {
             case 'MOUNT':
+                setSelectedProject(projectsOnPage(listOfProjects, 1)[0])
                 if (TOTALPROJECTPAGES <= MAXNUMBEROFPAGESTOSHOW) {
                     return {
                         selectedPage: 1,
@@ -68,7 +102,11 @@ export default function Projects({
                 }
                 break
             case 'CHANGE':
-                // selected page is above the max page
+                const newProjectsOnPage = projectsOnPage(
+                    listOfProjects,
+                    Number(action.payload.selectedPage)
+                )
+                setSelectedProject(newProjectsOnPage[0])
                 if (action.payload.selectedPage > state.maxPage) {
                     const difference =
                         TOTALPROJECTPAGES - Number(action.payload.selectedPage)
@@ -121,19 +159,13 @@ export default function Projects({
     }
     const [page, dispatch] = useReducer(reducer, initialState)
 
-    const projectsOnPage = projects.slice(
-        Number(PROJECTSPERPAGE * page?.selectedPage) - PROJECTSPERPAGE,
-        Number(PROJECTSPERPAGE * page?.selectedPage)
-    )
-
     const changeProjectPageHandler = (page) => {
         dispatch({ type: 'CHANGE', payload: { selectedPage: page } })
     }
 
     useEffect(() => {
         dispatch({ type: 'MOUNT' })
-        setSelectedProject(projectsOnPage[0])
-    }, [])
+    }, [listOfProjects])
 
     return (
         <Wrapper session={session} status={status}>
@@ -146,6 +178,7 @@ export default function Projects({
                     reachedMaximumPostedProjects={
                         authenticatedProjects.length >= CREATELIMIT
                     }
+                    onSearch={(query) => searchHandler(query)}
                 />
             </Flex>
             <Flex
@@ -162,7 +195,9 @@ export default function Projects({
                     padding="2rem 2rem 0rem 2rem"
                     marginBottom={-4}
                 >
-                    <Text fontSize="xs">{`${projects.length} projects posted.`}</Text>
+                    <Text fontSize="xs">{`${listOfProjects.length} projects ${
+                        filteredProjects.length > 0 ? 'found' : 'posted'
+                    }.`}</Text>
                 </Flex>
                 <Flex maxWidth="1400px" width="100%">
                     <HStack width="100%" align="flex-start" padding="2rem">
@@ -172,7 +207,10 @@ export default function Projects({
                             width={['100%', '100%', '50%', '50%']}
                             align={isLargerThan768 ? 'flex-start' : 'center'}
                         >
-                            {projectsOnPage.map((project) => {
+                            {projectsOnPage(
+                                listOfProjects,
+                                page?.selectedPage
+                            ).map((project) => {
                                 return (
                                     <ProjectPreviewCard
                                         onClick={() =>
@@ -190,7 +228,7 @@ export default function Projects({
                                 )
                             })}
                         </VStack>
-                        {projects.length > 0 && (
+                        {listOfProjects.length > 0 && (
                             <VStack
                                 height="100%"
                                 direction="column"

@@ -25,7 +25,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
 
     const { data: session } = useSession()
 
-    const isAdmin = project.admin._id === session.dbUser._id
+    const isAdmin = project?.admin?._id === session.dbUser._id
 
     const selectedProjectHandler = () => {
         if (externalDetails) {
@@ -58,13 +58,13 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                         onClick={selectedProjectHandler}
                         href={
                             externalDetails
-                                ? `/projects/${project._id}`
+                                ? `/projects/${project?._id}`
                                 : undefined
                         }
                         isExternal={externalDetails ? true : false}
                     >
                         <Heading size="md" noOfLines={1}>
-                            {project.title}
+                            {project?.title}
                         </Heading>
                     </LinkOverlay>
                     <Menu>
@@ -79,7 +79,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                                     onClick={async () => {
                                         if (
                                             (await deleteProjectIdea(
-                                                project._id
+                                                project?._id
                                             )) == true
                                         ) {
                                             router.reload()
@@ -106,20 +106,20 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                             src={project?.admin?.discordAvatarUrl}
                         />
                         <Heading size="sm" fontWeight={500}>
-                            {project.admin.username}
+                            {project?.admin?.username}
                         </Heading>
                     </Flex>
-                    {project.timezone && (
+                    {project?.timezone && (
                         <Flex align="center" gap={1}>
                             <BiTimeFive />
                             <Heading size="sm" fontWeight={500}>
-                                {project.timezone}
+                                {project?.timezone}
                             </Heading>
                         </Flex>
                     )}
                 </Flex>
                 <HStack spacing={2}>
-                    {project.technologies.map(
+                    {project?.technologies?.map(
                         (tech, index) =>
                             index < 3 && (
                                 <Tag
@@ -131,7 +131,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                                 </Tag>
                             )
                     )}
-                    {project.technologies.length > 3 ? (
+                    {project?.technologies?.length > 3 ? (
                         <Tag variant="solid" colorScheme="green">
                             <TagLabel>+</TagLabel>
                         </Tag>
@@ -140,7 +140,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
                     )}
                 </HStack>
                 <Text fontSize="sm" noOfLines={5} marginTop={4}>
-                    {project.details}
+                    {project?.details}
                 </Text>
             </Flex>
         </LinkBox>
