@@ -17,10 +17,21 @@ export default async function handler(req, res) {
         switch (method) {
             case 'GET':
                 try {
-                    const projects = await Project.find()
-                        .populate('admin')
-                        .populate('currentMembers')
-                        .populate('requestedMembers')
+                    const { title } = req.query
+                    let projects
+                    if (title) {
+                        projects = await Project.find({
+                            title: new RegExp(title),
+                        })
+                            .populate('admin')
+                            .populate('currentMembers')
+                            .populate('requestedMembers')
+                    } else {
+                        projects = await Project.find()
+                            .populate('admin')
+                            .populate('currentMembers')
+                            .populate('requestedMembers')
+                    }
                     return res.status(200).json(projects)
                 } catch (err) {
                     return res
