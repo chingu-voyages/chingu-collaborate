@@ -1,7 +1,10 @@
 import connectToDatabase from '../../../utils/dbConnect'
 import Project from '../../../models/project'
 import { DateTime } from 'luxon'
-import { validateProjectBody } from '../../../utils/validation'
+import {
+    validateProjectBody,
+    existingProjectTitle,
+} from '../../../utils/validation'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 
@@ -40,6 +43,13 @@ export default async function handler(req, res) {
                     return res.status(400).send({ error: validationResponse })
                 }
                 try {
+                    const existingProjectTitleResponse =
+                        await existingProjectTitle(title)
+                    if (existingProjectTitleResponse != true) {
+                        return res
+                            .status(400)
+                            .json({ error: existingProjectTitleResponse })
+                    }
                     const project = new Project(req.body)
                     const now = DateTime.now()
                     project.createdAt = now

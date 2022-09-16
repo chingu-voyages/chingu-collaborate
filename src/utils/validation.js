@@ -97,3 +97,14 @@ export async function existingUser(username, email) {
         return true
     }
 }
+
+export async function existingProjectTitle(title) {
+    const existingProjectTitle = await Project.findOne({
+        title: title,
+    })
+    if (existingProjectTitle != null) {
+        return 'Project Title is already taken'
+    } else {
+        return true
+    }
+}
