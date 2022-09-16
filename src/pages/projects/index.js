@@ -43,7 +43,7 @@ export default function Projects({
     const initialState = {
         selectedPage: 1,
         minPage: 1,
-        maxPage: 3,
+        maxPage: 1,
         pageRange: [],
     }
 
