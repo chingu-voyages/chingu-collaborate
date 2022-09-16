@@ -12,6 +12,23 @@ export async function getProjects(context) {
     }
 }
 
+export async function getProjectById(context) {
+    try {
+        const response = await fetch(
+            `http://localhost:3000/api/projects/${context.params.id}`,
+            {
+                method: 'GET',
+                headers: {
+                    Cookie: context.req.headers.cookie,
+                },
+            }
+        )
+        return await response.json()
+    } catch (err) {
+        return err
+    }
+}
+
 export async function deleteProjectIdea(id) {
     try {
         const response = await fetch(`/api/projects/${id}`, {
