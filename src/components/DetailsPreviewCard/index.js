@@ -42,10 +42,11 @@ function DetailsPreviewCard({ info, projects }) {
 
     const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
 
-    const projectsJoined = getNumberOfProjectsRequested(projects, session)
+    const projectsRequested = getNumberOfProjectsRequested(projects, session)
 
-    const isJoinable =
-        !isRequestedMember && projectsJoined < JOINLIMIT && !isCurrentMember
+    const isRequestable = projectsRequested < JOINLIMIT
+
+    const isJoinable = !isRequestedMember && isRequestable && !isCurrentMember
 
     const isReported = false
 
@@ -314,7 +315,22 @@ function DetailsPreviewCard({ info, projects }) {
                     <Button
                         isLoading={projectRequestLoading}
                         width="fit-content"
-                        colorScheme={isJoinable ? 'green' : 'gray'}
+                        colorScheme={
+                            isJoinable
+                                ? 'green'
+                                : isRequestedMember
+                                ? 'yellow'
+                                : isCurrentMember
+                                ? 'gray'
+                                : 'red'
+                        }
+                        cursor={
+                            isJoinable
+                                ? 'pointer'
+                                : isRequestedMember
+                                ? 'pointer'
+                                : 'not-allowed'
+                        }
                         marginBottom={4}
                         height="30px"
                         onClick={() => {
@@ -322,7 +338,7 @@ function DetailsPreviewCard({ info, projects }) {
                         }}
                     >
                         {isRequestedMember ? (
-                            <Text fontSize="xs">Requested</Text>
+                            <Text fontSize="xs">Withdraw</Text>
                         ) : isJoinable ? (
                             <Text fontSize="xs">Request</Text>
                         ) : isCurrentMember ? (
