@@ -3,6 +3,16 @@ import Project from '../../../models/project'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 
+async function countProjects(userId) {
+    const joinLimit = process.env.NEXT_PUBLIC_JOINLIMIT
+    const count = await Project.find({ requestedMembers: userId }).count()
+    console.log(count)
+    if (count < joinLimit) {
+        return true
+    }
+    return false
+}
+
 export default async function handler(req, res) {
     const session = await unstable_getServerSession(req, res, authOptions)
     if (session) {
@@ -31,6 +41,11 @@ export default async function handler(req, res) {
                 }
                 try {
                     if (requestType == 'requestForProject') {
+                        if (!(await countProjects(user_id))) {
+                            return res.status(400).send({
+                                error: 'You reached your project join limit',
+                            })
+                        }
                         const project = await Project.findById(id)
                         const exists =
                             project.requestedMembers.includes(user_id)
