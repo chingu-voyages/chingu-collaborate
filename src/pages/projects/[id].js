@@ -21,10 +21,11 @@ export default function Project({
 
     const isAdmin = session?.dbUser?._id === details?.admin?._id
 
-    const projectsJoined = getNumberOfProjectsRequested(projects, session)
+    const projectsRequested = getNumberOfProjectsRequested(projects, session)
 
-    const isJoinable =
-        !isRequestedMember && projectsJoined < JOINLIMIT && !isCurrentMember
+    const isRequestable = projectsRequested < JOINLIMIT
+
+    const isJoinable = !isRequestedMember && isRequestable && !isCurrentMember
 
     return (
         <Wrapper session={session} status={status}>

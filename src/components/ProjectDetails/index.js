@@ -125,14 +125,29 @@ function ProjectDetails({ project, isJoinable }) {
             <Button
                 isLoading={isLoading}
                 width="fit-content"
-                colorScheme={isJoinable ? 'green' : 'gray'}
+                colorScheme={
+                    isJoinable
+                        ? 'green'
+                        : isRequestedMember
+                        ? 'yellow'
+                        : isCurrentMember
+                        ? 'gray'
+                        : 'red'
+                }
+                cursor={
+                    isJoinable
+                        ? 'pointer'
+                        : isRequestedMember
+                        ? 'pointer'
+                        : 'not-allowed'
+                }
                 marginBottom={4}
                 onClick={() => {
                     requestHandler()
                 }}
             >
                 {isRequestedMember ? (
-                    <Text fontSize="xs">Requested</Text>
+                    <Text fontSize="xs">Withdraw</Text>
                 ) : isJoinable ? (
                     <Text fontSize="xs">Request</Text>
                 ) : isCurrentMember ? (
