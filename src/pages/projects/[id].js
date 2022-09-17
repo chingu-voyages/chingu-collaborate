@@ -7,7 +7,12 @@ import Wrapper from '../../components/Wrapper'
 import { getNumberOfProjectsRequested } from '../../components/util.js'
 import { getProjects, getProjectById } from '../../controllers/project'
 
-export default function Project({ details, projects, isRequestedMember }) {
+export default function Project({
+    details,
+    projects,
+    isRequestedMember,
+    isCurrentMember,
+}) {
     const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
 
     const { data: session, status } = useSession()
@@ -17,7 +22,8 @@ export default function Project({ details, projects, isRequestedMember }) {
     const isAdmin = session?.dbUser?._id === details?.admin?._id
 
     const projectsJoined = getNumberOfProjectsRequested(projects, session)
-    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
+    const isJoinable =
+        !isRequestedMember && projectsJoined < JOINLIMIT && isCurrentMember
 
     return (
         <Wrapper session={session} status={status}>
@@ -47,9 +53,14 @@ export const getServerSideProps = async (context) => {
         const requestedMembers = projectData?.requestedMembers.map(
             (member) => member._id
         )
+
+        const currentMembers = projectData?.currentMembers.map(
+            (member) => member._id
+        )
         const authenticatedUserId = session?.dbUser?._id.toString()
 
         const isRequestedMember = requestedMembers.includes(authenticatedUserId)
+        const isCurrentMember = currentMembers.includes(authenticatedUserId)
 
         return {
             props: {

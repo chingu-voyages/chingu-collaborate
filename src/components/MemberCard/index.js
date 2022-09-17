@@ -79,10 +79,10 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
                         <Text fontSize="xs">{info.email}</Text>
                     </Flex>
 
-                    {info.githubProfile !== undefined && (
+                    {info.githubLink !== undefined && (
                         <Flex align="center" gap={1}>
                             <Heading size="xs">Github:</Heading>
-                            <Text fontSize="xs">{info.githubProfile}</Text>
+                            <Text fontSize="xs">{info.githubLink}</Text>
                         </Flex>
                     )}
                 </Flex>
