@@ -51,6 +51,22 @@ function ProjectDetails({ project, isJoinable }) {
         }
     }
 
+    const withdrawFromProject = async () => {
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'withdrawFromProject',
+        }
+
+        const response = await patchProject(project._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setProjectRequestLoading(false)
+            console.log(
+                'Something went wrong while trying to withdraw from a project.'
+            )
+        }
+    }
     return (
         <Flex
             borderWidth="2px"
@@ -96,15 +112,15 @@ function ProjectDetails({ project, isJoinable }) {
                 isLoading={projectRequestLoading}
                 loadingText="Requesting..."
                 width="fit-content"
-                colorScheme={isJoinable ? 'green' : 'gray'}
-                cursor={isJoinable ? 'pointer' : 'not-allowed'}
+                colorScheme={isJoinable ? 'green' : 'red'}
+                // cursor={isJoinable ? 'pointer' : 'not-allowed'}
                 marginBottom={4}
                 onClick={() => {
-                    requestForProject()
+                    isJoinable ? requestForProject() : withdrawFromProject()
                 }}
             >
                 {isRequestedMember ? (
-                    <Text fontSize="xs">Requested</Text>
+                    <Text fontSize="xs">Withdraw</Text>
                 ) : isJoinable ? (
                     <Text fontSize="xs">Request</Text>
                 ) : (

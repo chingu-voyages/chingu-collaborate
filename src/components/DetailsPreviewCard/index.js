@@ -63,6 +63,23 @@ function DetailsPreviewCard({ info }) {
         }
     }
 
+    const withdrawFromProject = async () => {
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'withdrawFromProject',
+        }
+
+        const response = await patchProject(info._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setProjectRequestLoading(false)
+            console.log(
+                'Something went wrong while trying to withdraw from a project.'
+            )
+        }
+    }
+
     const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
     const { data, error } = useSWR(
@@ -133,10 +150,27 @@ function DetailsPreviewCard({ info }) {
                                     <RequestedMemberCard
                                         key={index}
                                         info={member}
+                                        projectId={info?._id}
                                     />
                                 )
                             })}
                         </VStack>
+                        <Heading size="sm" marginTop={2}>
+                            Current Members
+                        </Heading>
+                        {info?.currentMembers?.length > 0 && (
+                            <AvatarGroup size="sm" max={2}>
+                                {info.currentMembers.map((member, index) => {
+                                    return (
+                                        <Avatar
+                                            key={index}
+                                            name={member.username}
+                                            src={member?.discordAvatarUrl}
+                                        />
+                                    )
+                                })}
+                            </AvatarGroup>
+                        )}
                     </Flex>
                     <Accordion allowToggle>
                         <AccordionItem border="none">
@@ -232,16 +266,18 @@ function DetailsPreviewCard({ info }) {
                     <Button
                         isLoading={projectRequestLoading}
                         width="fit-content"
-                        colorScheme={isJoinable ? 'green' : 'gray'}
-                        cursor={isJoinable ? 'pointer' : 'not-allowed'}
+                        colorScheme={isJoinable ? 'green' : 'red'}
+                        // cursor={isJoinable ? 'pointer' : 'not-allowed'}
                         marginBottom={4}
                         height="30px"
                         onClick={() => {
-                            requestForProject()
+                            isJoinable
+                                ? requestForProject()
+                                : withdrawFromProject()
                         }}
                     >
                         {isRequestedMember ? (
-                            <Text fontSize="xs">Requested</Text>
+                            <Text fontSize="xs">Withdraw</Text>
                         ) : isJoinable ? (
                             <Text fontSize="xs">Request</Text>
                         ) : (
