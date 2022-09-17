@@ -31,12 +31,21 @@ export default async function handler(req, res) {
                 }
                 try {
                     if (requestType == 'requestForProject') {
-                        const project = await Project.findByIdAndUpdate(
-                            id,
-                            { $push: { requestedMembers: user_id } },
-                            options
-                        )
-                        return res.status(200).json(project)
+                        const project = await Project.findById(id)
+                        const exists =
+                            project.requestedMembers.includes(user_id)
+                        if (!exists) {
+                            const project = await Project.findByIdAndUpdate(
+                                id,
+                                { $push: { requestedMembers: user_id } },
+                                options
+                            )
+                            return res.status(200).json(project)
+                        } else {
+                            return res.status(400).json({
+                                error: 'You already requested for this project',
+                            })
+                        }
                     } else if (
                         requestType == 'rejectProject' ||
                         requestType == 'withdrawFromProject'
@@ -48,17 +57,25 @@ export default async function handler(req, res) {
                         )
                         return res.status(200).json(project)
                     } else if (requestType == 'approveProject') {
-                        await Project.findByIdAndUpdate(
-                            id,
-                            { $pull: { requestedMembers: user_id } },
-                            options
-                        )
-                        const project = await Project.findByIdAndUpdate(
-                            id,
-                            { $push: { currentMembers: user_id } },
-                            options
-                        )
-                        return res.status(200).json(project)
+                        const project = await Project.findById(id)
+                        const exists = project.currentMembers.includes(user_id)
+                        if (!exists) {
+                            await Project.findByIdAndUpdate(
+                                id,
+                                { $pull: { requestedMembers: user_id } },
+                                options
+                            )
+                            const project = await Project.findByIdAndUpdate(
+                                id,
+                                { $push: { currentMembers: user_id } },
+                                options
+                            )
+                            return res.status(200).json(project)
+                        } else {
+                            return res.status(400).json({
+                                error: 'You already accepted this member',
+                            })
+                        }
                     } else {
                         return res.status(400).json('requestType is invalid')
                     }

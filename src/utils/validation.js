@@ -103,7 +103,6 @@ export async function existingProjectTitle(title) {
     const existingProjectTitle = await Project.findOne({
         title: title,
     })
-    console.log(existingProjectTitle)
     if (existingProjectTitle != null) {
         return 'Project Title is already taken'
     } else {
