@@ -44,23 +44,50 @@ function DetailsPreviewCard({ info }) {
     )
 
     const requestForProject = async () => {
-        if (isJoinable) {
-            setProjectRequestLoading(true)
-            const formDataProject = {
-                user_id: session?.dbUser?._id,
-                requestType: 'requestForProject',
-            }
-
-            const response = await patchProject(info._id, formDataProject)
-            if (response == true) {
-                router.reload()
-            } else {
-                setProjectRequestLoading(false)
-                console.log(
-                    'Something went wrong while trying to request to join a project.'
-                )
-            }
+        setProjectRequestLoading(true)
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'requestForProject',
         }
+
+        const response = await patchProject(info._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setProjectRequestLoading(false)
+            console.log(
+                'Something went wrong while trying to request to join a project.'
+            )
+        }
+    }
+
+    const withdrawFromProject = async () => {
+        setProjectRequestLoading(true)
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'withdrawFromProject',
+        }
+
+        const response = await patchProject(info._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setProjectRequestLoading(false)
+            console.log(
+                'Something went wrong while trying to withdraw from a project.'
+            )
+        }
+    }
+
+    const requestHandler = async () => {
+        if (isJoinable && !isRequestedMember) {
+            return await requestForProject()
+        }
+        if (!isJoinable && isRequestedMember) {
+            return await withdrawFromProject()
+        }
+        // If limit reached
+        return
     }
 
     const approveHandler = async (id, projectId) => {
@@ -283,11 +310,10 @@ function DetailsPreviewCard({ info }) {
                         isLoading={projectRequestLoading}
                         width="fit-content"
                         colorScheme={isJoinable ? 'green' : 'gray'}
-                        cursor={isJoinable ? 'pointer' : 'not-allowed'}
                         marginBottom={4}
                         height="30px"
                         onClick={() => {
-                            requestForProject()
+                            requestHandler()
                         }}
                     >
                         {isRequestedMember ? (

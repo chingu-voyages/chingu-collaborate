@@ -14,7 +14,7 @@ import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 import { patchProject } from '../../controllers/project'
 
 function ProjectDetails({ project, isJoinable }) {
-    const [projectRequestLoading, setProjectRequestLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const router = useRouter()
     const { data: session } = useSession()
@@ -32,23 +32,50 @@ function ProjectDetails({ project, isJoinable }) {
     const isReported = false
 
     const requestForProject = async () => {
-        if (isJoinable) {
-            setProjectRequestLoading(true)
-            const formDataProject = {
-                user_id: session?.dbUser?._id,
-                requestType: 'requestForProject',
-            }
-
-            const response = await patchProject(project._id, formDataProject)
-            if (response == true) {
-                router.reload()
-            } else {
-                setProjectRequestLoading(false)
-                console.log(
-                    'Something went wrong while trying to request to join a project.'
-                )
-            }
+        setIsLoading(true)
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'requestForProject',
         }
+
+        const response = await patchProject(project._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setIsLoading(false)
+            console.log(
+                'Something went wrong while trying to request to join a project.'
+            )
+        }
+    }
+
+    const withdrawFromProject = async () => {
+        setIsLoading(true)
+        const formDataProject = {
+            user_id: session?.dbUser?._id,
+            requestType: 'withdrawFromProject',
+        }
+
+        const response = await patchProject(project._id, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            setIsLoading(false)
+            console.log(
+                'Something went wrong while trying to withdraw from a project.'
+            )
+        }
+    }
+
+    const requestHandler = async () => {
+        if (isJoinable && !isRequestedMember) {
+            return await requestForProject()
+        }
+        if (!isJoinable && isRequestedMember) {
+            return await withdrawFromProject()
+        }
+        // If limit reached
+        return
     }
 
     return (
@@ -94,14 +121,12 @@ function ProjectDetails({ project, isJoinable }) {
             </Flex>
 
             <Button
-                isLoading={projectRequestLoading}
-                loadingText="Requesting..."
+                isLoading={isLoading}
                 width="fit-content"
                 colorScheme={isJoinable ? 'green' : 'gray'}
-                cursor={isJoinable ? 'pointer' : 'not-allowed'}
                 marginBottom={4}
                 onClick={() => {
-                    requestForProject()
+                    requestHandler()
                 }}
             >
                 {isRequestedMember ? (
