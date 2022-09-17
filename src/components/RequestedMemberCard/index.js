@@ -8,10 +8,10 @@ import {
 } from '@chakra-ui/react'
 import { patchProject } from '../../controllers/project'
 import { useRouter } from 'next/router'
+
 function RequestedMemberCard({ info, projectId }) {
     const router = useRouter()
     const approveForProject = async () => {
-        console.log(info)
         const formDataProject = {
             user_id: info?._id,
             requestType: 'approveProject',
@@ -25,23 +25,17 @@ function RequestedMemberCard({ info, projectId }) {
             )
         }
     }
-    const rejectForProject = async () => {
-        if (isJoinable) {
-            setProjectRequestLoading(true)
-            const formDataProject = {
-                user_id: session?.dbUser?._id,
-                requestType: 'requestForProject',
-            }
 
-            const response = await patchProject(project._id, formDataProject)
-            if (response == true) {
-                router.reload()
-            } else {
-                setProjectRequestLoading(false)
-                console.log(
-                    'Something went wrong while trying to request to join a project.'
-                )
-            }
+    const rejectForProject = async () => {
+        const formDataProject = {
+            user_id: info?._id,
+            requestType: 'rejectProject',
+        }
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log('Something went wrong while trying to reject a member.')
         }
     }
 
