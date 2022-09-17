@@ -42,7 +42,7 @@ export const getServerSideProps = async (context) => {
 
         const projectData = await getProjectById(context)
 
-        const allProjectsData = await getProjects(context)
+        const allProjectsData = await getProjects(context.req.headers.cookie)
 
         const requestedMembers = projectData.requestedMembers.map(
             (member) => member._id
