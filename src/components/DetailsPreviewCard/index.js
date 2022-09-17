@@ -26,7 +26,7 @@ import {
     formatRelativeProjectDates,
 } from '../util.js'
 
-function DetailsPreviewCard({ info }) {
+function DetailsPreviewCard({ info, projects }) {
     const [projectRequestLoading, setProjectRequestLoading] = useState(false)
 
     const { data: session } = useSession()
@@ -41,6 +41,8 @@ function DetailsPreviewCard({ info }) {
     const isCurrentMember = currentMembers?.includes(session?.dbUser._id)
 
     const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
+
+    const projectsJoined = getNumberOfProjectsRequested(projects, session)
 
     const isJoinable =
         !isRequestedMember && projectsJoined < JOINLIMIT && !isCurrentMember
@@ -134,8 +136,6 @@ function DetailsPreviewCard({ info }) {
         'http://localhost:3000/api/projects',
         fetcher
     )
-
-    const projectsJoined = getNumberOfProjectsRequested(data, session)
 
     if (info !== undefined) {
         if (isAdmin) {
