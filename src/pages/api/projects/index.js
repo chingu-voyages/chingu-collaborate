@@ -8,6 +8,15 @@ import {
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 
+async function countProjects(admin) {
+    const postLimit = process.env.NEXT_PUBLIC_POSTLIMIT
+    const count = await Project.where({ admin: admin }).count()
+    if (count < postLimit) {
+        return true
+    }
+    return false
+}
+
 export default async function handler(req, res) {
     const session = await unstable_getServerSession(req, res, authOptions)
     if (session) {
@@ -49,6 +58,12 @@ export default async function handler(req, res) {
                     admin,
                     timezone
                 )
+
+                if (!(await countProjects(admin))) {
+                    return res
+                        .status(400)
+                        .send({ error: 'You reached your project post limit' })
+                }
 
                 if (validationResponse != true) {
                     return res.status(400).send({ error: validationResponse })
