@@ -12,10 +12,12 @@ import {
     AccordionIcon,
     Avatar,
 } from '@chakra-ui/react'
+
 import { BiTimeFive, BiHourglass } from 'react-icons/bi'
 import { useRouter } from 'next/router'
-import RequestedMemberCard from '../RequestedMemberCard'
+import MemberCard from '../MemberCard'
 import { deleteProjectIdea } from '../../controllers/project'
+import { patchProject } from '../../controllers/project'
 import { getRelativeProjectDates, formatRelativeProjectDates } from '../util.js'
 
 function ManageProject({ project }) {
@@ -24,8 +26,38 @@ function ManageProject({ project }) {
     )
 
     const numberOfRequestedMembers = project?.requestedMembers?.length
+    const numberOfCurrentMembers = project?.currentMembers?.length
 
     const router = useRouter()
+
+    const approveHandler = async (id, projectId) => {
+        const formDataProject = {
+            user_id: id,
+            requestType: 'approveProject',
+        }
+
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log(
+                'Something went wrong while trying to approve a member.'
+            )
+        }
+    }
+    const rejectHandler = async (id, projectId) => {
+        const formDataProject = {
+            user_id: id,
+            requestType: 'rejectProject',
+        }
+
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log('Something went wrong while trying to reject a member.')
+        }
+    }
 
     return (
         <Flex
@@ -38,6 +70,7 @@ function ManageProject({ project }) {
             textAlign="left"
             gap={2}
             marginTop={10}
+            marginBottom={10}
         >
             <Flex align="center" justify="space-between">
                 <Heading size="lg">{project?.title}</Heading>
@@ -67,9 +100,8 @@ function ManageProject({ project }) {
                 </Heading>
             </Flex>
             <Text fontSize="xs">
-                You’ll have 48 hours after the post expires to contact the
-                requested members, after which you will lose their contact
-                information along with this post.
+                You will have to contact members before the post expires or you
+                risk losing their contact information along with this post.
             </Text>
             <hr />
             <Flex direction="column" marginTop={4} marginBottom={4}>
@@ -79,7 +111,30 @@ function ManageProject({ project }) {
                 >{`Requested Members (${numberOfRequestedMembers})`}</Heading>
                 <VStack>
                     {project?.requestedMembers?.map((member, index) => {
-                        return <RequestedMemberCard key={index} info={member} />
+                        return (
+                            <MemberCard
+                                key={index}
+                                info={member}
+                                isRequestable={true}
+                                onApprove={(id) =>
+                                    approveHandler(id, project._id)
+                                }
+                                onReject={(id) =>
+                                    rejectHandler(id, project._id)
+                                }
+                            />
+                        )
+                    })}
+                </VStack>
+            </Flex>
+            <Flex direction="column" marginTop={4} marginBottom={4}>
+                <Heading
+                    size="md"
+                    marginBottom={2}
+                >{`Current Members (${numberOfCurrentMembers})`}</Heading>
+                <VStack>
+                    {project?.currentMembers?.map((member, index) => {
+                        return <MemberCard key={index} info={member} />
                     })}
                 </VStack>
             </Flex>

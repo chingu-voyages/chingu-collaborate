@@ -1,6 +1,14 @@
-import { Avatar, Flex, Heading, Text } from '@chakra-ui/react'
+import {
+    Avatar,
+    Button,
+    ButtonGroup,
+    Flex,
+    Heading,
+    Text,
+} from '@chakra-ui/react'
+import { BiCheck, BiX } from 'react-icons/bi'
 
-function RequestedMemberCard({ info }) {
+function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
     return (
         <Flex
             borderWidth="2px"
@@ -13,6 +21,32 @@ function RequestedMemberCard({ info }) {
         >
             <Flex gap={5} align="center">
                 <Avatar name={info.username} src={info?.discordAvatarUrl} />
+                {isRequestable && (
+                    <Flex
+                        justify="center"
+                        height="100%"
+                        direction="column"
+                        width="fit-content"
+                        gap={1}
+                    >
+                        <Button
+                            colorScheme="green"
+                            size="xs"
+                            width="100%"
+                            onClick={() => onApprove(info._id)}
+                        >
+                            <BiCheck />
+                        </Button>
+                        <Button
+                            colorScheme="red"
+                            size="xs"
+                            width="100%"
+                            onClick={() => onReject(info?._id)}
+                        >
+                            <BiX />
+                        </Button>
+                    </Flex>
+                )}
                 <Flex direction="column">
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Username:</Heading>
