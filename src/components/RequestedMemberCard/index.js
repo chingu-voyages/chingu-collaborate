@@ -1,44 +1,6 @@
-import {
-    Avatar,
-    ButtonGroup,
-    Button,
-    Flex,
-    Heading,
-    Text,
-} from '@chakra-ui/react'
-import { patchProject } from '../../controllers/project'
-import { useRouter } from 'next/router'
+import { Avatar, Flex, Heading, Text } from '@chakra-ui/react'
 
-function RequestedMemberCard({ info, projectId }) {
-    const router = useRouter()
-    const approveForProject = async () => {
-        const formDataProject = {
-            user_id: info?._id,
-            requestType: 'approveProject',
-        }
-        const response = await patchProject(projectId, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            console.log(
-                'Something went wrong while trying to approve a member.'
-            )
-        }
-    }
-
-    const rejectForProject = async () => {
-        const formDataProject = {
-            user_id: info?._id,
-            requestType: 'rejectProject',
-        }
-        const response = await patchProject(projectId, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            console.log('Something went wrong while trying to reject a member.')
-        }
-    }
-
+function RequestedMemberCard({ info }) {
     return (
         <Flex
             borderWidth="2px"
@@ -51,22 +13,6 @@ function RequestedMemberCard({ info, projectId }) {
         >
             <Flex gap={5} align="center">
                 <Avatar name={info.username} src={info?.discordAvatarUrl} />
-                <ButtonGroup>
-                    <Button
-                        onClick={() => {
-                            approveForProject()
-                        }}
-                    >
-                        Approve
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            rejectForProject()
-                        }}
-                    >
-                        Reject
-                    </Button>
-                </ButtonGroup>
                 <Flex direction="column">
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Username:</Heading>
