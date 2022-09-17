@@ -5,9 +5,6 @@ export default function Pagination({ page, onChange, totalProjectPages }) {
 
     const { pageRange: range, selectedPage } = page
 
-    console.log(1, page)
-    console.log(2, range)
-
     return (
         <ButtonGroup variant="outline" spacing={2} size="sm" paddingBottom={10}>
             {/* Should be disabled if selected page is at 1 */}
