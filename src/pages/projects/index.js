@@ -200,7 +200,7 @@ export default function Projects({
                         filteredProjects !== false ? 'found' : 'posted'
                     }.`}</Text>
                 </Flex>
-                <Flex maxWidth="1400px" width="100%">
+                <Flex maxWidth="1400px" width="100%" minHeight="500px">
                     <HStack width="100%" align="flex-start" padding="2rem">
                         <VStack
                             marginTop={4}
