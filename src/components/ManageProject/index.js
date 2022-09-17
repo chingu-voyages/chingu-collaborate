@@ -79,7 +79,13 @@ function ManageProject({ project }) {
                 >{`Requested Members (${numberOfRequestedMembers})`}</Heading>
                 <VStack>
                     {project?.requestedMembers?.map((member, index) => {
-                        return <RequestedMemberCard key={index} info={member} />
+                        return (
+                            <RequestedMemberCard
+                                key={index}
+                                info={member}
+                                projectId={project?._id}
+                            />
+                        )
                     })}
                 </VStack>
             </Flex>

@@ -133,6 +133,7 @@ function DetailsPreviewCard({ info }) {
                                     <RequestedMemberCard
                                         key={index}
                                         info={member}
+                                        projectId={info?._id}
                                     />
                                 )
                             })}
