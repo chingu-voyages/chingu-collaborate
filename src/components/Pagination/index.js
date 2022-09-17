@@ -11,7 +11,7 @@ export default function Pagination({ page, onChange, totalProjectPages }) {
             {selectedPage > 1 && (
                 <Button
                     variant="solid"
-                    color="pink.400"
+                    colorScheme="blue"
                     onClick={clickHandler}
                     value={selectedPage - 1}
                 >{`<`}</Button>
@@ -19,7 +19,7 @@ export default function Pagination({ page, onChange, totalProjectPages }) {
             {range?.map((number) => (
                 <Button
                     key={number}
-                    colorScheme={selectedPage == number ? 'pink' : 'gray'}
+                    colorScheme={selectedPage == number ? 'blue' : 'gray'}
                     onClick={clickHandler}
                     value={number}
                 >
@@ -30,7 +30,7 @@ export default function Pagination({ page, onChange, totalProjectPages }) {
             {selectedPage < totalProjectPages && (
                 <Button
                     variant="solid"
-                    color="pink.400"
+                    colorScheme="blue"
                     onClick={clickHandler}
                     value={Number(selectedPage) + 1}
                 >{`>`}</Button>
