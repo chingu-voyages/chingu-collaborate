@@ -27,7 +27,9 @@ function ProjectDetails({ project, isJoinable }) {
         (member) => member._id
     )
     const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
-    console.log(isRequestedMember)
+
+    const currentMembers = project?.currentMembers?.map((member) => member._id)
+    const isCurrentMember = currentMembers?.includes(session?.dbUser._id)
 
     const isReported = false
 
@@ -68,10 +70,10 @@ function ProjectDetails({ project, isJoinable }) {
     }
 
     const requestHandler = async () => {
-        if (isJoinable && !isRequestedMember) {
+        if (isJoinable) {
             return await requestForProject()
         }
-        if (!isJoinable && isRequestedMember) {
+        if (isRequestedMember) {
             return await withdrawFromProject()
         }
         // If limit reached
@@ -133,6 +135,8 @@ function ProjectDetails({ project, isJoinable }) {
                     <Text fontSize="xs">Requested</Text>
                 ) : isJoinable ? (
                     <Text fontSize="xs">Request</Text>
+                ) : isCurrentMember ? (
+                    <Text fontSize="xs">Joined</Text>
                 ) : (
                     <Text fontSize="xs">Limit Reached</Text>
                 )}

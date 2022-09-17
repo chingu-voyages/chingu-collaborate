@@ -37,7 +37,15 @@ function DetailsPreviewCard({ info }) {
     const requestedMembers = info?.requestedMembers?.map((member) => member._id)
     const isRequestedMember = requestedMembers?.includes(session?.dbUser._id)
 
+    const currentMembers = info?.currentMembers?.map((member) => member._id)
+    const isCurrentMember = currentMembers?.includes(session?.dbUser._id)
+
     const JOINLIMIT = process.env.NEXT_PUBLIC_JOINLIMIT
+
+    const isJoinable =
+        !isRequestedMember && projectsJoined < JOINLIMIT && !isCurrentMember
+
+    const isReported = false
 
     const { expiresMessage, createdMessage } = formatRelativeProjectDates(
         getRelativeProjectDates(info)
@@ -80,10 +88,10 @@ function DetailsPreviewCard({ info }) {
     }
 
     const requestHandler = async () => {
-        if (isJoinable && !isRequestedMember) {
+        if (isJoinable) {
             return await requestForProject()
         }
-        if (!isJoinable && isRequestedMember) {
+        if (isRequestedMember) {
             return await withdrawFromProject()
         }
         // If limit reached
@@ -128,9 +136,6 @@ function DetailsPreviewCard({ info }) {
     )
 
     const projectsJoined = getNumberOfProjectsRequested(data, session)
-
-    const isJoinable = !isRequestedMember && projectsJoined < JOINLIMIT
-    const isReported = false
 
     if (info !== undefined) {
         if (isAdmin) {
@@ -320,6 +325,8 @@ function DetailsPreviewCard({ info }) {
                             <Text fontSize="xs">Requested</Text>
                         ) : isJoinable ? (
                             <Text fontSize="xs">Request</Text>
+                        ) : isCurrentMember ? (
+                            <Text fontSize="xs">Joined</Text>
                         ) : (
                             <Text fontSize="xs">Limit Reached</Text>
                         )}
