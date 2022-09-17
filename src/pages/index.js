@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Wrapper from '../components/Wrapper'
-import { Heading, Progress, Stack } from '@chakra-ui/react'
+import { Heading, Flex, Progress, Stack } from '@chakra-ui/react'
 
 export default function Home() {
     const { data: session, status } = useSession()
@@ -16,12 +16,20 @@ export default function Home() {
 
     return (
         <Wrapper session={session} status={status}>
-            <Heading size="md" marginTop={5} marginBottom={2}>
-                Redirecting
-            </Heading>
-            <Stack width="90%">
-                <Progress size="xs" isIndeterminate colorScheme="green" />
-            </Stack>
+            <Flex
+                width="100%"
+                direction="column"
+                alignItems="center"
+                height="80vh"
+                minHeight="500px"
+            >
+                <Heading size="md" marginTop={5} marginBottom={2}>
+                    Redirecting
+                </Heading>
+                <Stack width="90%">
+                    <Progress size="xs" isIndeterminate colorScheme="green" />
+                </Stack>
+            </Flex>
         </Wrapper>
     )
 }
