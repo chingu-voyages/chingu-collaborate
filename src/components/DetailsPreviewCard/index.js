@@ -49,10 +49,6 @@ function DetailsPreviewCard({ info, projects }) {
 
     const isReported = false
 
-    console.log('isJoinable', isJoinable)
-    console.log('projectsJoined', projectsJoined)
-    console.log('JOINLIMIT', process.env.NEXT_PUBLIC_JOINLIMIT)
-
     const { expiresMessage, createdMessage } = formatRelativeProjectDates(
         getRelativeProjectDates(info)
     )
