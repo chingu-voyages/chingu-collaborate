@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { BiHourglass, BiTimeFive } from 'react-icons/bi'
-import RequestedMemberCard from '../RequestedMemberCard'
+import MemberCard from '../MemberCard'
 import { deleteProjectIdea, patchProject } from '../../controllers/project'
 import {
     getNumberOfProjectsRequested,
@@ -63,6 +63,36 @@ function DetailsPreviewCard({ info }) {
         }
     }
 
+    const approveHandler = async (id, projectId) => {
+        const formDataProject = {
+            user_id: id,
+            requestType: 'approveProject',
+        }
+
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log(
+                'Something went wrong while trying to approve a member.'
+            )
+        }
+    }
+
+    const rejectHandler = async (id, projectId) => {
+        const formDataProject = {
+            user_id: id,
+            requestType: 'rejectProject',
+        }
+
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log('Something went wrong while trying to reject a member.')
+        }
+    }
+
     const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
     const { data, error } = useSWR(
@@ -78,6 +108,8 @@ function DetailsPreviewCard({ info }) {
     if (info !== undefined) {
         if (isAdmin) {
             const numberOfRequestedMembers = info?.requestedMembers?.length
+            const numberOfCurrentMembers = info?.currentMembers?.length
+
             return (
                 <Flex
                     borderWidth="1.5px"
@@ -117,9 +149,9 @@ function DetailsPreviewCard({ info }) {
                         </Heading>
                     </Flex>
                     <Text fontSize="xs">
-                        You’ll have 48 hours after the post expires to contact
-                        the requested members, after which you will lose their
-                        contact information along with this post.
+                        You will have to contact members before the post expires
+                        or you risk losing their contact information along with
+                        this post.
                     </Text>
                     <hr />
                     <Flex direction="column" marginTop={1} marginBottom={4}>
@@ -130,11 +162,29 @@ function DetailsPreviewCard({ info }) {
                         <VStack>
                             {info?.requestedMembers?.map((member, index) => {
                                 return (
-                                    <RequestedMemberCard
+                                    <MemberCard
                                         key={index}
                                         info={member}
+                                        isRequestable={true}
+                                        onApprove={(id) =>
+                                            approveHandler(id, info._id)
+                                        }
+                                        onReject={(id) =>
+                                            rejectHandler(id, info._id)
+                                        }
                                     />
                                 )
+                            })}
+                        </VStack>
+                    </Flex>
+                    <Flex direction="column" marginTop={1} marginBottom={4}>
+                        <Heading
+                            size="sm"
+                            marginBottom={2}
+                        >{`Current Members (${numberOfCurrentMembers})`}</Heading>
+                        <VStack>
+                            {info?.currentMembers?.map((member, index) => {
+                                return <MemberCard key={index} info={member} />
                             })}
                         </VStack>
                     </Flex>

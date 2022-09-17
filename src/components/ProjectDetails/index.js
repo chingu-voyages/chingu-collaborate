@@ -62,6 +62,7 @@ function ProjectDetails({ project, isJoinable }) {
             textAlign="left"
             gap={2}
             marginTop={10}
+            marginBottom={10}
         >
             <Flex align="center" justify="space-between">
                 <Heading size="lg">{project?.title}</Heading>
