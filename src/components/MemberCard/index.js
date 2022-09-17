@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Avatar, Button, Flex, Heading, Text } from '@chakra-ui/react'
+import {
+    Avatar,
+    Button,
+    ButtonGroup,
+    Flex,
+    Heading,
+    Text,
+} from '@chakra-ui/react'
 import { BiCheck, BiX } from 'react-icons/bi'
 
 function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
@@ -15,6 +22,14 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
         onReject(info?._id)
     }
 
+    const locationIsValid =
+        info.location !== undefined &&
+        info.location.trim().length > 0 &&
+        info.location !== ''
+
+    const githubLinkIsValid =
+        info.githubLink !== undefined && info.githubLink !== ''
+
     return (
         <Flex
             borderWidth="2px"
@@ -26,62 +41,78 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
             gap={1}
         >
             <Flex gap={5} align="center">
-                <Avatar name={info.username} src={info?.discordAvatarUrl} />
-                {isRequestable && (
-                    <Flex
-                        justify="center"
-                        height="100%"
-                        direction="column"
-                        width="fit-content"
-                        gap={1}
+                <Flex direction="column" alignItems="center" minWidth="75px">
+                    <Avatar
+                        size="md"
+                        name={info.username}
+                        src={info?.discordAvatarUrl}
+                    />
+                    <Text
+                        fontSize="xs"
+                        fontWeight={700}
+                        textOverflow="ellipsis"
                     >
-                        <Button
-                            colorScheme="green"
-                            isDisabled={disableActions ? true : false}
-                            size="xs"
-                            width="100%"
-                            onClick={() => approveMember(info)}
-                        >
-                            <BiCheck />
-                        </Button>
-                        <Button
-                            colorScheme="red"
-                            isDisabled={disableActions ? true : false}
-                            size="xs"
-                            width="100%"
-                            onClick={() => rejectMember(info)}
-                        >
-                            <BiX />
-                        </Button>
-                    </Flex>
-                )}
-                <Flex direction="column">
-                    <Flex align="center" gap={1}>
-                        <Heading size="xs">Username:</Heading>
-                        <Text fontSize="xs" textOverflow="ellipsis">
-                            {info.username}
-                        </Text>
-                    </Flex>
-                    {info.location !== undefined && (
-                        <Flex align="center" gap={1}>
-                            <Heading size="xs">Location:</Heading>
-                            <Text fontSize="xs">{info.location}</Text>
-                        </Flex>
+                        {info.username}
+                    </Text>
+                    {isRequestable && (
+                        <ButtonGroup isAttached>
+                            <Button
+                                colorScheme="green"
+                                isDisabled={disableActions ? true : false}
+                                size="xs"
+                                width="fit-content"
+                                onClick={() => approveMember(info)}
+                            >
+                                <BiCheck />
+                            </Button>
+                            <Button
+                                colorScheme="red"
+                                isDisabled={disableActions ? true : false}
+                                size="xs"
+                                width="fit-content"
+                                onClick={() => rejectMember(info)}
+                            >
+                                <BiX />
+                            </Button>
+                        </ButtonGroup>
                     )}
-
-                    <Flex align="center" gap={1}>
-                        <Heading size="xs">Discord:</Heading>
+                </Flex>
+                <Flex
+                    direction="column"
+                    width="fit-content"
+                    wordBreak="break-word"
+                >
+                    <Flex align="flex-start" direction="column">
+                        <Text
+                            fontSize="xs"
+                            fontWeight={600}
+                            wordBreak="keep-all"
+                        >
+                            Discord
+                        </Text>
                         <Text fontSize="xs">{info.discordUsername}</Text>
                     </Flex>
 
-                    <Flex align="center" gap={1}>
-                        <Heading size="xs">Email:</Heading>
+                    <Flex align="flex-start" direction="column">
+                        <Text
+                            fontSize="xs"
+                            fontWeight={600}
+                            wordBreak="keep-all"
+                        >
+                            Email
+                        </Text>
                         <Text fontSize="xs">{info.email}</Text>
                     </Flex>
 
-                    {info.githubLink !== undefined && (
-                        <Flex align="center" gap={1}>
-                            <Heading size="xs">Github:</Heading>
+                    {githubLinkIsValid && (
+                        <Flex align="flex-start" direction="column">
+                            <Text
+                                fontSize="xs"
+                                fontWeight={600}
+                                wordBreak="keep-all"
+                            >
+                                Github
+                            </Text>
                             <Text fontSize="xs">{info.githubLink}</Text>
                         </Flex>
                     )}
