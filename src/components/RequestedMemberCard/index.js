@@ -1,6 +1,50 @@
-import { Avatar, Flex, Heading, Text } from '@chakra-ui/react'
+import {
+    Avatar,
+    ButtonGroup,
+    Button,
+    Flex,
+    Heading,
+    Text,
+} from '@chakra-ui/react'
+import { patchProject } from '../../controllers/project'
+import { useRouter } from 'next/router'
+function RequestedMemberCard({ info, projectId }) {
+    const router = useRouter()
+    const approveForProject = async () => {
+        console.log(info)
+        const formDataProject = {
+            user_id: info?._id,
+            requestType: 'approveProject',
+        }
+        const response = await patchProject(projectId, formDataProject)
+        if (response == true) {
+            router.reload()
+        } else {
+            console.log(
+                'Something went wrong while trying to approve a member.'
+            )
+        }
+    }
+    const rejectForProject = async () => {
+        if (isJoinable) {
+            setProjectRequestLoading(true)
+            const formDataProject = {
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
+            }
 
-function RequestedMemberCard({ info }) {
+            const response = await patchProject(project._id, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                setProjectRequestLoading(false)
+                console.log(
+                    'Something went wrong while trying to request to join a project.'
+                )
+            }
+        }
+    }
+
     return (
         <Flex
             borderWidth="2px"
@@ -13,6 +57,22 @@ function RequestedMemberCard({ info }) {
         >
             <Flex gap={5} align="center">
                 <Avatar name={info.username} src={info?.discordAvatarUrl} />
+                <ButtonGroup>
+                    <Button
+                        onClick={() => {
+                            approveForProject()
+                        }}
+                    >
+                        Approve
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            rejectForProject()
+                        }}
+                    >
+                        Reject
+                    </Button>
+                </ButtonGroup>
                 <Flex direction="column">
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Username:</Heading>
