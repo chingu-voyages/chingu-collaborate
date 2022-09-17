@@ -15,7 +15,6 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
         onReject(info?._id)
     }
 
-    console.log(info.githubLink)
     return (
         <Flex
             borderWidth="2px"
