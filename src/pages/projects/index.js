@@ -29,11 +29,11 @@ export default function Projects({
     const CREATELIMIT = process.env.NEXT_PUBLIC_POSTLIMIT
     const [selectedProject, setSelectedProject] = useState({})
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
-    const [filteredProjects, setFilteredProjects] = useState([])
+    const [filteredProjects, setFilteredProjects] = useState(false)
     const { data: session, status } = useSession()
 
     const listOfProjects =
-        filteredProjects.length > 0 ? filteredProjects : projects
+        filteredProjects !== false ? filteredProjects : projects
 
     const selectedProjectHandler = (project) => {
         if (isLargerThan768) {
@@ -48,12 +48,12 @@ export default function Projects({
     )
 
     const searchHandler = async (value) => {
-        if (value !== '') {
+        if (value.trim().length > 0) {
             const projects = await getProjects(cookie, value)
             setFilteredProjects(projects)
         } else {
             //reset state
-            setFilteredProjects([])
+            setFilteredProjects(false)
         }
     }
 
@@ -197,7 +197,7 @@ export default function Projects({
                     marginBottom={-4}
                 >
                     <Text fontSize="xs">{`${listOfProjects.length} projects ${
-                        filteredProjects.length > 0 ? 'found' : 'posted'
+                        filteredProjects !== false ? 'found' : 'posted'
                     }.`}</Text>
                 </Flex>
                 <Flex maxWidth="1400px" width="100%">
