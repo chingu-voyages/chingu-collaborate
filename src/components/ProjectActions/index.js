@@ -26,6 +26,11 @@ function ProjectActions({ reachedMaximumPostedProjects, onSearch }) {
                 </InputLeftElement>
                 <Input
                     ref={searchInput}
+                    onKeyDown={(event) => {
+                        if (event.code === 'Enter') {
+                            onSearch(searchInput.current.value)
+                        }
+                    }}
                     type="search"
                     borderWidth="2px"
                     borderRadius="md"
