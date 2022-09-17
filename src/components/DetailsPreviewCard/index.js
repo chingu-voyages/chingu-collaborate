@@ -138,6 +138,22 @@ function DetailsPreviewCard({ info }) {
                                 )
                             })}
                         </VStack>
+                        <Heading size="sm" marginTop={2}>
+                            Current Members
+                        </Heading>
+                        {info?.currentMembers?.length > 0 && (
+                            <AvatarGroup size="sm" max={2}>
+                                {info.currentMembers.map((member, index) => {
+                                    return (
+                                        <Avatar
+                                            key={index}
+                                            name={member.username}
+                                            src={member?.discordAvatarUrl}
+                                        />
+                                    )
+                                })}
+                            </AvatarGroup>
+                        )}
                     </Flex>
                     <Accordion allowToggle>
                         <AccordionItem border="none">
