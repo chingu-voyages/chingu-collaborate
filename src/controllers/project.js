@@ -59,8 +59,6 @@ export async function patchProject(id, formDataProject) {
             body: JSON.stringify(formDataProject),
         })
 
-        console.log(response)
-
         if (!response.ok) {
             return false
         }
