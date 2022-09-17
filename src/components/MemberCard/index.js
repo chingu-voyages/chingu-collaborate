@@ -1,14 +1,20 @@
-import {
-    Avatar,
-    Button,
-    ButtonGroup,
-    Flex,
-    Heading,
-    Text,
-} from '@chakra-ui/react'
+import { useState } from 'react'
+import { Avatar, Button, Flex, Heading, Text } from '@chakra-ui/react'
 import { BiCheck, BiX } from 'react-icons/bi'
 
 function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
+    const [disableActions, setDisableActions] = useState(false)
+
+    const approveMember = (info) => {
+        setDisableActions(true)
+        onApprove(info?._id)
+    }
+
+    const rejectMember = (info) => {
+        setDisableActions(true)
+        onReject(info?._id)
+    }
+
     return (
         <Flex
             borderWidth="2px"
@@ -31,17 +37,19 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
                     >
                         <Button
                             colorScheme="green"
+                            isDisabled={disableActions ? true : false}
                             size="xs"
                             width="100%"
-                            onClick={() => onApprove(info._id)}
+                            onClick={() => approveMember(info)}
                         >
                             <BiCheck />
                         </Button>
                         <Button
                             colorScheme="red"
+                            isDisabled={disableActions ? true : false}
                             size="xs"
                             width="100%"
-                            onClick={() => onReject(info?._id)}
+                            onClick={() => rejectMember(info)}
                         >
                             <BiX />
                         </Button>
@@ -50,29 +58,31 @@ function RequestedMemberCard({ info, isRequestable, onApprove, onReject }) {
                 <Flex direction="column">
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Username:</Heading>
-                        <Text fontSize="sm">{info.username}</Text>
+                        <Text fontSize="xs" textOverflow="ellipsis">
+                            {info.username}
+                        </Text>
                     </Flex>
-                    {info.location !== '' && (
+                    {info.location !== undefined && (
                         <Flex align="center" gap={1}>
                             <Heading size="xs">Location:</Heading>
-                            <Text fontSize="xs">{info.location}</Text>{' '}
+                            <Text fontSize="xs">{info.location}</Text>
                         </Flex>
                     )}
 
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Discord:</Heading>
-                        <Text fontSize="sm">{info.discordUsername}</Text>
+                        <Text fontSize="xs">{info.discordUsername}</Text>
                     </Flex>
 
                     <Flex align="center" gap={1}>
                         <Heading size="xs">Email:</Heading>
-                        <Text fontSize="sm">{info.email}</Text>
+                        <Text fontSize="xs">{info.email}</Text>
                     </Flex>
 
                     {info.githubProfile !== undefined && (
                         <Flex align="center" gap={1}>
                             <Heading size="xs">Github:</Heading>
-                            <Text fontSize="sm">{info.githubProfile}</Text>
+                            <Text fontSize="xs">{info.githubProfile}</Text>
                         </Flex>
                     )}
                 </Flex>
