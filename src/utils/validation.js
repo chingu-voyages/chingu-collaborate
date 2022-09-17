@@ -20,7 +20,7 @@ export function validateProjectBody(
         return 'timezone parameter is required'
     } else if (typeof title !== 'string') {
         return 'Title parameter should be string'
-    } else if (title.length < 5 || title.length > 21) {
+    } else if (title.length < 5 || title.length > 51) {
         return 'Title parameter length should be between 5 to 20 characters'
     } else if (technologies.length < 1) {
         return 'At least one technology should be selected'
