@@ -5,6 +5,7 @@ import HamburgerMenu from '../HamburgerMenu'
 import { Flex, Box, Link, Divider } from '@chakra-ui/react'
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 function Navbar() {
     const nonAuthenticatedRoutes = []
 
@@ -13,7 +14,9 @@ function Navbar() {
         { name: 'Sign Out', route: '/' },
     ]
 
+    const router = useRouter()
     const { data: session, status } = useSession()
+
     const [routes, setRoutes] = useState(nonAuthenticatedRoutes)
 
     useEffect(() => {
@@ -21,6 +24,13 @@ function Navbar() {
             setRoutes(authenticatedRoutes)
         }
     }, [session])
+
+    const redirectHandler = () => {
+        if (router.pathname === '/projects') {
+            return router.reload()
+        }
+        router.replace('/projects')
+    }
 
     return (
         <>
@@ -38,6 +48,8 @@ function Navbar() {
                         alt="Chingu Collaborate Logo"
                         width="142px"
                         height="48px"
+                        style={{ cursor: 'pointer' }}
+                        onClick={redirectHandler}
                     />
                 </Box>
                 {/* Smaller Screens */}
