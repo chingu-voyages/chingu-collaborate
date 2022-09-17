@@ -22,8 +22,9 @@ export default function Project({
     const isAdmin = session?.dbUser?._id === details?.admin?._id
 
     const projectsJoined = getNumberOfProjectsRequested(projects, session)
+
     const isJoinable =
-        !isRequestedMember && projectsJoined < JOINLIMIT && isCurrentMember
+        !isRequestedMember && projectsJoined < JOINLIMIT && !isCurrentMember
 
     return (
         <Wrapper session={session} status={status}>
@@ -67,6 +68,7 @@ export const getServerSideProps = async (context) => {
                 details: projectData,
                 projects: allProjectsData,
                 isRequestedMember,
+                isCurrentMember,
             },
         }
     } catch (error) {

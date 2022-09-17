@@ -237,7 +237,10 @@ export default function Projects({
                                 width="50%"
                                 display={['none', 'none', 'flex', 'flex']}
                             >
-                                <DetailsPreviewCard info={selectedProject} />
+                                <DetailsPreviewCard
+                                    info={selectedProject}
+                                    projects={projects}
+                                />
                             </VStack>
                         )}
                     </HStack>
