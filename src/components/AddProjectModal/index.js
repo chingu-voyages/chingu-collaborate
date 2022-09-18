@@ -18,7 +18,6 @@ import {
 import { Select } from 'chakra-react-select'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import TimezoneSelect from 'react-timezone-select'
 
 function AddProjectModal({ reachedMaximumPostedProjects }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -35,6 +34,46 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
         { value: 'Express.js', label: 'Express.js', colorScheme: 'blackAlpha' },
         { value: 'MongoDB', label: 'MongoDB', colorScheme: 'green' },
         { value: 'Next.js', label: 'Next.js', colorScheme: 'gray' },
+    ]
+
+    const timeZones = [
+        { value: 'UTC+14:00', label: 'UTC+14:00' },
+        { value: 'UTC+13:00', label: 'UTC+13:00' },
+        { value: 'UTC+12:45', label: 'UTC+12:45' },
+        { value: 'UTC+12:00', label: 'UTC+12:00' },
+        { value: 'UTC+11:00', label: 'UTC+11:00' },
+        { value: 'UTC+10:30', label: 'UTC+10:30' },
+        { value: 'UTC+10:00', label: 'UTC+10:00' },
+        { value: 'UTC+9:30', label: 'UTC+9:30' },
+        { value: 'UTC+9:00', label: 'UTC+9:00' },
+        { value: 'UTC+8:45', label: 'UTC+8:45' },
+        { value: 'UTC+8:00', label: 'UTC+8:00' },
+        { value: 'UTC+7:00', label: 'UTC+7:00' },
+        { value: 'UTC+6:30', label: 'UTC+6:30' },
+        { value: 'UTC+6:00', label: 'UTC+6:00' },
+        { value: 'UTC+5:45', label: 'UTC+5:45' },
+        { value: 'UTC+5:30', label: 'UTC+5:30' },
+        { value: 'UTC+5:00', label: 'UTC+5:00' },
+        { value: 'UTC+4:30', label: 'UTC+4:30' },
+        { value: 'UTC+4:00', label: 'UTC+4:00' },
+        { value: 'UTC+3:00', label: 'UTC+3:00' },
+        { value: 'UTC+2:00', label: 'UTC+2:00' },
+        { value: 'UTC+1:00', label: 'UTC+1:00' },
+        { value: 'UTC+0:00', label: 'UTC+0:00' },
+        { value: 'UTC-1:00', label: 'UTC-1:00' },
+        { value: 'UTC-2:00', label: 'UTC-2:00' },
+        { value: 'UTC-2:30', label: 'UTC-2:30' },
+        { value: 'UTC-3:00', label: 'UTC-3:00' },
+        { value: 'UTC-4:00', label: 'UTC-4:00' },
+        { value: 'UTC-5:00', label: 'UTC-5:00' },
+        { value: 'UTC-6:00', label: 'UTC-6:00' },
+        { value: 'UTC-7:00', label: 'UTC-7:00' },
+        { value: 'UTC-8:00', label: 'UTC-8:00' },
+        { value: 'UTC-9:00', label: 'UTC-9:00' },
+        { value: 'UTC-9:30', label: 'UTC-9:30' },
+        { value: 'UTC-10:00', label: 'UTC-10:00' },
+        { value: 'UTC-11:00', label: 'UTC-11:00' },
+        { value: 'UTC-12:00', label: 'UTC-12:00' },
     ]
 
     const inputMarginBottom = '1rem'
@@ -96,7 +135,7 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
         const user_id = session.dbUser._id
 
         let formData = {
-            timezone: timezone.label,
+            timezone,
             title,
             technologies,
             details,
@@ -221,12 +260,18 @@ function AddProjectModal({ reachedMaximumPostedProjects }) {
                             >
                                 Timezone
                             </FormLabel>
-                            <TimezoneSelect
+                            <Select
                                 isInvalid={
                                     didFocusOnTimezone && !timezoneIsValid
                                 }
-                                value={timezone}
-                                onChange={setTimezone}
+                                isRequired
+                                onFocus={() => {
+                                    setDidFocusOnTimezone(true)
+                                }}
+                                onChange={(e) => {
+                                    setTimezone(e.value)
+                                }}
+                                options={timeZones}
                             />
                             <FormLabel
                                 marginBottom={labelMarginBottom}
