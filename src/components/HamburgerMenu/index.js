@@ -24,6 +24,16 @@ function HamburgerMenu({ routes }) {
         onOpen()
     }
 
+    const [isHovering, setIsHovering] = useState(false)
+
+    const handleMouseEnter = () => {
+        setIsHovering(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovering(false)
+    }
+
     return (
         <div>
             <IconButton
@@ -40,25 +50,49 @@ function HamburgerMenu({ routes }) {
                 >
                     <DrawerCloseButton />
                     <DrawerBody>
-                        {routes.map((route, index) => {
-                            return (
-                                <NextLink
-                                    key={index}
-                                    href={route.route}
-                                    passHref
-                                >
+                        {routes
+                            .filter((route) => route.name !== 'Sign Out')
+                            .map((route, index) => {
+                                return (
+                                    <NextLink
+                                        key={index}
+                                        href={route.route}
+                                        passHref
+                                    >
+                                        <Link>
+                                            <Heading size="lg">
+                                                {route.name}
+                                            </Heading>
+                                        </Link>
+                                    </NextLink>
+                                )
+                            })}
+                        {routes
+                            .filter((route) => route.name === 'Sign Out')
+                            .map((route, index) => {
+                                return (
                                     <Link
-                                        onClick={
-                                            route.name == 'Sign Out' && signOut
-                                        }
+                                        key={index}
+                                        onClick={async () => {
+                                            await signOut()
+                                        }}
+                                        style={{
+                                            cursor: isHovering
+                                                ? 'pointer'
+                                                : 'default',
+                                            textDecoration: isHovering
+                                                ? 'underline'
+                                                : 'none',
+                                        }}
+                                        onMouseEnter={handleMouseEnter}
+                                        onMouseLeave={handleMouseLeave}
                                     >
                                         <Heading size="lg">
                                             {route.name}
                                         </Heading>
                                     </Link>
-                                </NextLink>
-                            )
-                        })}
+                                )
+                            })}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>

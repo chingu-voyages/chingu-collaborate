@@ -11,13 +11,23 @@ function Navbar() {
 
     const authenticatedRoutes = [
         { name: 'Projects', route: '/projects' },
-        { name: 'Sign Out', route: '/' },
+        { name: 'Sign Out' },
     ]
 
     const router = useRouter()
     const { data: session, status } = useSession()
 
     const [routes, setRoutes] = useState(nonAuthenticatedRoutes)
+
+    const [isHovering, setIsHovering] = useState(false)
+
+    const handleMouseEnter = () => {
+        setIsHovering(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovering(false)
+    }
 
     useEffect(() => {
         if (session) {
@@ -62,20 +72,43 @@ function Navbar() {
                     gap={2}
                     fontSize="1rem"
                 >
-                    {routes.map((route, index) => {
-                        return (
-                            <NextLink key={index} href={route.route} passHref>
-                                <Link
+                    {routes
+                        .filter((route) => route.name !== 'Sign Out')
+                        .map((route, index) => {
+                            return (
+                                <NextLink
+                                    key={index}
+                                    href={route.route}
+                                    passHref
+                                >
+                                    <Link>{route.name}</Link>
+                                </NextLink>
+                            )
+                        })}
+                    {routes
+                        .filter((route) => route.name === 'Sign Out')
+                        .map((route, index) => {
+                            return (
+                                <a
+                                    key={index}
                                     onClick={async () => {
-                                        route.name == 'Sign Out' &&
-                                            (await signOut())
+                                        await signOut()
                                     }}
+                                    style={{
+                                        cursor: isHovering
+                                            ? 'pointer'
+                                            : 'default',
+                                        textDecoration: isHovering
+                                            ? 'underline'
+                                            : 'none',
+                                    }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
                                 >
                                     {route.name}
-                                </Link>
-                            </NextLink>
-                        )
-                    })}
+                                </a>
+                            )
+                        })}
                 </Box>
             </Flex>
             <Divider width="100vw" minWidth="320px" />
