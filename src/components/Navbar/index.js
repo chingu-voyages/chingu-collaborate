@@ -66,9 +66,10 @@ function Navbar() {
                         return (
                             <NextLink key={index} href={route.route} passHref>
                                 <Link
-                                    onClick={
-                                        route.name == 'Sign Out' && signOut
-                                    }
+                                    onClick={async () => {
+                                        route.name == 'Sign Out' &&
+                                            (await signOut())
+                                    }}
                                 >
                                     {route.name}
                                 </Link>
