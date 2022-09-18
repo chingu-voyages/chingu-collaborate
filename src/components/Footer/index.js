@@ -19,7 +19,11 @@ export default function Footer() {
             maxWidth="2000px"
         >
             <Stack spacing={{ base: '4', md: '5' }}>
-                <Stack justify="space-between" direction="row" align="center">
+                <Stack
+                    justify="space-between"
+                    align="center"
+                    direction={['column', 'column', 'row', 'row']}
+                >
                     <Box>
                         <Image
                             src={'https://www.chingu.io/logo-with-text-192.png'}
@@ -60,7 +64,11 @@ export default function Footer() {
                         />
                     </ButtonGroup>
                 </Stack>
-                <Text fontSize="sm" color="subtle">
+                <Text
+                    fontSize="sm"
+                    color="subtle"
+                    textAlign={['center', 'center', 'left', 'left']}
+                >
                     Made with ❤ from a Chingu cohort.
                 </Text>
             </Stack>
