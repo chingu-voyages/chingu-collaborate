@@ -1,4 +1,3 @@
-import NextLink from 'next/link'
 import Image from 'next/image'
 import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'

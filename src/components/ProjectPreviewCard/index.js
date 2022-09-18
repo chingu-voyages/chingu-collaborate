@@ -13,6 +13,7 @@ import {
     LinkBox,
     LinkOverlay,
     Avatar,
+    useMediaQuery,
 } from '@chakra-ui/react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { BiTimeFive } from 'react-icons/bi'
@@ -22,8 +23,9 @@ import { deleteProjectIdea } from '../../controllers/project'
 
 function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
     const router = useRouter()
-
     const { data: session } = useSession()
+
+    const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
 
     const isAdmin = project?.admin?._id === session.dbUser._id
 
@@ -34,6 +36,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
         onClick()
     }
 
+    console.log(isLargerThan768)
     return (
         <LinkBox
             as="article"
@@ -43,7 +46,7 @@ function ProjectPreviewCard({ project, isSelected, externalDetails, onClick }) {
             <Flex
                 borderWidth="1.5px"
                 borderRadius="lg"
-                borderColor={isSelected ? 'green.600' : ''}
+                borderColor={isSelected && isLargerThan768 ? 'green.600' : ''}
                 width="100%"
                 padding="1rem"
                 flexDirection="column"
