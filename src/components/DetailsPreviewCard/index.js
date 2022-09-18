@@ -55,38 +55,46 @@ function DetailsPreviewCard({ info, projects }) {
     )
 
     const requestForProject = async () => {
-        setProjectRequestLoading(true)
-        const formDataProject = {
-            user_id: session?.dbUser?._id,
-            requestType: 'requestForProject',
-        }
+        try {
+            setProjectRequestLoading(true)
+            const formDataProject = {
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
+            }
 
-        const response = await patchProject(info._id, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            setProjectRequestLoading(false)
-            console.log(
-                'Something went wrong while trying to request to join a project.'
-            )
+            const response = await patchProject(info._id, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                setProjectRequestLoading(false)
+                console.log(
+                    'Something went wrong while trying to request to join a project.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     const withdrawFromProject = async () => {
-        setProjectRequestLoading(true)
-        const formDataProject = {
-            user_id: session?.dbUser?._id,
-            requestType: 'withdrawFromProject',
-        }
+        try {
+            setProjectRequestLoading(true)
+            const formDataProject = {
+                user_id: session?.dbUser?._id,
+                requestType: 'withdrawFromProject',
+            }
 
-        const response = await patchProject(info._id, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            setProjectRequestLoading(false)
-            console.log(
-                'Something went wrong while trying to withdraw from a project.'
-            )
+            const response = await patchProject(info._id, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                setProjectRequestLoading(false)
+                console.log(
+                    'Something went wrong while trying to withdraw from a project.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 

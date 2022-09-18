@@ -31,31 +31,41 @@ function ManageProject({ project }) {
     const router = useRouter()
 
     const approveHandler = async (id, projectId) => {
-        const formDataProject = {
-            user_id: id,
-            requestType: 'approveProject',
-        }
+        try {
+            const formDataProject = {
+                user_id: id,
+                requestType: 'approveProject',
+            }
 
-        const response = await patchProject(projectId, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            console.log(
-                'Something went wrong while trying to approve a member.'
-            )
+            const response = await patchProject(projectId, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                console.log(
+                    'Something went wrong while trying to approve a member.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
     const rejectHandler = async (id, projectId) => {
-        const formDataProject = {
-            user_id: id,
-            requestType: 'rejectProject',
-        }
+        try {
+            const formDataProject = {
+                user_id: id,
+                requestType: 'rejectProject',
+            }
 
-        const response = await patchProject(projectId, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            console.log('Something went wrong while trying to reject a member.')
+            const response = await patchProject(projectId, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                console.log(
+                    'Something went wrong while trying to reject a member.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
