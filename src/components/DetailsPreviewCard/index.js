@@ -141,10 +141,7 @@ function DetailsPreviewCard({ info, projects }) {
 
     const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
-    const { data, error } = useSWR(
-        'http://localhost:3000/api/projects',
-        fetcher
-    )
+    const { data, error } = useSWR('/api/projects', fetcher)
 
     if (info !== undefined) {
         if (isAdmin) {

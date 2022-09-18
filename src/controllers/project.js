@@ -2,9 +2,9 @@ export async function getProjects(cookie, searchQuery = '') {
     try {
         let apiEndpoint
         if (searchQuery == '') {
-            apiEndpoint = `http://localhost:3000/api/projects`
+            apiEndpoint = `${process.env.NEXT_PUBLIC_DOMAIN}/api/projects`
         } else {
-            apiEndpoint = `http://localhost:3000/api/projects?title=${searchQuery}`
+            apiEndpoint = `${process.env.NEXT_PUBLIC_DOMAIN}/api/projects?title=${searchQuery}`
         }
 
         const response = await fetch(apiEndpoint, {
@@ -22,7 +22,7 @@ export async function getProjects(cookie, searchQuery = '') {
 export async function getProjectById(context) {
     try {
         const response = await fetch(
-            `http://localhost:3000/api/projects/${context.params.id}`,
+            `${process.env.NEXT_PUBLIC_DOMAIN}/api/projects/${context.params.id}`,
             {
                 method: 'GET',
                 headers: {
