@@ -115,6 +115,11 @@ function CreateProfile() {
                     ) {
                         setEmailExists(true)
                     }
+
+                    if (data.error === 'Both username and email is taken') {
+                        setUsernameExists(true)
+                        setEmailExists(true)
+                    }
                 }
 
                 setIsLoading(false)
