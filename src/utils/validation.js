@@ -90,6 +90,9 @@ export async function existingUser(username, email) {
         username: username,
     })
     const existingEmail = await User.findOne({ email: email })
+    if (existingUsername != null && existingEmail != null) {
+        return 'Both username and email is taken'
+    }
     if (existingUsername != null) {
         return 'Username is already taken'
     } else if (existingEmail != null) {
