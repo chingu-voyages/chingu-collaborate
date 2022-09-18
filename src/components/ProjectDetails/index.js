@@ -34,38 +34,46 @@ function ProjectDetails({ project, isJoinable }) {
     const isReported = false
 
     const requestForProject = async () => {
-        setIsLoading(true)
-        const formDataProject = {
-            user_id: session?.dbUser?._id,
-            requestType: 'requestForProject',
-        }
+        try {
+            setIsLoading(true)
+            const formDataProject = {
+                user_id: session?.dbUser?._id,
+                requestType: 'requestForProject',
+            }
 
-        const response = await patchProject(project._id, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            setIsLoading(false)
-            console.log(
-                'Something went wrong while trying to request to join a project.'
-            )
+            const response = await patchProject(project._id, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                setIsLoading(false)
+                console.log(
+                    'Something went wrong while trying to request to join a project.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 
     const withdrawFromProject = async () => {
-        setIsLoading(true)
-        const formDataProject = {
-            user_id: session?.dbUser?._id,
-            requestType: 'withdrawFromProject',
-        }
+        try {
+            setIsLoading(true)
+            const formDataProject = {
+                user_id: session?.dbUser?._id,
+                requestType: 'withdrawFromProject',
+            }
 
-        const response = await patchProject(project._id, formDataProject)
-        if (response == true) {
-            router.reload()
-        } else {
-            setIsLoading(false)
-            console.log(
-                'Something went wrong while trying to withdraw from a project.'
-            )
+            const response = await patchProject(project._id, formDataProject)
+            if (response == true) {
+                router.reload()
+            } else {
+                setIsLoading(false)
+                console.log(
+                    'Something went wrong while trying to withdraw from a project.'
+                )
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 

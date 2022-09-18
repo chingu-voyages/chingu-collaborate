@@ -30,7 +30,7 @@ export default async function handler(req, res) {
                     let projects
                     if (title) {
                         projects = await Project.find({
-                            title: new RegExp(title),
+                            title: new RegExp(title, 'i'),
                         })
                             .populate('admin')
                             .populate('currentMembers')
