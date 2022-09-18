@@ -7,17 +7,17 @@ import {
     DrawerContent,
     DrawerCloseButton,
     IconButton,
-    Button,
     useDisclosure,
     Link,
 } from '@chakra-ui/react'
-import NextLink from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 function HamburgerMenu({ routes }) {
     const [size, setSize] = useState('xs')
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const router = useRouter()
 
     const handleClick = (newSize) => {
         setSize(newSize)
@@ -32,6 +32,13 @@ function HamburgerMenu({ routes }) {
 
     const handleMouseLeave = () => {
         setIsHovering(false)
+    }
+
+    const changeRoute = (route) => {
+        if (route === router.route) {
+            return router.reload()
+        }
+        return router.replace(route)
     }
 
     return (
@@ -54,17 +61,14 @@ function HamburgerMenu({ routes }) {
                             .filter((route) => route.name !== 'Sign Out')
                             .map((route, index) => {
                                 return (
-                                    <NextLink
+                                    <Link
                                         key={index}
-                                        href={route.route}
-                                        passHref
+                                        onClick={() => changeRoute(route.route)}
                                     >
-                                        <Link>
-                                            <Heading size="lg">
-                                                {route.name}
-                                            </Heading>
-                                        </Link>
-                                    </NextLink>
+                                        <Heading size="lg">
+                                            {route.name}
+                                        </Heading>
+                                    </Link>
                                 )
                             })}
                         {routes

@@ -35,6 +35,13 @@ function Navbar() {
         }
     }, [session])
 
+    const changeRoute = (route) => {
+        if (route === router.route) {
+            return router.reload()
+        }
+        return router.replace(route)
+    }
+
     const redirectHandler = () => {
         if (router.pathname === '/projects') {
             return router.reload()
@@ -76,37 +83,28 @@ function Navbar() {
                         .filter((route) => route.name !== 'Sign Out')
                         .map((route, index) => {
                             return (
-                                <NextLink
+                                <Link
                                     key={index}
-                                    href={route.route}
-                                    passHref
+                                    onClick={() => changeRoute(route.route)}
                                 >
-                                    <Link>{route.name}</Link>
-                                </NextLink>
+                                    {route.name}
+                                </Link>
                             )
                         })}
                     {routes
                         .filter((route) => route.name === 'Sign Out')
                         .map((route, index) => {
                             return (
-                                <a
+                                <Link
                                     key={index}
                                     onClick={async () => {
                                         await signOut()
-                                    }}
-                                    style={{
-                                        cursor: isHovering
-                                            ? 'pointer'
-                                            : 'default',
-                                        textDecoration: isHovering
-                                            ? 'underline'
-                                            : 'none',
                                     }}
                                     onMouseEnter={handleMouseEnter}
                                     onMouseLeave={handleMouseLeave}
                                 >
                                     {route.name}
-                                </a>
+                                </Link>
                             )
                         })}
                 </Box>
