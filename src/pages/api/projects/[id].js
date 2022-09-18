@@ -18,7 +18,6 @@ export default async function handler(req, res) {
     if (session) {
         const { method } = req
         connectToDatabase()
-
         switch (method) {
             case 'GET':
                 try {
@@ -100,10 +99,20 @@ export default async function handler(req, res) {
                 break
             case 'DELETE':
                 try {
-                    const project = await Project.findByIdAndDelete(
-                        req.query.id
-                    )
-                    return res.status(200).json(project)
+                    const project = await Project.findById(req.query.id)
+                    if (
+                        JSON.stringify(session.dbUser._id) ===
+                        JSON.stringify(project.admin._id)
+                    ) {
+                        await Project.findByIdAndDelete(req.query.id)
+                        return res.status(200).json({
+                            success: 'You successfuly deleted your project',
+                        })
+                    } else {
+                        return res.status(401).json({
+                            error: 'Sorry you are not authorised to delete this project',
+                        })
+                    }
                 } catch (err) {
                     return res.status(500).json(err)
                 }
