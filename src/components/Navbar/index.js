@@ -54,7 +54,7 @@ function Navbar() {
                 </Box>
                 {/* Smaller Screens */}
                 <Box display={['flex', 'flex', 'none', 'none']}>
-                    <HamburgerMenu routes={routes} />
+                    {routes.length > 0 && <HamburgerMenu routes={routes} />}{' '}
                 </Box>
                 {/* Larger Screens */}
                 <Box
