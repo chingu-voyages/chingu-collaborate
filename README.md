@@ -9,7 +9,7 @@ Secondly, while Chingus may initially be able to commit to a Voyage there may be
 
 For these reasons, we decided to create a platform to help Chingus. Using Chingu Collaborate, Chingus will be able to collborate with other decicated Chingus in the event they miss the deadline to join a Voyage or the next Voyage is months away. Additionally, Voyage teams can leverage Chingu Collaborate to gain help with their Voyages.
 
-[![TechStack](https://skillicons.dev/icons?i=nextjs,nodejs,mongodb,git,js,css,html&perline=10)](https://skillicons.dev)
+[![TechStack](https://skillicons.dev/icons?i=nextjs,nodejs,mongodb,git,js,html,css&perline=10)](https://skillicons.dev)
 
 ## ▶️ Demo 
 
