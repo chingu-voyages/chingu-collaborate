@@ -1,0 +1,186 @@
+const projects = [
+    {
+        title: 'Project 1',
+        technologies: ['React', 'JavaScript'],
+        details:
+            'Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1Project 1',
+        timezone: 'UTC+01:00',
+    },
+    {
+        title: 'Project 2',
+        technologies: ['React', 'JavaScript'],
+        details:
+            'Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2Project 2',
+        timezone: 'UTC+01:00',
+    },
+    // {
+    //     title: 'Project 3',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: 'Project 4',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: 'Project 5',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: 'Project 6',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: 'Project 7',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+    // {
+    //     title: '',
+    //     technologies: ['React', 'JavaScript'],
+    //     details: '',
+    //     timezone: 'UTC+01:00',
+    // },
+]
+
+export default projects
