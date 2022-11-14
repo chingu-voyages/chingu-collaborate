@@ -16,15 +16,14 @@ const getUsersId = async () => {
 }
 
 const seedDB = async () => {
-    // for (let user of users) {
-    //     const newUser = new User(user)
-    //     await newUser.save()
-    // }
+    for (let user of users) {
+        const newUser = new User(user)
+        await newUser.save()
+    }
     const dbUsersId = await getUsersId()
     for (let project of projects) {
         const randomElement =
             dbUsersId[Math.floor(Math.random() * dbUsersId.length)]
-        console.log(randomElement)
         const newProject = new Project(project)
         const now = DateTime.now()
         newProject.createdAt = now
