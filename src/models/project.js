@@ -1,6 +1,6 @@
-const { Schema, model, models } = require('mongoose')
+import mongoose from 'mongoose'
 
-const projectSchema = new Schema({
+const projectSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -30,23 +30,24 @@ const projectSchema = new Schema({
     },
     admin: {
         required: true,
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
     currentMembers: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
     ],
     requestedMembers: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
     ],
 })
 
-const Project = models.Project || model('Project', projectSchema)
+const Project =
+    mongoose.models.Project || mongoose.model('Project', projectSchema)
 
 export default Project
