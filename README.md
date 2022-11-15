@@ -33,6 +33,21 @@ DISCORD_CLIENT_ID= <api key here>
 DISCORD_CLIENT_SECRET= <api key here>
 MONGODB_URI= <db URI here>
 ```
+- create a `.env` file with the following environment variables :
+```
+MONGODB_URI= <db URI here>
+```
+
+## 🛢️ Seed your local database
+
+- Add below line in your package.json and remove this after seeding the database
+```
+"type": "module"
+```
+- Run below command from root directory
+```
+npm run seed-database
+```
 
 
 ## 📝 Authors
