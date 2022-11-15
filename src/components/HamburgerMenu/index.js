@@ -7,21 +7,38 @@ import {
     DrawerContent,
     DrawerCloseButton,
     IconButton,
-    Button,
     useDisclosure,
     Link,
 } from '@chakra-ui/react'
-import NextLink from 'next/link'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 function HamburgerMenu({ routes }) {
     const [size, setSize] = useState('xs')
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const router = useRouter()
 
     const handleClick = (newSize) => {
         setSize(newSize)
         onOpen()
+    }
+
+    const [isHovering, setIsHovering] = useState(false)
+
+    const handleMouseEnter = () => {
+        setIsHovering(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovering(false)
+    }
+
+    const changeRoute = (route) => {
+        if (route === router.route) {
+            return router.reload()
+        }
+        return router.replace(route)
     }
 
     return (
@@ -40,25 +57,46 @@ function HamburgerMenu({ routes }) {
                 >
                     <DrawerCloseButton />
                     <DrawerBody>
-                        {routes.map((route, index) => {
-                            return (
-                                <NextLink
-                                    key={index}
-                                    href={route.route}
-                                    passHref
-                                >
+                        {routes
+                            .filter((route) => route.name !== 'Sign Out')
+                            .map((route, index) => {
+                                return (
                                     <Link
-                                        onClick={
-                                            route.name == 'Sign Out' && signOut
-                                        }
+                                        key={index}
+                                        onClick={() => changeRoute(route.route)}
                                     >
                                         <Heading size="lg">
                                             {route.name}
                                         </Heading>
                                     </Link>
-                                </NextLink>
-                            )
-                        })}
+                                )
+                            })}
+                        {routes
+                            .filter((route) => route.name === 'Sign Out')
+                            .map((route, index) => {
+                                return (
+                                    <Link
+                                        key={index}
+                                        onClick={async () => {
+                                            await signOut()
+                                        }}
+                                        style={{
+                                            cursor: isHovering
+                                                ? 'pointer'
+                                                : 'default',
+                                            textDecoration: isHovering
+                                                ? 'underline'
+                                                : 'none',
+                                        }}
+                                        onMouseEnter={handleMouseEnter}
+                                        onMouseLeave={handleMouseLeave}
+                                    >
+                                        <Heading size="lg">
+                                            {route.name}
+                                        </Heading>
+                                    </Link>
+                                )
+                            })}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
