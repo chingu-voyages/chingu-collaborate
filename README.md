@@ -32,6 +32,10 @@ git clone <your forked repo URL>
 DISCORD_CLIENT_ID= <api key here>
 DISCORD_CLIENT_SECRET= <api key here>
 MONGODB_URI= <db URI here>
+NEXTAUTH_SECRET = <Your NEXTAUTH_SECRET here>
+NEXT_PUBLIC_DOMAIN=http://localhost:3000/
+NEXT_PUBLIC_JOINLIMIT=5 
+NEXT_PUBLIC_POSTLIMIT=1
 ```
 - create a `.env` file with the following environment variables :
 ```
