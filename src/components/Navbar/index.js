@@ -1,4 +1,3 @@
-import NextLink from 'next/link'
 import Image from 'next/image'
 import logo from './ChinguCollaborateLogo.png'
 import HamburgerMenu from '../HamburgerMenu'
@@ -11,7 +10,7 @@ function Navbar() {
 
     const authenticatedRoutes = [
         { name: 'Projects', route: '/projects' },
-        { name: 'Sign Out', route: '/' },
+        { name: 'Sign Out' },
     ]
 
     const router = useRouter()
@@ -19,11 +18,28 @@ function Navbar() {
 
     const [routes, setRoutes] = useState(nonAuthenticatedRoutes)
 
+    const [isHovering, setIsHovering] = useState(false)
+
+    const handleMouseEnter = () => {
+        setIsHovering(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovering(false)
+    }
+
     useEffect(() => {
         if (session) {
             setRoutes(authenticatedRoutes)
         }
     }, [session])
+
+    const changeRoute = (route) => {
+        if (route === router.route) {
+            return router.reload()
+        }
+        return router.replace(route)
+    }
 
     const redirectHandler = () => {
         if (router.pathname === '/projects') {
@@ -62,19 +78,34 @@ function Navbar() {
                     gap={2}
                     fontSize="1rem"
                 >
-                    {routes.map((route, index) => {
-                        return (
-                            <NextLink key={index} href={route.route} passHref>
+                    {routes
+                        .filter((route) => route.name !== 'Sign Out')
+                        .map((route, index) => {
+                            return (
                                 <Link
-                                    onClick={
-                                        route.name == 'Sign Out' && signOut
-                                    }
+                                    key={index}
+                                    onClick={() => changeRoute(route.route)}
                                 >
                                     {route.name}
                                 </Link>
-                            </NextLink>
-                        )
-                    })}
+                            )
+                        })}
+                    {routes
+                        .filter((route) => route.name === 'Sign Out')
+                        .map((route, index) => {
+                            return (
+                                <Link
+                                    key={index}
+                                    onClick={async () => {
+                                        await signOut()
+                                    }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    {route.name}
+                                </Link>
+                            )
+                        })}
                 </Box>
             </Flex>
             <Divider width="100vw" minWidth="320px" />
